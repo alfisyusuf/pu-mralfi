@@ -19,11 +19,11 @@ Di bagian ini, kita melatih kemampuan mengubah bentuk kalimat tanpa mengubah mak
 Tentukan ingkaran (negasi) dari pernyataan berikut:
 **"Jika harga BBM naik, maka harga bahan pokok ikut naik."**
 
-A. Harga BBM naik dan harga bahan pokok tidak naik.
-B. Harga BBM tidak naik atau harga bahan pokok naik.
-C. Jika harga BBM tidak naik, maka harga bahan pokok tidak naik.
-D. Harga BBM naik atau harga bahan pokok tidak naik.
-E. Harga BBM tidak naik dan harga bahan pokok naik.
+- A. Harga BBM naik dan harga bahan pokok tidak naik.
+- B. Harga BBM tidak naik atau harga bahan pokok naik.
+- C. Jika harga BBM tidak naik, maka harga bahan pokok tidak naik.
+- D. Harga BBM naik atau harga bahan pokok tidak naik.
+- E. Harga BBM tidak naik dan harga bahan pokok naik.
 
 ::: details Lihat Pembahasan
 **Jawaban: A**
@@ -51,11 +51,11 @@ $\sim q$: harga bahan pokok **tidak** naik.
 ### Soal 2
 Pernyataan yang **ekuivalen (setara)** dengan pernyataan **"Jika Budi rajin belajar, maka ia lulus UTBK"** adalah...
 
-A. Jika Budi lulus UTBK, maka ia rajin belajar.
-B. Budi rajin belajar dan ia tidak lulus UTBK.
-C. Budi tidak rajin belajar atau ia lulus UTBK.
-D. Jika Budi tidak lulus UTBK, maka ia rajin belajar.
-E. Budi tidak rajin belajar dan ia lulus UTBK.
+- A. Jika Budi lulus UTBK, maka ia rajin belajar.
+- B. Budi rajin belajar dan ia tidak lulus UTBK.
+- C. Budi tidak rajin belajar atau ia lulus UTBK.
+- D. Jika Budi tidak lulus UTBK, maka ia rajin belajar.
+- E. Budi tidak rajin belajar dan ia lulus UTBK.
 
 ::: details Lihat Pembahasan
 **Jawaban: C**
@@ -86,11 +86,11 @@ Perhatikan premis-premis berikut:
 
 Kesimpulan yang sah adalah...
 
-A. Hari ini hujan.
-B. Hari ini tidak hujan.
-C. Saya lupa membawa payung.
-D. Hari ini cerah berawan.
-E. Jika saya membawa payung, maka hari ini hujan.
+- A. Hari ini hujan.
+- B. Hari ini tidak hujan.
+- C. Saya lupa membawa payung.
+- D. Hari ini cerah berawan.
+- E. Jika saya membawa payung, maka hari ini hujan.
 
 ::: details Lihat Pembahasan
 **Jawaban: B**
@@ -122,11 +122,11 @@ Perhatikan premis-premis berikut:
 
 Kesimpulan dari kedua premis di atas adalah...
 
-A. Jika air laut pasang, maka pasokan ikan di pasar berkurang.
-B. Jika pasokan ikan di pasar berkurang, maka air laut pasang.
-C. Air laut pasang dan pasokan ikan berkurang.
-D. Jika air laut tidak pasang, maka pasokan ikan tidak berkurang.
-E. Nelayan melaut meskipun air laut pasang.
+- A. Jika air laut pasang, maka pasokan ikan di pasar berkurang.
+- B. Jika pasokan ikan di pasar berkurang, maka air laut pasang.
+- C. Air laut pasang dan pasokan ikan berkurang.
+- D. Jika air laut tidak pasang, maka pasokan ikan tidak berkurang.
+- E. Nelayan melaut meskipun air laut pasang.
 
 ::: details Lihat Pembahasan
 **Jawaban: A**
@@ -164,11 +164,11 @@ Diketahui premis:
 
 Kesimpulan yang sah adalah...
 
-A. $p$
-B. $\sim p$
-C. $q$
-D. $p \land q$
-E. Tidak dapat ditarik kesimpulan
+- A. $p$
+- B. $\sim p$
+- C. $q$
+- D. $p \land q$
+- E. Tidak dapat ditarik kesimpulan
 
 ::: details Lihat Pembahasan
 **Jawaban: B**
