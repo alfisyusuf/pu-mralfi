@@ -71,7 +71,7 @@ Ada dua bentuk setara yang umum:
 2.  **Disjungsi:** $\sim p \lor q$ (Tidak rajin **atau** lulus).
 
 **Cek Pilihan:**
-Pilihan C berbunyi: "Budi tidak rajin belajar ($ \sim p $) **atau** ($\lor$) ia lulus UTBK ($ q $)".
+Pilihan C berbunyi: "Budi tidak rajin belajar ($\sim p$) **atau** ($\lor$) ia lulus UTBK ($q$)".
 Ini sesuai dengan rumus $\sim p \lor q$.
 :::
 
