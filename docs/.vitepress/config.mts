@@ -22,7 +22,7 @@ export default defineConfig({
           text: '🧠 Penalaran Deduktif',
           items: [
             { text: 'Rangkuman Materi', link: '/deduktif/' },
-            { text: 'Latihan Soal', link: '/deduktif/kuis' }
+            { text: 'Contoh Soal', link: '/deduktif/contoh-soal-untuk-memahami' }
           ]
         }
       ],
