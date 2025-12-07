@@ -30,10 +30,10 @@ Tipe soal ini meminta kamu mencari informasi yang sesuai berdasarkan teks bacaan
 **Pertanyaan:**
 Pernyataan berikut yang sesuai dengan isi bacaan di atas adalah ...
 
-A. Ungkapan politik sebagai panglima berkembang pada masa silam
-B. Setiap politik memiliki label yang berbeda-beda
-C. Ungkapan dalam dunia politik sering membuat masyarakat takut
-D. Setiap insan memperoleh ancaman dalam masalah politik
+A. Ungkapan politik sebagai panglima berkembang pada masa silam<br>
+B. Setiap politik memiliki label yang berbeda-beda<br>
+C. Ungkapan dalam dunia politik sering membuat masyarakat takut<br>
+D. Setiap insan memperoleh ancaman dalam masalah politik<br>
 
 ::: details Lihat Pembahasan
 **Analisis Jawaban:**
@@ -67,11 +67,11 @@ Pada tipe ini, kamu harus jeli membaca data angka yang disusun dalam baris dan k
 **Pertanyaan:**
 Berdasarkan data pada tabel, skor matematika di tahun 2015 dibandingkan dengan tahun sebelumnya (2012) mengalami ....
 
-A. kenaikan sebesar 4 poin
-B. kenaikan sebesar 11 poin
-C. kenaikan sebesar 14 poin
-D. penurunan sebesar 4 poin
-E. penurunan sebesar 11 poin
+A. kenaikan sebesar 4 poin<br>
+B. kenaikan sebesar 11 poin<br>
+C. kenaikan sebesar 14 poin<br>
+D. penurunan sebesar 4 poin<br>
+E. penurunan sebesar 11 poin<br>
 
 ::: details Lihat Pembahasan
 **Jawaban: B**
@@ -107,11 +107,11 @@ Informasi disajikan dalam bentuk visual. Kamu harus bisa membaca diagram garis, 
 **Pertanyaan:**
 Berdasarkan data di atas, rata-rata rumah tangga yang **belum** memiliki akses sanitasi aman di 5 provinsi terendah tersebut adalah sebesar ....
 
-A. 320,04%
-B. 79,96%
-C. 64,008%
-D. 35,992%
-E. 22,806%
+A. 320,04%<br>
+B. 79,96%<br>
+C. 64,008%<br>
+D. 35,992%<br>
+E. 22,806%<br>
 
 ::: details Lihat Pembahasan
 **Jawaban: D**
