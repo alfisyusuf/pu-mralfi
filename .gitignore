@@ -1,0 +1,15 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories (Wajib banget di-ignore)
+node_modules/
+
+# VitePress build output (Cloudflare bakal bikin ini sendiri)
+docs/.vitepress/dist
+docs/.vitepress/cache
+
+# System files (Sampah OS)
+.DS_Store
+Thumbs.db
