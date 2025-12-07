@@ -31,7 +31,7 @@ export default defineConfig({
           text: '📊 Penalaran Induktif',
           items: [
             { text: 'Rangkuman Materi', link: '/induktif/' },
-            { text: 'Contoh Soal', link: '/deduktif/contoh-soal-untuk-memahami' }
+            { text: 'Contoh Soal', link: '/induktif/contoh-soal-untuk-memahami' }
           ]
         }
       ],
