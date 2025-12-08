@@ -49,19 +49,19 @@ $\sim q$: harga bahan pokok **tidak** naik.
 ---
 
 ### Soal 2
-Pernyataan yang **ekuivalen (setara)** dengan pernyataan **"Jika Budi rajin belajar, maka ia lulus UTBK"** adalah...
+Pernyataan yang **ekuivalen (setara)** dengan pernyataan **"Jika Aldo rajin belajar, maka ia lulus UTBK"** adalah...
 
-- A. Jika Budi lulus UTBK, maka ia rajin belajar.
-- B. Budi rajin belajar dan ia tidak lulus UTBK.
-- C. Budi tidak rajin belajar atau ia lulus UTBK.
-- D. Jika Budi tidak lulus UTBK, maka ia rajin belajar.
-- E. Budi tidak rajin belajar dan ia lulus UTBK.
+- A. Jika Aldo lulus UTBK, maka ia rajin belajar.
+- B. Aldo rajin belajar dan ia tidak lulus UTBK.
+- C. Aldo tidak rajin belajar atau ia lulus UTBK.
+- D. Jika Aldo tidak lulus UTBK, maka ia rajin belajar.
+- E. Aldo tidak rajin belajar dan ia lulus UTBK.
 
 ::: details Lihat Pembahasan
 **Jawaban: C**
 
 **Analisis:**
-* $p$: Budi rajin belajar
+* $p$: Aldo rajin belajar
 * $q$: Ia lulus UTBK
 * Bentuk soal: $p \Rightarrow q$
 
@@ -71,7 +71,7 @@ Ada dua bentuk setara yang umum:
 2.  **Disjungsi:** $\sim p \lor q$ (Tidak rajin **atau** lulus).
 
 **Cek Pilihan:**
-Pilihan C berbunyi: "Budi tidak rajin belajar ($\sim p$) **atau** ($\lor$) ia lulus UTBK ($q$)".
+Pilihan C berbunyi: "Aldo tidak rajin belajar ($\sim p$) **atau** ($\lor$) ia lulus UTBK ($q$)".
 Ini sesuai dengan rumus $\sim p \lor q$.
 :::
 
