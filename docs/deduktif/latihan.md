@@ -17,8 +17,8 @@ description: Kumpulan soal logika deduktif
 **Bacalah premis berikut dengan saksama!**
 
 ::: info Diketahui Premis-Premis:
-* **Premis $p$:** $$x^2 - 7x + 10 = 0$$
-* **Premis $q$:** $$x^2 - 3x - 10 = 0$$
+* **Premis $p$:** $x^2 - 7x + 10 = 0$
+* **Premis $q$:** $x^2 - 3x - 10 = 0$
 * *Catatan: $x \in \mathbb{R}$*
 :::
 
