@@ -23,7 +23,8 @@ export default defineConfig({
           items: [
             { text: 'Rangkuman Materi', link: '/deduktif/' },
             { text: 'Contoh Soal', link: '/deduktif/contoh-soal-untuk-memahami' },
-            { text: 'Latihan', link: '/deduktif/latihan'}
+            { text: 'Latihan 1', link: '/deduktif/latihan'},
+            { text: 'Latihan 2', link: '/deduktif/latihan2' }
           ]
         }
       ],
