@@ -31,11 +31,11 @@ Latihan ini berfokus pada kemampuan memprediksi kejadian di masa depan berdasark
 ### Soal 1
 Berdasarkan tren pada tabel di atas, apa yang **PALING MUNGKIN TIDAK TERJADI** pada jumlah pengguna narkoba setelah tahun 2007?
 
-A. Pengguna narkoba usia < 16 berpotensi meningkat jumlahnya.
-B. Pengguna narkoba usia 16-19 berpotensi meningkat jumlahnya.
-C. Pengguna narkoba usia 20-24 berpotensi meningkat jumlahnya.
-D. Pengguna narkoba usia 25-29 berpotensi meningkat jumlahnya.
-E. Pengguna narkoba usia > 29 berpotensi meningkat jumlahnya.
+- A. Pengguna narkoba usia < 16 berpotensi meningkat jumlahnya.
+- B. Pengguna narkoba usia 16-19 berpotensi meningkat jumlahnya.
+- C. Pengguna narkoba usia 20-24 berpotensi meningkat jumlahnya.
+- D. Pengguna narkoba usia 25-29 berpotensi meningkat jumlahnya.
+- E. Pengguna narkoba usia > 29 berpotensi meningkat jumlahnya.
 
 ::: details 🔓 Lihat Kunci Jawaban & Pembahasan
 **Jawaban Benar: C**
@@ -64,11 +64,11 @@ Awalnya, pengguna narkoba adalah orang dewasa (sekitar 25 tahun) dari kalangan e
 ### Soal 2
 Berdasarkan fakta bahwa narkoba sudah merambah masyarakat kelas menengah ke bawah dan gelandangan, manakah simpulan mengenai lokasi sebaran yang **PALING MUNGKIN** benar?
 
-A. Narkoba sudah merambah ke diskotek dan tempat hiburan mahal.
-B. Narkoba sudah merambah ke lingkungan perumahan elit.
-C. Narkoba sudah merambah ke lingkungan perkampungan.
-D. Narkoba sudah merambah ke rumah-rumah sakit.
-E. Narkoba sudah merambah ke sekolah-sekolah dasar swasta.
+- A. Narkoba sudah merambah ke diskotek dan tempat hiburan mahal.
+- B. Narkoba sudah merambah ke lingkungan perumahan elit.
+- C. Narkoba sudah merambah ke lingkungan perkampungan.
+- D. Narkoba sudah merambah ke rumah-rumah sakit.
+- E. Narkoba sudah merambah ke sekolah-sekolah dasar swasta.
 
 ::: details 🔓 Lihat Kunci Jawaban & Pembahasan
 **Jawaban Benar: C (Lingkungan Perkampungan)**
@@ -92,11 +92,11 @@ Perlambatan penurunan jumlah kemiskinan disebabkan, antara lain, tidak adanya ke
 ### Soal 3
 Berdasarkan data bahwa 71,3% orang miskin ada di desa/pertanian, manakah simpulan yang **PALING MUNGKIN** benar mengenai strategi pembangunan?
 
-A. Kurangnya keberpihakan pembangunan ke desa dan sektor pertanian adalah penyebab utama kemiskinan bertahan.
-B. Belum jelas keberpihakan pembangunan ke desa dan sektor pertanian.
-C. Hanya ada keberpihakan pembangunan ke desa dan sektor pertanian.
-D. Keberpihakan pembangunan ke desa dan sektor pertanian tidak dirasakan.
-E. Keberpihakan pembangunan ke desa dan sektor pertanian akan bertambah.
+- A. Kurangnya keberpihakan pembangunan ke desa dan sektor pertanian adalah penyebab utama kemiskinan bertahan.
+- B. Belum jelas keberpihakan pembangunan ke desa dan sektor pertanian.
+- C. Hanya ada keberpihakan pembangunan ke desa dan sektor pertanian.
+- D. Keberpihakan pembangunan ke desa dan sektor pertanian tidak dirasakan.
+- E. Keberpihakan pembangunan ke desa dan sektor pertanian akan bertambah.
 
 ::: details 🔓 Lihat Kunci Jawaban & Pembahasan
 **Jawaban Benar: A**
@@ -120,11 +120,11 @@ Sejak tahun 1930, sebagian besar penduduk Indonesia tinggal di Pulau Jawa, padah
 ### Soal 4
 Manakah simpulan yang **BENAR** berdasarkan ketimpangan antara jumlah penduduk dan luas wilayah tersebut?
 
-A. Pulau Jawa terasa sempit.
-B. Pulau-pulau lain selain Jawa berpenduduk sedikit (relatif terhadap luasnya).
-C. Pulau Jawa paling luas karena dihuni mayoritas penduduk.
-D. Pulau Jawa diminati untuk dihuni karena paling subur.
-E. Mayoritas penduduk Indonesia adalah orang Jawa.
+- A. Pulau Jawa terasa sempit.
+- B. Pulau-pulau lain selain Jawa berpenduduk sedikit (relatif terhadap luasnya).
+- C. Pulau Jawa paling luas karena dihuni mayoritas penduduk.
+- D. Pulau Jawa diminati untuk dihuni karena paling subur.
+- E. Mayoritas penduduk Indonesia adalah orang Jawa.
 
 ::: details 🔓 Lihat Kunci Jawaban & Pembahasan
 **Jawaban Benar: A (Secara kiasan/logika kepadatan)**
@@ -158,11 +158,11 @@ E. Mayoritas penduduk Indonesia adalah orang Jawa.
 ### Soal 5
 Berdasarkan tren perlambatan dan masalah fundamental yang belum teratasi, apa yang **PALING MUNGKIN** terjadi setelah tahun 2012?
 
-A. Angka kemiskinan akan stabil (stagnan).
-B. Angka kemiskinan akan naik secara perlahan.
-C. Angka kemiskinan akan naik drastis.
-D. Angka kemiskinan akan turun secara perlahan.
-E. Angka kemiskinan akan turun drastis.
+- A. Angka kemiskinan akan stabil (stagnan).
+- B. Angka kemiskinan akan naik secara perlahan.
+- C. Angka kemiskinan akan naik drastis.
+- D. Angka kemiskinan akan turun secara perlahan.
+- E. Angka kemiskinan akan turun drastis.
 
 ::: details 🔓 Lihat Kunci Jawaban & Pembahasan
 **Jawaban Benar: A (Stagnan/Stabil)**
