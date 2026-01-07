@@ -12,7 +12,7 @@ hero:
       link: /deduktif/
     - theme: alt
       text: 📝 Latihan Soal
-      link: /deduktif/kuis
+      link: /deduktif/latihan
 
 features:
   - title: 🧠 Penalaran Deduktif
