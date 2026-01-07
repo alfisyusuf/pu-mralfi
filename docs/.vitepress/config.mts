@@ -35,7 +35,8 @@ export default defineConfig({
           items: [
             { text: 'Rangkuman Materi', link: '/induktif/' },
             { text: 'Contoh Soal', link: '/induktif/contoh-soal-untuk-memahami' },
-            { text: 'Latihan 1', link: '/induktif/latihan'}
+            { text: 'Latihan 1', link: '/induktif/latihan'},
+            { text: 'Latihan 2', link: '/induktif/latihan2' }
           ]
         }
       ],
