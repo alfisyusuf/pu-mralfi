@@ -135,7 +135,7 @@ Berdasarkan teks, jika pengentasan penduduk miskin makin lambat padahal anggaran
 **Perhatikan grafik Indeks Letusan (VEI) berikut!**
 
 ::: info 📈 Grafik Tren VEI
-*(Bayangkan sebuah grafik garis yang fluktuatif)*
+![Grafik Tren VEI](/images/vei.png)
 * Tahun 1994: VEI 2
 * Tahun 2001: VEI 2
 * Tahun 2010: VEI 4 (Lonjakan Tinggi)
