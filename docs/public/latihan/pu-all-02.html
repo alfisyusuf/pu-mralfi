@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎮 SNBT Set 2 - Mr. Alfi Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Palette Warna Baru (Tema "Galaxy") */
+            --primary: #6c5ce7;
+            --primary-dark: #5849be;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --success: #00b894;
+            --danger: #d63031;
+            --dark: #2d3436;
+            --light: #dfe6e9;
+            --card-bg: #ffffff;
+            --shadow: 0 8px 0 rgba(0,0,0,0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- HEADER --- */
+        .game-header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            border-bottom: 5px solid rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 2px 2px 0 #fab1a0;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            margin: 0 20px;
+            max-width: 400px;
+            background: #b2bec3;
+            height: 12px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .score-pill {
+            background: var(--dark);
+            color: var(--secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 800;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .game-container {
+            flex: 1;
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            height: calc(100vh - 70px);
+        }
+
+        /* --- LEFT: CONTEXT --- */
+        .context-panel {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 4px solid rgba(0,0,0,0.1);
+            padding: 25px;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+        }
+
+        .context-panel h3 {
+            color: var(--primary);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .context-content { font-size: 1rem; line-height: 1.7; color: #636e72; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9rem; }
+        th { background: var(--primary); color: white; padding: 10px; }
+        td { border: 1px solid #dfe6e9; padding: 8px; text-align: center; }
+        tr:nth-child(even) { background: #f1f2f6; }
+
+        /* --- RIGHT: QUESTION --- */
+        .interaction-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            border: 4px solid rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: white;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .bg-induktif { background: #fd79a8; }
+        .bg-deduktif { background: #6c5ce7; }
+        .bg-kuantitatif { background: #00b894; }
+
+        .question-text { font-size: 1.15rem; font-weight: 700; color: var(--dark); }
+
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .option-btn {
+            background: white;
+            border: 3px solid #dfe6e9;
+            border-bottom: 6px solid #dfe6e9;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.1s;
+        }
+        .option-btn:active { transform: translateY(4px); border-bottom-width: 3px; }
+        .option-letter {
+            background: var(--dark); color: white; width: 28px; height: 28px;
+            border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; flex-shrink: 0;
+        }
+        
+        .opt-0 .option-letter { background: #ff7675; }
+        .opt-1 .option-letter { background: #74b9ff; }
+        .opt-2 .option-letter { background: #ffeaa7; color: #333; }
+        .opt-3 .option-letter { background: #55efc4; color: #333; }
+        .opt-4 .option-letter { background: #a29bfe; }
+
+        .correct { background: #d1fae5 !important; border-color: var(--success) !important; }
+        .incorrect { background: #fab1a0 !important; border-color: var(--danger) !important; opacity: 0.7; }
+
+        .explanation-box {
+            background: white; padding: 20px; border-radius: 15px;
+            border-left: 5px solid var(--success); display: none;
+            box-shadow: var(--shadow);
+        }
+
+        .next-btn {
+            width: 100%; background: var(--primary); color: white;
+            border: none; border-bottom: 5px solid var(--primary-dark);
+            padding: 15px; border-radius: 10px; font-weight: 800;
+            cursor: pointer; margin-top: 15px;
+        }
+        .next-btn:active { transform: translateY(4px); border-bottom: 0; }
+
+        /* --- FINISH MODAL --- */
+        .finish-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: none;
+            justify-content: center; align-items: center; z-index: 999;
+        }
+        .finish-card {
+            background: white; padding: 40px; border-radius: 20px;
+            text-align: center; max-width: 400px; width: 90%;
+            border: 5px solid var(--primary);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .game-container { flex-direction: column; overflow-y: auto; height: auto; }
+            .context-panel { max-height: 250px; flex: none; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="game-header">
+    <div class="logo"><i class="fas fa-rocket"></i> SNBT SET 2</div>
+    <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="score-pill"><i class="fas fa-gem"></i> <span id="score">0</span></div>
+</header>
+
+<main class="game-container">
+    <div class="context-panel">
+        <div id="context-content" class="context-content"></div>
+    </div>
+
+    <div class="interaction-panel">
+        <div class="question-card">
+            <span id="type-badge" class="badge bg-induktif">Induktif</span>
+            <div class="question-text" id="question-text"></div>
+        </div>
+        <div class="options-grid" id="options-container"></div>
+        <div class="explanation-box" id="explanation-box">
+            <h4 style="color:var(--success); margin-bottom:5px;">Pembahasan:</h4>
+            <p id="explanation-text"></p>
+            <button class="next-btn" onclick="nextQuestion()">Lanjut Soal <i class="fas fa-forward"></i></button>
+        </div>
+    </div>
+</main>
+
+<div class="finish-modal" id="finish-modal">
+    <div class="finish-card">
+        <h1>🏆 Misi Selesai!</h1>
+        <p>Pak Alfi, skor Anda:</p>
+        <div style="font-size:3.5rem; font-weight:900; color:var(--primary); margin:10px 0;" id="final-score">0</div>
+        <p id="final-stats">Benar: 0/30</p>
+        <button class="next-btn" onclick="location.reload()">Ulangi Set Ini 🔄</button>
+    </div>
+</div>
+
+<script>
+    /* DATABASE SOAL BARU (SET 2) */
+    const questions = [
+        /* --- INDUKTIF (1-10) --- */
+        {
+            type: "Induktif (Teks)",
+            context: `<h3>Rumput Laut & Ekonomi</h3><p>Berdasarkan PDF RTO-PRSD1UE, rumput laut dianggap komoditas unggulan karena 6 alasan, salah satunya: teknik budidaya mudah dan murah, risiko gagal panen rendah, dan panen bisa dilakukan setiap 45 hari. Selain itu, pasar rumput laut sangat besar dan mampu menyerap banyak tenaga kerja.</p>`,
+            question: "Manakah pernyataan yang PALING MEMPERLEMAH argumen bahwa 'Rumput laut adalah solusi instan pengentasan kemiskinan'?",
+            options: ["Harga bibit rumput laut sangat murah.", "Diperlukan waktu 2 tahun pelatihan intensif bagi petani baru untuk memahami kualitas air laut sebelum bisa mulai menanam.", "Pasar global sangat meminati rumput laut Indonesia.", "Panen rumput laut bisa dilakukan sepanjang tahun.", "Industri kosmetik sangat membutuhkan bahan baku rumput laut."],
+            answer: 1,
+            explanation: "Argumen 'solusi instan' (cepat) dilemahkan oleh fakta (opsi B) yang menyatakan butuh waktu lama (2 tahun pelatihan) sebelum bisa mulai."
+        },
+        {
+            type: "Induktif (Tabel)",
+            context: `<h3>Ekspor Kopi (Ton)</h3>
+            <table>
+                <tr><th>Negara Tujuan</th><th>2020</th><th>2021</th><th>2022</th></tr>
+                <tr><td>Amerika Serikat</td><td>50.000</td><td>52.000</td><td>55.000</td></tr>
+                <tr><td>Jepang</td><td>30.000</td><td>28.000</td><td>25.000</td></tr>
+                <tr><td>Mesir</td><td>40.000</td><td>45.000</td><td>60.000</td></tr>
+            </table>`,
+            question: "Simpulan tren ekspor yang paling tepat berdasarkan tabel di atas adalah...",
+            options: ["Semua negara tujuan mengalami peningkatan permintaan.", "Jepang adalah pasar yang paling berkembang.", "Terjadi pergeseran pasar dimana permintaan Mesir tumbuh sangat pesat melampaui pertumbuhan AS.", "Ekspor ke Amerika Serikat selalu turun.", "Total ekspor di tahun 2022 lebih rendah dari 2020."],
+            answer: 2,
+            explanation: "AS naik stabil (dikit). Jepang turun. Mesir naik tajam (40k ke 60k). Opsi C paling tepat menggambarkan lonjakan (pesat) di Mesir."
+        },
+        {
+            type: "Induktif (Sebab-Akibat)",
+            context: `<h3>Polusi Udara</h3><p>Data menunjukkan bahwa di kota-kota besar yang menerapkan sistem 'Ganjil-Genap', tingkat kemacetan menurun 20% pada jam sibuk. Namun, kadar polusi udara tetap tinggi. Peneliti menemukan bahwa masyarakat beralih menggunakan sepeda motor yang tidak terkena aturan ganjil-genap.</p>`,
+            question: "Apa penyebab utama kebijakan Ganjil-Genap tidak efektif menurunkan polusi berdasarkan teks?",
+            options: ["Mobil mengeluarkan asap lebih banyak dari motor.", "Kebijakan hanya berlaku di jalan tol.", "Adanya efek substitusi moda transportasi ke sepeda motor.", "Masyarakat lebih suka jalan kaki.", "Angkutan umum belum memadai."],
+            answer: 2,
+            explanation: "Teks eksplisit menyebutkan 'masyarakat beralih menggunakan sepeda motor'. Ini adalah efek substitusi yang menggagalkan penurunan polusi."
+        },
+        {
+            type: "Induktif (Generalisasi)",
+            context: `<h3>Logam & Panas</h3><p>Besi memuai jika dipanaskan. Tembaga memuai jika dipanaskan. Aluminium memuai jika dipanaskan.</p>`,
+            question: "Generalisasi induktif yang paling tepat adalah...",
+            options: ["Semua benda padat memuai jika dipanaskan.", "Hanya besi yang memuai paling panjang.", "Semua logam memuai jika dipanaskan.", "Benda cair tidak memuai.", "Plastik akan meleleh jika dipanaskan."],
+            answer: 2,
+            explanation: "Besi, Tembaga, Aluminium adalah contoh Logam. Maka generalisasi yang sah adalah pada kategori 'Logam'."
+        },
+        {
+            type: "Induktif (Analogi)",
+            context: `<h3>Analogi Profesi</h3><p>Seorang Guru Fisika menggunakan Laboratorium untuk eksperimen.</p>`,
+            question: "Hubungan yang setara adalah...",
+            options: ["Koki : Resep", "Petani : Cangkul", "Dokter Bedah : Ruang Operasi", "Supir : Mobil", "Penulis : Buku"],
+            answer: 2,
+            explanation: "Guru (Subjek) bekerja melakukan tindakan khusus di Laboratorium (Tempat Khusus). Dokter Bedah bekerja melakukan tindakan khusus di Ruang Operasi."
+        },
+        {
+            type: "Induktif (Prediksi Grafik)",
+            context: `<h3>Grafik Pengguna Linux</h3><p>Tahun 2020: 2%. Tahun 2021: 2.5%. Tahun 2022: 3.2%. Tahun 2023: 4.0%.</p>`,
+            question: "Jika tren kenaikan terus berlanjut dengan pola yang sama, prediksi pengguna Linux di tahun 2024 adalah...",
+            options: ["Turun kembali ke 2%.", "Tetap di 4.0%.", "Lebih dari 4.0%, kemungkinan sekitar 4.9-5.0%.", "Mencapai 10% secara tiba-tiba.", "Tidak bisa diprediksi."],
+            answer: 2,
+            explanation: "Kenaikan bertahap: +0.5, +0.7, +0.8. Maka tahun berikutnya pasti >4.0%, estimasi naik ~0.9 atau 1.0."
+        },
+        {
+            type: "Induktif (Kesehatan)",
+            context: `<h3>Vaksinasi</h3><p>Di Desa A, cakupan vaksinasi 95%, kasus penyakit X adalah 2 orang. Di Desa B, cakupan vaksinasi 40%, kasus penyakit X adalah 150 orang.</p>`,
+            question: "Kesimpulan yang paling didukung oleh data tersebut adalah...",
+            options: ["Vaksinasi tidak berpengaruh pada penyakit X.", "Tingkat vaksinasi berbanding terbalik dengan jumlah kasus penyakit X.", "Desa B memiliki udara yang lebih buruk.", "Penduduk Desa A lebih kaya.", "Penyakit X hanya menyerang orang yang belum divaksin."],
+            answer: 1,
+            explanation: "Vaksin tinggi = Kasus rendah. Vaksin rendah = Kasus tinggi. Ini hubungan berbanding terbalik (korelasi negatif)."
+        },
+        {
+            type: "Induktif (Teks Pendidikan)",
+            context: `<h3>Metode Belajar</h3><p>Siswa yang belajar menggunakan metode SKS (Sistem Kebut Semalam) cenderung memiliki ingatan jangka pendek yang baik namun lupa materi setelah ujian. Siswa yang mencicil belajar memiliki ingatan jangka panjang yang lebih kuat.</p>`,
+            question: "Manakah saran terbaik bagi Pak Alfi untuk muridnya yang ingin menguasai Fisika seumur hidup?",
+            options: ["Mengadakan ujian dadakan setiap hari.", "Menyarankan belajar rutin sedikit demi sedikit setiap hari.", "Menyarankan belajar hanya saat malam sebelum ujian.", "Menghapus semua ujian.", "Memberikan materi yang sangat sedikit."],
+            answer: 1,
+            explanation: "Tujuannya 'menguasai seumur hidup' (jangka panjang). Teks menyatakan 'mencicil belajar = ingatan jangka panjang kuat'."
+        },
+        {
+            type: "Induktif (Lingkungan)",
+            context: `<h3>Hutan Mangrove</h3><p>Hutan mangrove di pesisir utara Jawa rusak parah. Akibatnya, abrasi pantai meningkat dan air laut mulai masuk ke pemukiman (rob).</p>`,
+            question: "Jika dilakukan penanaman kembali mangrove secara masif, prediksi dampak jangka panjangnya adalah...",
+            options: ["Air laut akan menjadi tawar.", "Abrasi pantai akan berkurang dan pemukiman lebih terlindungi dari rob.", "Nelayan tidak bisa melaut.", "Penduduk akan pindah ke pegunungan.", "Curah hujan akan menurun."],
+            answer: 1,
+            explanation: "Sebab kerusakan mangrove = akibat abrasi/rob. Memperbaiki sebab (menanam mangrove) akan mengurangi akibat (abrasi berkurang)."
+        },
+        {
+            type: "Induktif (Sosial)",
+            context: `<h3>Remaja & Gadget</h3><p>Studi menunjukkan remaja yang menghabiskan waktu >5 jam di media sosial memiliki tingkat kecemasan (anxiety) yang lebih tinggi dibanding yang <1 jam.</p>`,
+            question: "Manakah pernyataan yang TIDAK didukung oleh temuan di atas?",
+            options: ["Ada korelasi antara durasi medsos dan kecemasan.", "Mengurangi waktu medsos mungkin menurunkan kecemasan.", "Semua remaja pengguna medsos pasti mengalami gangguan jiwa.", "Penggunaan medsos berlebihan berpotensi negatif bagi kesehatan mental.", "Remaja yang jarang main medsos cenderung lebih tenang."],
+            answer: 2,
+            explanation: "Kata 'Pasti' dan 'Gangguan jiwa' (terlalu ekstrem) adalah generalisasi yang salah. Studi hanya bicara 'tingkat kecemasan lebih tinggi' (peluang/rata-rata)."
+        },
+
+        /* --- DEDUKTIF (11-20) --- */
+        {
+            type: "Deduktif (Silogisme)",
+            context: `<h3>Premis Pramuka</h3><p>Semua anggota Dewan Ambalan SMA ABBS wajib disiplin.<br>Andi adalah anggota Dewan Ambalan SMA ABBS.</p>`,
+            question: "Kesimpulan yang valid adalah...",
+            options: ["Andi mungkin disiplin.", "Andi wajib disiplin.", "Andi tidak wajib disiplin.", "Hanya Andi yang disiplin.", "Semua siswa SMA ABBS wajib disiplin."],
+            answer: 1,
+            explanation: "Semua A = B. C = A. Maka C = B. (Andi wajib disiplin)."
+        },
+        {
+            type: "Deduktif (Urutan)",
+            context: `<h3>Nilai Ujian Fisika</h3><p>Nilai Budi lebih tinggi dari Cici. Nilai Dedi lebih rendah dari Cici. Nilai Eka lebih tinggi dari Budi.</p>`,
+            question: "Siapakah yang mendapat nilai tertinggi?",
+            options: ["Budi", "Cici", "Dedi", "Eka", "Tidak dapat ditentukan"],
+            answer: 3,
+            explanation: "Urutan: Eka > Budi > Cici > Dedi. Paling tinggi Eka."
+        },
+        {
+            type: "Deduktif (Logika Syarat)",
+            context: `<h3>Syarat Masuk Lab</h3><p>Untuk masuk Lab Komputer, siswa harus memakai seragam lengkap ATAU membawa kartu pelajar. Budi tidak membawa kartu pelajar.</p>`,
+            question: "Agar Budi tetap bisa masuk Lab, apa yang harus dilakukan?",
+            options: ["Budi harus pulang.", "Budi harus memakai seragam lengkap.", "Budi harus melapor guru.", "Budi tidak mungkin bisa masuk.", "Budi meminjam kartu teman."],
+            answer: 1,
+            explanation: "Syarat: P V Q. Diketahui ~Q (tidak bawa kartu). Agar True, maka P (pakai seragam) harus True."
+        },
+        {
+            type: "Deduktif (Implikasi)",
+            context: `<h3>Logika Server</h3><p>Jika server down (P), maka website tidak bisa diakses (Q).<br>Diketahui: Website bisa diakses (~Q).</p>`,
+            question: "Kesimpulan yang sah adalah...",
+            options: ["Server sedang down.", "Server tidak down.", "Internet lambat.", "Website sedang maintenance.", "Tidak dapat disimpulkan."],
+            answer: 1,
+            explanation: "Modus Tollens: P -> Q. ~Q terjadi. Maka ~P (Server tidak down)."
+        },
+        {
+            type: "Deduktif (Posisi Duduk)",
+            context: `<h3>Rapat Guru</h3><p>Meja bundar 4 kursi. Pak Alfi duduk berhadapan dengan Bu Guru Biologi. Pak Kepala Sekolah duduk di sebelah kanan Pak Alfi.</p>`,
+            question: "Di manakah posisi Wakil Kepala Sekolah duduk?",
+            options: ["Di sebelah kiri Pak Alfi.", "Di sebelah kanan Bu Biologi.", "Berhadapan dengan Pak Kepala Sekolah.", "Semua jawaban benar.", "Tidak ada kursi tersisa."],
+            answer: 3,
+            explanation: "Jika 4 kursi: Alfi (Bawah), Istri/Bu Biologi (Atas). KS (Kanan Alfi). Maka sisa kursi kiri Alfi (atau Kanan Bu Biologi) adalah Waka. Waka juga berhadapan dengan KS."
+        },
+        {
+            type: "Deduktif (Himpunan)",
+            context: `<h3>Kategori Hewan</h3><p>Semua Paus adalah Mamalia. Tidak ada Mamalia yang bernapas dengan insang.</p>`,
+            question: "Kesimpulan:",
+            options: ["Sebagian Paus bernapas dengan insang.", "Semua Paus bernapas dengan insang.", "Tidak ada Paus yang bernapas dengan insang.", "Paus adalah ikan.", "Mamalia bisa hidup di air."],
+            answer: 2,
+            explanation: "Paus -> Mamalia -> Tidak Insang. Maka Paus -> Tidak Insang."
+        },
+        {
+            type: "Deduktif (Jadwal)",
+            context: `<h3>Jadwal Piket</h3><p>Senin: Ani. Selasa: Budi. Rabu: Cici. Kamis: Dedi. Jumat: Eka.<br>Jika hari ini Budi piket, siapa yang piket lusa?</p>`,
+            question: "Siapa yang piket lusa?",
+            options: ["Ani", "Cici", "Dedi", "Eka", "Budi"],
+            answer: 2,
+            explanation: "Hari ini Budi = Selasa. Besok = Rabu (Cici). Lusa = Kamis (Dedi)."
+        },
+        {
+            type: "Deduktif (Analitik)",
+            context: `<h3>Antrian Sembako</h3><p>A ada di depan B. C ada di belakang B. D ada di depan A.</p>`,
+            question: "Urutan dari yang paling depan adalah...",
+            options: ["D - A - B - C", "A - B - C - D", "C - B - A - D", "D - B - A - C", "A - D - B - C"],
+            answer: 0,
+            explanation: "D depan A. A depan B. B depan C (C belakang B). Urutan: D -> A -> B -> C."
+        },
+        {
+            type: "Deduktif (Hubungan Keluarga)",
+            context: `<h3>Keluarga</h3><p>X adalah ayah dari Y. Y adalah adik dari Z. Z adalah perempuan.</p>`,
+            question: "Apa hubungan X terhadap Z?",
+            options: ["Kakek", "Paman", "Ayah", "Kakak", "Suami"],
+            answer: 2,
+            explanation: "X ayah Y. Y saudara Z. Maka X juga ayah dari Z."
+        },
+        {
+            type: "Deduktif (Modus Ponens)",
+            context: `<h3>Hukum Fisika</h3><p>Jika gaya total pada benda nol, maka benda diam atau bergerak lurus beraturan (Hukum Newton I).<br>Diketahui: Gaya total pada benda adalah nol.</p>`,
+            question: "Kesimpulan:",
+            options: ["Benda pasti diam.", "Benda pasti bergerak.", "Benda mengalami percepatan.", "Benda diam atau bergerak lurus beraturan.", "Benda berbelok."],
+            answer: 3,
+            explanation: "Sesuai premis hukumnya. P -> Q. P terjadi. Maka Q terjadi (persis seperti bunyi hukum)."
+        },
+
+        /* --- KUANTITATIF (21-30) --- */
+        {
+            type: "Kuantitatif (Diskon)",
+            context: `<h3>Belanja Alat Tulis</h3><p>Harga buku Rp 10.000. Beli 1 lusin (12 pcs) dapat diskon 10%.</p>`,
+            question: "Berapa yang harus dibayar jika Pak Alfi membeli 1 lusin buku?",
+            options: ["Rp 100.000", "Rp 108.000", "Rp 110.000", "Rp 120.000", "Rp 90.000"],
+            answer: 1,
+            explanation: "Harga normal: 12 x 10.000 = 120.000. Diskon 10% = 12.000. Bayar: 120k - 12k = 108.000."
+        },
+        {
+            type: "Kuantitatif (Pola Bilangan)",
+            context: `<h3>Deret Fibonacci</h3><p>1, 1, 2, 3, 5, 8, ...</p>`,
+            question: "Angka selanjutnya adalah...",
+            options: ["10", "11", "12", "13", "15"],
+            answer: 3,
+            explanation: "Pola: Jumlahkan dua angka sebelumnya. 5 + 8 = 13."
+        },
+        {
+            type: "Kuantitatif (Kecepatan)",
+            context: `<h3>Berpapasan</h3><p>Jarak Solo - Jogja 60 km. A dari Solo (40 km/jam). B dari Jogja (20 km/jam). Berangkat bareng.</p>`,
+            question: "Berapa jam lagi mereka bertemu?",
+            options: ["0.5 jam", "1 jam", "1.5 jam", "2 jam", "2.5 jam"],
+            answer: 1,
+            explanation: "Waktu = Jarak Total / (V1 + V2) = 60 / (40+20) = 60/60 = 1 jam."
+        },
+        {
+            type: "Kuantitatif (Aljabar)",
+            context: `<h3>Persamaan Linear</h3><p>Jika 3x + 10 = 25, maka nilai x adalah...</p>`,
+            question: "Nilai x?",
+            options: ["3", "4", "5", "6", "15"],
+            answer: 2,
+            explanation: "3x = 25 - 10. 3x = 15. x = 5."
+        },
+        {
+            type: "Kuantitatif (Pekerjaan)",
+            context: `<h3>Mengecat Dinding</h3><p>Pak Alfi bisa mengecat kelas dalam 3 jam. Pak Budi bisa dalam 6 jam. Jika dikerjakan berdua?</p>`,
+            question: "Waktu yang dibutuhkan jika kerja bareng...",
+            options: ["1 jam", "2 jam", "3 jam", "4.5 jam", "9 jam"],
+            answer: 1,
+            explanation: "1/t = 1/3 + 1/6 = 2/6 + 1/6 = 3/6. t = 6/3 = 2 jam."
+        },
+        {
+            type: "Kuantitatif (Geometri)",
+            context: `<h3>Luas Tanah</h3><p>Tanah berbentuk persegi dengan keliling 40 meter.</p>`,
+            question: "Berapakah luas tanah tersebut?",
+            options: ["10 m²", "40 m²", "100 m²", "160 m²", "400 m²"],
+            answer: 2,
+            explanation: "Sisi = Keliling / 4 = 40 / 4 = 10m. Luas = sisi x sisi = 10 x 10 = 100 m²."
+        },
+        {
+            type: "Kuantitatif (Perbandingan)",
+            context: `<h3>Resep Minuman</h3><p>Perbandingan Sirup : Air adalah 1 : 4. Jika ingin membuat 10 liter minuman...</p>`,
+            question: "Berapa liter sirup yang dibutuhkan?",
+            options: ["1 liter", "2 liter", "2.5 liter", "4 liter", "5 liter"],
+            answer: 1,
+            explanation: "Total bagian = 1 + 4 = 5. Sirup = 1/5 dari total. 1/5 x 10 liter = 2 liter."
+        },
+        {
+            type: "Kuantitatif (Statistika)",
+            context: `<h3>Rata-rata Nilai</h3><p>Rata-rata nilai 4 siswa adalah 80. Jika nilai Andi dimasukkan, rata-ratanya menjadi 82.</p>`,
+            question: "Berapakah nilai Andi?",
+            options: ["82", "85", "88", "90", "92"],
+            answer: 3,
+            explanation: "Total awal = 4 x 80 = 320. Total baru = 5 x 82 = 410. Nilai Andi = 410 - 320 = 90."
+        },
+        {
+            type: "Kuantitatif (Aritmatika)",
+            context: `<h3>Operasi Bilangan</h3><p>Hasil dari (20 : 2) + (3 x 4) - 5 adalah...</p>`,
+            question: "Hitunglah!",
+            options: ["15", "17", "20", "22", "25"],
+            answer: 1,
+            explanation: "(10) + (12) - 5 = 22 - 5 = 17."
+        },
+        {
+            type: "Kuantitatif (Pecahan)",
+            context: `<h3>Pizza</h3><p>Satu loyang pizza dibagi 8. Pak Alfi makan 2 potong, Anaknya makan 3 potong.</p>`,
+            question: "Berapa bagian sisa pizza?",
+            options: ["1/8", "2/8", "3/8", "4/8", "5/8"],
+            answer: 2,
+            explanation: "Dimakan: 2+3 = 5 potong. Sisa: 8 - 5 = 3 potong. Pecahan: 3/8."
+        }
+    ];
+
+    /* LOGIKA GAME (Sama seperti sebelumnya) */
+    let currentIdx = 0;
+    let score = 0;
+    let correctCount = 0;
+    
+    function initGame() {
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const q = questions[currentIdx];
+        document.getElementById('context-content').innerHTML = q.context;
+        document.getElementById('question-text').innerText = q.question;
+        
+        const badge = document.getElementById('type-badge');
+        badge.innerText = q.type;
+        badge.className = 'badge ' + (q.type.includes('Induktif')?'bg-induktif': q.type.includes('Deduktif')?'bg-deduktif':'bg-kuantitatif');
+        
+        // Progress Bar
+        const pct = (currentIdx / questions.length) * 100;
+        document.getElementById('progress-bar').style.width = pct + "%";
+
+        // Options
+        const optContainer = document.getElementById('options-container');
+        optContainer.innerHTML = '';
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement('div');
+            btn.className = `option-btn opt-${i}`;
+            btn.innerHTML = `<div class="option-letter">${String.fromCharCode(65+i)}</div><div>${opt}</div>`;
+            btn.onclick = () => checkAnswer(i, btn);
+            optContainer.appendChild(btn);
+        });
+
+        document.getElementById('explanation-box').style.display = 'none';
+        document.querySelector('.context-panel').scrollTop = 0;
+    }
+
+    function checkAnswer(idx, btn) {
+        const q = questions[currentIdx];
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.style.pointerEvents = 'none'); // Lock buttons
+
+        if(idx === q.answer) {
+            btn.classList.add('correct');
+            score += 10;
+            correctCount++;
+        } else {
+            btn.classList.add('incorrect');
+            allBtns[q.answer].classList.add('correct');
+        }
+        
+        document.getElementById('score').innerText = score;
+        document.getElementById('explanation-text').innerText = q.explanation;
+        document.getElementById('explanation-box').style.display = 'block';
+        
+        // Auto scroll to explanation on mobile
+        if(window.innerWidth < 768) {
+            document.getElementById('explanation-box').scrollIntoView({behavior: "smooth"});
+        }
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if(currentIdx < questions.length) {
+            loadQuestion();
+        } else {
+            showFinish();
+        }
+    }
+
+    function showFinish() {
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('final-stats').innerText = `Benar: ${correctCount} dari ${questions.length} soal`;
+        document.getElementById('finish-modal').style.display = 'flex';
+        document.getElementById('progress-bar').style.width = "100%";
+    }
+
+    // Start
+    initGame();
+</script>
+</body>
+</html>
