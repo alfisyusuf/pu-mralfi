@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>📝 Ujian SNBT - Mode Siswa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Warna yang lebih tenang untuk fokus ujian */
+            --primary: #4a6fff;
+            --primary-dark: #3a5bd9;
+            --secondary: #9d4edd;
+            --accent: #ffd166;
+            --selected: #2d3748; /* Warna saat dipilih */
+            --dark: #1a1b2e;
+            --light: #f8f9fa;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            background: #f0f2f5; /* Background abu muda agar mata tidak lelah */
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            /* Scroll diaktifkan kembali */
+            overflow-y: auto; 
+        }
+
+        /* --- HEADER --- */
+        .game-header {
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-pill {
+            background: var(--dark);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .game-container {
+            flex: 1;
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            height: auto; /* Membiarkan tinggi menyesuaikan konten */
+            flex-direction: row;
+        }
+
+        /* --- LEFT PANEL: CONTEXT --- */
+        .context-panel {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            height: fit-content; /* Agar tidak memanjang kosong */
+        }
+
+        .context-panel h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .context-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #2d3748;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        th { background: var(--primary); color: white; padding: 10px; text-align: center;}
+        td { border: 1px solid #e2e8f0; padding: 8px; text-align: center; }
+        tr:nth-child(even) { background: #f8f9fa; }
+
+        /* --- RIGHT PANEL: QUESTION --- */
+        .interaction-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+        .bg-induktif { background: #ed8936; }
+        .bg-deduktif { background: #805ad5; }
+        .bg-kuantitatif { background: #38b2ac; }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* --- OPTIONS --- */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #ebf8ff;
+        }
+
+        /* State ketika dipilih (User Answer) */
+        .option-btn.selected {
+            background: var(--dark);
+            color: white;
+            border-color: var(--dark);
+        }
+
+        .option-letter {
+            font-weight: 800;
+            min-width: 25px;
+            height: 25px;
+            background: #e2e8f0;
+            color: #4a5568;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .option-btn.selected .option-letter {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        /* --- NAVIGATION BUTTONS --- */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.1s;
+        }
+
+        .btn-prev { background: #cbd5e0; color: #2d3748; }
+        .btn-next { background: var(--primary); color: white; }
+        .btn-finish { background: var(--success); color: white; background-color: #00c58e;}
+
+        .nav-btn:active { transform: scale(0.98); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+
+        /* --- FINISH SCREEN --- */
+        .finish-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .finish-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .game-container { flex-direction: column; padding: 15px; }
+            .context-panel { margin-bottom: 20px; }
+            .nav-buttons { position: sticky; bottom: 0; background: white; padding: 15px 0; border-top: 1px solid #eee; z-index: 90;}
+        }
+    </style>
+</head>
+<body>
+
+    <header class="game-header">
+        <div class="logo"><i class="fas fa-book-reader"></i> Latihan SNBT</div>
+        <div class="status-pill">
+            Soal <span id="current-num">1</span> / <span id="total-num">30</span>
+        </div>
+    </header>
+
+    <main class="game-container">
+        <div class="context-panel">
+            <div id="context-content" class="context-content"></div>
+        </div>
+
+        <div class="interaction-panel">
+            <div class="question-card">
+                <span id="type-badge" class="badge bg-induktif">Induktif</span>
+                <div class="question-text" id="question-text">
+                    Loading question...
+                </div>
+            </div>
+
+            <div class="options-list" id="options-container">
+                </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn btn-prev" id="btn-prev" onclick="prevQuestion()">
+                    <i class="fas fa-arrow-left"></i> Sebelumnya
+                </button>
+                <button class="nav-btn btn-next" id="btn-next" onclick="nextQuestion()">
+                    Selanjutnya <i class="fas fa-arrow-right"></i>
+                </button>
+                <button class="nav-btn btn-finish" id="btn-finish" onclick="finishExam()" style="display: none;">
+                    Selesai <i class="fas fa-check"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div class="finish-modal" id="finish-modal">
+        <div class="finish-card">
+            <h1 style="font-size: 2rem; margin-bottom: 10px; color: var(--dark);">Hasil Latihan</h1>
+            <div style="font-size: 4rem; font-weight: 900; color: var(--primary); margin-bottom: 10px;" id="final-score">0</div>
+            <p style="color: #718096; margin-bottom: 30px;">Nilai Kamu</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px;">
+                <div style="background: #f0f0f0; padding: 15px; border-radius: 10px;">
+                    <div style="font-weight: bold; font-size: 0.9rem;">Benar</div>
+                    <div style="font-size: 1.5rem; color: #00c58e;" id="final-correct">0</div>
+                </div>
+                <div style="background: #f0f0f0; padding: 15px; border-radius: 10px;">
+                    <div style="font-weight: bold; font-size: 0.9rem;">Salah/Kosong</div>
+                    <div style="font-size: 1.5rem; color: #ff3b5c;" id="final-wrong">0</div>
+                </div>
+            </div>
+            <button class="nav-btn btn-next" style="width: 100%; justify-content: center;" onclick="location.reload()">Ulangi Latihan 🔄</button>
+        </div>
+    </div>
+
+<script>
+    // --- DATABASE SOAL (Sama seperti sebelumnya) ---
+    const questions = [
+        // --- 1-10 INDUKTIF ---
+        {
+            type: "Induktif",
+            context: `<h3>Wacana: Robot Pendeteksi Gempa</h3><p>Tiga mahasiswa Atma Jaya mengembangkan robot pendeteksi gempa sejak 2018. Robot ini dilengkapi teknologi hybrid (roda dan kaki). Hal ini membuat robot dapat digunakan di lingkungan industri maupun alam seperti goa dan jalan berbatu. Produk ini masih berupa prototype. Saat ini baru dilakukan uji coba fungsi modul dan pergerakannya saja. Penelitian ini menghabiskan biaya Rp 15 juta belum termasuk listrik, air, dan bensin.</p>`,
+            question: "Berdasarkan teks, manakah simpulan yang PALING MUNGKIN BENAR jika robot tersebut sudah bukan prototype lagi?",
+            options: ["Robot akan dijual dengan harga Rp 15 juta.", "Biaya operasional robot akan menurun drastis.", "Robot dapat diandalkan untuk fungsi yang lebih kompleks seperti peringatan dini.", "Robot tidak akan menggunakan roda lagi.", "Mahasiswa tidak perlu mengembangkan fitur GPS."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>Produksi Rumput Laut (Ton)</h3>
+            <table>
+                <tr><th>Provinsi</th><th>2006</th><th>2007</th><th>2008</th></tr>
+                <tr><td>Sulawesi Selatan</td><td>433.180</td><td>630.741</td><td>690.385</td></tr>
+                <tr><td>NTT</td><td>478.114</td><td>504.699</td><td>566.495</td></tr>
+                <tr><td>Sulawesi Tengah</td><td>170.236</td><td>190.073</td><td>208.040</td></tr>
+            </table>`,
+            question: "Berdasarkan tabel, provinsi manakah yang mengalami kenaikan produksi paling konsisten (stabil) setiap tahunnya tanpa lonjakan ekstrem?",
+            options: ["Sulawesi Selatan", "NTT", "Sulawesi Tengah", "Semua sama", "Tidak dapat disimpulkan"],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>Krisis Air Bersih</h3><p>Dadang memaparkan bahwa sebagian besar air hujan semestinya meresap ke dalam tanah untuk menjadi cadangan. Akan tetapi, kenyataan yang terjadi malah sebaliknya, 'Saat ini, 70 persen air hujan itu tergenang di permukaan sebelum dialirkan hingga ke lautan. Otomatis, hanya 30 persen yang meresap,' terangnya. Hal ini terjadi lantaran maraknya alih fungsi hutan menjadi beton.</p>`,
+            question: "Apa yang PALING MUNGKIN terjadi jika alih fungsi hutan dihentikan dan reboisasi dilakukan secara masif?",
+            options: ["Air hujan yang mengalir ke laut menjadi 100%.", "Persentase air yang meresap ke tanah akan meningkat di atas 30%.", "Banjir akan hilang sepenuhnya dalam satu tahun.", "Masyarakat tidak perlu membuat sumur resapan.", "Kebutuhan air bersih akan menurun."],
+            answer: 1
+        },
+        {
+            type: "Induktif",
+            context: `<h3>Harga Daging Sapi (Rp/kg)</h3>
+            <table>
+                <tr><th>Tahun</th><th>Jatim</th><th>Jateng</th><th>Jabar</th></tr>
+                <tr><td>2016</td><td>97.800</td><td>96.900</td><td>97.500</td></tr>
+                <tr><td>2017</td><td>99.800</td><td>97.800</td><td>98.800</td></tr>
+                <tr><td>2018</td><td>114.600</td><td>114.700</td><td>105.800</td></tr>
+                <tr><td>2019</td><td>120.000</td><td>122.500</td><td>121.600</td></tr>
+            </table>`,
+            question: "Simpulan mana yang paling tepat menggambarkan tren harga daging sapi di Pulau Jawa?",
+            options: ["Harga selalu turun setiap tahun genap.", "Jawa Tengah selalu memiliki harga termurah.", "Terjadi lonjakan harga signifikan di semua provinsi dari 2017 ke 2018.", "Jawa Barat selalu memiliki harga tertinggi.", "Kenaikan harga di Jatim lebih tinggi daripada Jateng pada 2019."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>Defisit Anggaran</h3><p>Defisit anggaran sudah menjadi persoalan klasik. Penyempitan ruang fiskal disebabkan pembengkakan defisit keseimbangan primer yang didorong penurunan pendapatan dan peningkatan belanja. Pemerintah mengambil kebijakan mencabut subsidi BBM dan menyerahkannya ke pasar. Harapannya, efisiensi belanja tercapai.</p>`,
+            question: "Manakah pernyataan yang SESUAI dengan teks di atas?",
+            options: ["Pencabutan subsidi BBM adalah satu-satunya cara mengatasi defisit.", "Defisit keseimbangan primer terjadi karena pendapatan negara naik.", "Efisiensi belanja diharapkan dapat mengurangi ketergantungan utang.", "Ruang fiskal yang sempit membuat Indonesia menjadi negara maju.", "Pemerintah melarang mekanisme pasar dalam harga BBM."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>Data HIV/AIDS</h3><p>Data menunjukkan tren kasus HIV meningkat tajam dari tahun 2010 (21.591 kasus) hingga puncaknya di 2017 (48.300 kasus), lalu sedikit turun di 2018. Sementara kasus AIDS cenderung fluktuatif namun jauh lebih rendah dibanding HIV.</p>`,
+            question: "Simpulan yang paling mungkin benar berdasarkan tren tersebut adalah...",
+            options: ["Semua penderita HIV pasti langsung terdeteksi AIDS di tahun yang sama.", "Program pencegahan HIV gagal total karena angka terus naik.", "Terdapat kesenjangan jumlah yang besar antara orang yang terinfeksi HIV dengan yang sudah mencapai fase AIDS.", "Pada 2019 kasus HIV pasti akan turun drastis.", "AIDS lebih menular daripada HIV."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>Pola Konsumsi</h3><p>Penjualan produk perawatan kecantikan meningkat lebih cepat daripada kosmetik dan parfum. Penyebabnya adalah keinginan konsumen untuk tampil muda dan alami.</p>`,
+            question: "Manakah hipotesis yang paling didukung oleh pernyataan di atas?",
+            options: ["Konsumen masa kini lebih mementingkan kesehatan kulit jangka panjang daripada sekadar menutupi wajah.", "Parfum menyebabkan penuaan dini.", "Kosmetik tidak lagi diproduksi.", "Harga perawatan kecantikan lebih murah dari parfum.", "Semua orang ingin terlihat tua."],
+            answer: 0
+        },
+        {
+            type: "Induktif",
+            context: `<h3>Marginalisasi Desa</h3><p>Meskipun investor masuk ke desa, seringkali tenaga kerja desa tidak terserap karena kualifikasi tidak cocok dengan kebutuhan industri. Hal ini menyebabkan marginalisasi (peminggiran) penduduk lokal.</p>`,
+            question: "Apa solusi paling logis untuk memutus rantai masalah di atas berdasarkan teks?",
+            options: ["Mengusir semua investor dari desa.", "Membiarkan penduduk desa tetap bertani saja.", "Meningkatkan kualitas SDM desa melalui pelatihan agar sesuai kebutuhan industri.", "Memberikan uang tunai kepada penduduk desa.", "Memindahkan semua penduduk desa ke kota."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>Bunga</h3><p>Mawar: Harum, Berduri, Merah. Melati: Harum, Tidak Berduri, Putih. Bakung: Tidak terlalu harum, Beracun.</p>`,
+            question: "Jika ada bunga X yang harum dan sering digunakan dalam parfum, kemungkinan besar bunga X memiliki sifat...",
+            options: ["Pasti berduri.", "Pasti berwarna merah.", "Memiliki senyawa aroma yang kuat seperti Mawar atau Melati.", "Beracun seperti Bakung.", "Tidak memiliki kelopak."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>Tren Gempa</h3><p>Indonesia terletak di Cincin Api Pasifik. Gempa bumi adalah kejadian berulang. Teknologi pendeteksi dini sedang dikembangkan.</p>`,
+            question: "Prediksi paling rasional untuk masa depan Indonesia terkait gempa adalah...",
+            options: ["Gempa bumi akan berhenti terjadi.", "Indonesia akan pindah lokasi geografis.", "Gempa tetap terjadi, namun jumlah korban jiwa dapat diminimalkan dengan teknologi.", "Alat pendeteksi akan mencegah terjadinya gempa.", "Cincin Api Pasifik akan padam."],
+            answer: 2
+        },
+        // --- 11-20 DEDUKTIF ---
+        {
+            type: "Deduktif",
+            context: `<h3>Premis</h3><p>Semua guru Fisika bisa menggunakan Linux.<br>Pak Alfi adalah guru Fisika.</p>`,
+            question: "Kesimpulan yang sah adalah...",
+            options: ["Pak Alfi menggunakan Windows.", "Pak Alfi bisa menggunakan Linux.", "Semua pengguna Linux adalah guru Fisika.", "Pak Alfi suka anime.", "Tidak dapat disimpulkan."],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>Jadwal Baca Mona</h3><p>Mona membaca buku: Senin & Selasa (Ekonomi). Rabu & Jumat (Sastra). Kamis (Politik). Sabtu (Hukum). Minggu (Sosial Budaya). Buku Agama dibaca hari Sabtu <strong>setelah</strong> selesai semua buku Hukum.</p>`,
+            question: "Jika Mona membaca buku Politik hari ini, buku apa yang dibaca besok?",
+            options: ["Ekonomi", "Sastra", "Hukum", "Agama", "Sosial Budaya"],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>Rumah 5 Sekawan</h3><p>Joni menjemput Slamet, setelah Joni dijemput Anto. (Urutan: Anto -> Joni -> Slamet). Rika dijemput terakhir. Rumah Rahma ada di antara Joni dan Anto.</p>`,
+            question: "Siapakah yang rumahnya paling jauh dari sekolah (titik awal penjemputan)?",
+            options: ["Slamet", "Joni", "Anto", "Rika", "Rahma"],
+            answer: 2
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>Nilai Lomba</h3><p>Nilai Nana > Luthfan (+1). Nilai Gunawan > Kara (+2). Nilai Luthfan = Kara. Nilai Arif = Gunawan + 3.</p>`,
+            question: "Siapakah yang memiliki nilai tertinggi?",
+            options: ["Nana", "Luthfan", "Gunawan", "Arif", "Kara"],
+            answer: 3
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>Syarat Turis</h3><p>Turis A: Prancis, Jerman. Turis B: Prancis saja. Turis C: Inggris, Jepang, Cina. Turis D: Indo, Jerman, Prancis.</p>`,
+            question: "Siapa satu-satunya turis yang TIDAK bisa berkomunikasi langsung dengan Turis A (tanpa penerjemah)?",
+            options: ["Turis B", "Turis C", "Turis D", "Semua bisa", "Tidak ada"],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>Bunga</h3><p>Dahlia: Paling besar, paling cerah, kelopak paling sedikit. Mawar: Paling harum, lebih besar dari Melati. Melati: Kelopak terbanyak.</p>`,
+            question: "Manakah pernyataan yang PASTI SALAH?",
+            options: ["Dahlia lebih besar dari Melati.", "Melati memiliki kelopak lebih banyak dari Dahlia.", "Mawar tidak seharum Melati.", "Dahlia adalah bunga paling cerah.", "Mawar lebih besar dari Bakung."],
+            answer: 2
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>Logika Hujan</h3><p>Premis 1: Jika hari ini hujan, maka jalanan basah.<br>Premis 2: Jalanan tidak basah.</p>`,
+            question: "Kesimpulannya adalah...",
+            options: ["Hari ini hujan.", "Hari ini tidak hujan.", "Kemarin hujan.", "Jalanan kering karena panas.", "Tidak dapat disimpulkan."],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>Pengambilan Permen</h3><p>Ada 5 anak. 4 anak ambil permen Susu. Sherly & Tomi TIDAK ambil Coklat. Sherly HANYA ambil 1 permen (Anggur). Selain Sherly, hanya Sally & Sandy yang TIDAK ambil Kopi.</p>`,
+            question: "Siapa yang mengambil permen Kopi DAN Susu?",
+            options: ["Sherly", "Sally", "Sandy", "Tomi", "Laura"],
+            answer: 3
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>Penjualan Bakso</h3><p>Penjualan III > II. Penjualan III < I. Penjualan III = IV.</p>`,
+            question: "Urutan penjualan dari yang TERKECIL?",
+            options: ["I", "II", "III", "IV", "Semua sama"],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>Angka</h3><p>Jika x adalah bilangan genap dan y adalah bilangan ganjil, maka x + y adalah...</p>`,
+            question: "Hasil penjumlahan tersebut pasti...",
+            options: ["Genap", "Ganjil", "Nol", "Negatif", "Prima"],
+            answer: 1
+        },
+        // --- 21-30 KUANTITATIF ---
+        {
+            type: "Kuantitatif",
+            context: `<h3>Diskon Flash Sale</h3><p>Sebuah keyboard mekanikal seharga Rp 800.000 didiskon sebesar 20%, kemudian mendapat potongan tambahan 10% dari harga setelah diskon pertama.</p>`,
+            question: "Berapa harga akhir yang harus dibayar?",
+            options: ["Rp 560.000", "Rp 576.000", "Rp 600.000", "Rp 640.000", "Rp 500.000"],
+            answer: 1
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>Harga Daging</h3><p>Tahun 2016 harga daging Rp 97.000. Tahun 2019 harga daging Rp 120.000.</p>`,
+            question: "Berapa persentase kenaikan harga daging dari 2016 ke 2019? (Pembulatan terdekat)",
+            options: ["10%", "15%", "24%", "30%", "40%"],
+            answer: 2
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>Kasus HIV vs AIDS</h3><p>Tahun 2017: HIV = 48.000 kasus, AIDS = 10.000 kasus.</p>`,
+            question: "Berapa rasio (perbandingan) antara penderita AIDS terhadap HIV pada tahun 2017?",
+            options: ["1 : 48", "1 : 4.8", "4.8 : 1", "1 : 5", "5 : 1"],
+            answer: 1
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>Perjalanan ke Sekolah</h3><p>Jarak rumah Slamet ke sekolah adalah 10 km. Ia naik motor dengan kecepatan 40 km/jam.</p>`,
+            question: "Berapa menit waktu yang dibutuhkan Slamet untuk sampai?",
+            options: ["10 menit", "15 menit", "20 menit", "25 menit", "30 menit"],
+            answer: 1
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>Data Deret</h3><p>Produksi: 20, 24, 28, 32, ...</p>`,
+            question: "Berapa prediksi produksi pada urutan ke-8?",
+            options: ["40", "44", "48", "52", "60"],
+            answer: 2
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>Operasi Hitung</h3><p>Diketahui a = 5, b = -2.</p>`,
+            question: "Berapakah nilai dari (a - b)^2 - 3a?",
+            options: ["34", "39", "25", "49", "10"],
+            answer: 0
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>Lahan Perkebunan</h3><p>Sebuah lahan berbentuk persegi panjang dengan panjang 50m dan lebar 30m. Akan dibuat pagar di sekelilingnya.</p>`,
+            question: "Berapa meter panjang pagar yang dibutuhkan?",
+            options: ["150 m", "160 m", "80 m", "1500 m", "300 m"],
+            answer: 1
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>Air Hujan</h3><p>Hanya 30% air hujan yang meresap. Sisanya mengalir ke laut.</p>`,
+            question: "Jika curah hujan 500 liter, berapa liter yang mengalir ke laut (TIDAK meresap)?",
+            options: ["150 liter", "250 liter", "300 liter", "350 liter", "400 liter"],
+            answer: 3
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>Nilai Siswa</h3><p>Nilai ulangan Fisika 5 siswa: 70, 80, 85, 90, x. Rata-rata nilai mereka adalah 82.</p>`,
+            question: "Berapakah nilai x?",
+            options: ["80", "82", "85", "90", "75"],
+            answer: 2
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>Proyek Coding</h3><p>Pak Alfi bisa menyelesaikan website dalam 4 hari. Istrinya bisa menyelesaikan dalam 12 hari.</p>`,
+            question: "Jika mereka mengerjakannya bersama-sama, berapa hari selesai?",
+            options: ["2 hari", "3 hari", "4 hari", "6 hari", "8 hari"],
+            answer: 1
+        }
+    ];
+
+    // --- GAME STATE ---
+    let currentIndex = 0;
+    // Menyimpan jawaban user. Index array = nomor soal, Value = index jawaban (0-4)
+    let userAnswers = new Array(questions.length).fill(null);
+    const optionLetters = ['A', 'B', 'C', 'D', 'E'];
+
+    // --- DOM ELEMENTS ---
+    const contextEl = document.getElementById('context-content');
+    const questionEl = document.getElementById('question-text');
+    const optionsEl = document.getElementById('options-container');
+    const badgeEl = document.getElementById('type-badge');
+    
+    // Elements for Nav & Header
+    const currentNumEl = document.getElementById('current-num');
+    const totalNumEl = document.getElementById('total-num');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const btnFinish = document.getElementById('btn-finish');
+
+    function loadQuestion() {
+        const q = questions[currentIndex];
+        
+        // Update Header
+        currentNumEl.innerText = currentIndex + 1;
+        totalNumEl.innerText = questions.length;
+
+        // Update Content
+        contextEl.innerHTML = q.context;
+        questionEl.innerHTML = q.question;
+        
+        // Update Badge
+        badgeEl.textContent = q.type;
+        badgeEl.className = 'badge';
+        if(q.type.includes('Induktif')) badgeEl.classList.add('bg-induktif');
+        else if(q.type.includes('Deduktif')) badgeEl.classList.add('bg-deduktif');
+        else badgeEl.classList.add('bg-kuantitatif');
+
+        // Reset Options HTML
+        optionsEl.innerHTML = '';
+
+        // Generate Options
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('div');
+            // Cek apakah user sudah menjawab soal ini sebelumnya
+            const isSelected = userAnswers[currentIndex] === idx ? 'selected' : '';
+            
+            btn.className = `option-btn ${isSelected}`;
+            btn.innerHTML = `<div class="option-letter">${optionLetters[idx]}</div><div>${opt}</div>`;
+            btn.onclick = () => selectOption(idx);
+            optionsEl.appendChild(btn);
+        });
+
+        // Update Nav Button States
+        btnPrev.disabled = currentIndex === 0;
+        
+        if (currentIndex === questions.length - 1) {
+            btnNext.style.display = 'none';
+            btnFinish.style.display = 'flex';
+        } else {
+            btnNext.style.display = 'flex';
+            btnFinish.style.display = 'none';
+        }
+
+        // Scroll context to top secara otomatis setiap pindah soal
+        if(window.innerWidth > 900) {
+            document.querySelector('.context-panel').scrollTop = 0;
+        }
+    }
+
+    function selectOption(selectedIndex) {
+        // Simpan jawaban user ke array
+        userAnswers[currentIndex] = selectedIndex;
+        // Reload tampilan opsi untuk menunjukkan mana yang dipilih
+        loadQuestion(); 
+    }
+
+    function prevQuestion() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            loadQuestion();
+        }
+    }
+
+    function nextQuestion() {
+        if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+        }
+    }
+
+    function finishExam() {
+        let score = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+
+        questions.forEach((q, index) => {
+            if (userAnswers[index] === q.answer) {
+                correctCount++;
+                score += 10; // Bobot nilai per soal (bisa disesuaikan)
+            } else {
+                wrongCount++;
+            }
+        });
+
+        // Tampilkan Hasil
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('final-correct').innerText = correctCount;
+        document.getElementById('final-wrong').innerText = wrongCount;
+        document.getElementById('finish-modal').style.display = 'flex';
+    }
+
+    // Init First Load
+    loadQuestion();
+
+</script>
+</body>
+</html>
