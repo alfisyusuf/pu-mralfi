@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🍭 SNBT Candy Pop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* --- Candy Pop Palette --- */
+            --bg-color: #FFF0F5; /* Lavender Blush */
+            --card-bg: #FFFFFF;
+            
+            /* Warna Utama */
+            --primary: #FF6B95; /* Bubblegum Pink */
+            --primary-hover: #ff477e;
+            
+            /* Warna Aksen */
+            --secondary: #00D2BE; /* Mint Candy */
+            --accent: #FFD93D; /* Lemon Jelly */
+            --text-main: #5A4B58; /* Dark Purple-Grey (Softer than black) */
+            --text-light: #8E7F8D;
+            
+            /* UI Elements */
+            --border-width: 3px;
+            --border-color: #5A4B58;
+            --shadow-offset: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif; /* Font bulat nyaman dibaca */
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#FFB7CE 1px, transparent 1px);
+            background-size: 20px 20px; /* Pola dot halus */
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; 
+        }
+
+        /* --- HEADER --- */
+        .game-header {
+            background: var(--card-bg);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: var(--border-width) solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            color: var(--primary);
+            text-shadow: 2px 2px 0px var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-pill {
+            background: var(--accent);
+            color: var(--text-main);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: var(--border-width) solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .game-container {
+            flex: 1;
+            display: flex;
+            padding: 30px;
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            flex-direction: row;
+        }
+
+        /* --- PANEL UMUM (KARTU) --- */
+        .card-style {
+            background: var(--card-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--border-color);
+        }
+
+        /* --- LEFT PANEL: CONTEXT --- */
+        .context-panel {
+            flex: 1;
+            padding: 30px;
+            height: fit-content;
+        }
+
+        .context-panel h3 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            border-bottom: 3px dashed #FFB7CE;
+            padding-bottom: 10px;
+        }
+
+        .context-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* Table Styling (Cute Table) */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        th { background: var(--secondary); color: white; padding: 12px; border-bottom: 2px solid var(--border-color); }
+        td { border-bottom: 1px solid #ddd; padding: 10px; text-align: center; }
+        tr:last-child td { border-bottom: none; }
+        tr:nth-child(even) { background: #E0F7FA; }
+
+        /* --- RIGHT PANEL: QUESTION --- */
+        .interaction-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .question-card {
+            padding: 30px;
+            background: #fff;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            color: white;
+        }
+        .bg-induktif { background: #FF9F43; } /* Orange Pop */
+        .bg-deduktif { background: #A29BFE; } /* Lavender Pop */
+        .bg-kuantitatif { background: #00CEC9; } /* Teal Pop */
+
+        .question-text {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        /* --- OPTIONS --- */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: white;
+            border: var(--border-width) solid #E0E0E0; /* Default border halus */
+            border-bottom-width: 5px; /* Tebal bawah */
+            padding: 18px 20px;
+            border-radius: 16px;
+            font-size: 1rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--secondary);
+            background: #F0FDFA;
+        }
+
+        .option-btn:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        /* SELECTED STATE */
+        .option-btn.selected {
+            border-color: var(--primary);
+            background: #FFF0F5;
+            color: var(--primary);
+            border-bottom-width: 5px;
+        }
+
+        .option-letter {
+            width: 35px;
+            height: 35px;
+            background: #F0F0F0;
+            color: var(--text-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-family: 'Fredoka', sans-serif;
+            border: 2px solid #E0E0E0;
+            transition: all 0.2s;
+        }
+        
+        .option-btn.selected .option-letter {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: rotate(-10deg); /* Efek miring lucu */
+        }
+
+        /* --- NAVIGATION BUTTONS --- */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 15px 25px;
+            border: var(--border-width) solid var(--border-color);
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 4px 4px 0px var(--border-color);
+            transition: transform 0.1s;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .nav-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--border-color);
+        }
+
+        .btn-prev { background: #FFFFFF; color: var(--text-main); }
+        .btn-next { background: var(--secondary); color: white; }
+        .btn-finish { background: var(--primary); color: white; }
+
+        .nav-btn:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            box-shadow: none; 
+            transform: translate(2px, 2px);
+        }
+
+
+        /* --- FINISH MODAL (POPUP) --- */
+        .finish-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(90, 75, 88, 0.7); /* Ungu gelap transparan */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+
+        .finish-card {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            border: 4px solid var(--border-color);
+            box-shadow: 8px 8px 0px var(--primary);
+            animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .game-container { flex-direction: column; padding: 15px; gap: 15px;}
+            .context-panel { margin-bottom: 10px; }
+            .nav-buttons { 
+                position: sticky; 
+                bottom: 0; 
+                background: rgba(255,255,255,0.9); 
+                backdrop-filter: blur(5px);
+                padding: 15px 0; 
+                margin: 0;
+                border-top: 2px solid #eee;
+            }
+            body { padding-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="game-header">
+        <div class="logo"><i class="fas fa-candy-cane"></i> SNBT Master</div>
+        <div class="status-pill">
+            Soal <span id="current-num">1</span> dari <span id="total-num">30</span>
+        </div>
+    </header>
+
+    <main class="game-container">
+        <div class="context-panel card-style">
+            <div id="context-content" class="context-content"></div>
+        </div>
+
+        <div class="interaction-panel">
+            <div class="question-card card-style">
+                <span id="type-badge" class="badge bg-induktif">Induktif</span>
+                <div class="question-text" id="question-text">
+                    Loading question...
+                </div>
+            </div>
+
+            <div class="options-list" id="options-container">
+                </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn btn-prev" id="btn-prev" onclick="prevQuestion()">
+                    <i class="fas fa-chevron-left"></i> Kembali
+                </button>
+                <button class="nav-btn btn-next" id="btn-next" onclick="nextQuestion()">
+                    Lanjut <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="nav-btn btn-finish" id="btn-finish" onclick="finishExam()" style="display: none;">
+                    Selesai! <i class="fas fa-star"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div class="finish-modal" id="finish-modal">
+        <div class="finish-card">
+            <h1 style="font-family: 'Fredoka', sans-serif; font-size: 2.2rem; margin-bottom: 5px; color: var(--text-main);">🎉 Hore Selesai!</h1>
+            <p style="color: var(--text-light); margin-bottom: 25px;">Kerja bagus! Ini hasil latihanmu:</p>
+            
+            <div style="font-size: 4.5rem; font-family: 'Fredoka', sans-serif; color: var(--primary); margin-bottom: 20px; text-shadow: 3px 3px 0px #FFD93D;" id="final-score">0</div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+                <div style="background: #E0F7FA; padding: 15px; border-radius: 15px; border: 2px solid var(--secondary);">
+                    <div style="font-weight: bold; font-size: 0.9rem; color: var(--secondary);">Benar ✅</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);" id="final-correct">0</div>
+                </div>
+                <div style="background: #FFF0F5; padding: 15px; border-radius: 15px; border: 2px solid var(--primary);">
+                    <div style="font-weight: bold; font-size: 0.9rem; color: var(--primary);">Salah ❌</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);" id="final-wrong">0</div>
+                </div>
+            </div>
+            <button class="nav-btn btn-next" style="width: 100%; justify-content: center; background: var(--accent); color: var(--text-main);" onclick="location.reload()">Coba Lagi 🔄</button>
+        </div>
+    </div>
+
+<script>
+    // --- LOGIC DATABASE & FUNGSI (SAMA SEPERTI SEBELUMNYA) ---
+    // Tidak ada perubahan di logika, hanya tampilan CSS di atas.
+    
+    const questions = [
+    // --- 1-10 INDUKTIF ---
+        {
+            type: "Induktif",
+            context: `<h3>🤖 Survei Sistem Operasi Server (2025)</h3><p>Berdasarkan survei StackOverflow terhadap 5.000 DevOps Engineer:</p><table><tr><th>OS</th><th>Persentase</th><th>Keunggulan Utama</th></tr><tr><td>Ubuntu Server</td><td>45%</td><td>Dukungan Komunitas Luas</td></tr><tr><td>Debian</td><td>20%</td><td>Stabilitas Tinggi</td></tr><tr><td>Arch Linux</td><td>5%</td><td>Kustomisasi & Dokumentasi (Wiki)</td></tr><tr><td>CentOS/Rocky</td><td>15%</td><td>Kompatibilitas Enterprise</td></tr><tr><td>Lainnya</td><td>15%</td><td>Spesifik</td></tr></table><p>Seorang Guru Fisika ingin membuat server ujian sekolah mandiri (self-hosted) yang <strong>paling stabil</strong> dan tidak perlu sering di-update (rolling release) agar tidak mengganggu jadwal ujian.</p>`,
+            question: "Berdasarkan tabel dan kebutuhan Guru tersebut, manakah Sistem Operasi yang PALING TIDAK DISARANKAN?",
+            options: ["Debian", "Ubuntu Server", "Arch Linux", "CentOS", "Rocky Linux"],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>🍎 Eksperimen Gerak Jatuh Bebas</h3><p>Pak Alfi melakukan eksperimen menjatuhkan dua benda dari ketinggian 10 meter di ruang hampa udara (vakum).</p><ul><li>Benda A: Bola besi (1 kg)</li><li>Benda B: Bulu ayam (0.01 kg)</li></ul><p>Hasil pencatatan sensor waktu:</p><table><tr><th>Percobaan</th><th>Waktu Benda A</th><th>Waktu Benda B</th></tr><tr><td>1</td><td>1.43 detik</td><td>1.43 detik</td></tr><tr><td>2</td><td>1.43 detik</td><td>1.43 detik</td></tr><tr><td>3</td><td>1.43 detik</td><td>1.43 detik</td></tr></table>`,
+            question: "Simpulan induktif yang paling tepat berdasarkan data eksperimen di atas adalah...",
+            options: ["Massa benda sangat mempengaruhi kecepatan jatuh.", "Di ruang hampa, semua benda jatuh dengan percepatan yang sama tanpa dipengaruhi massa.", "Sensor waktu mengalami kerusakan karena angkanya sama terus.", "Bulu ayam menjadi seberat bola besi di ruang hampa.", "Gravitasi tidak bekerja di ruang hampa."],
+            answer: 1
+        },
+        {
+            type: "Induktif",
+            context: `<h3>⛺ Data Anggaran Kegiatan Pramuka</h3><p>Berikut adalah realisasi anggaran kegiatan Ambalan selama 3 tahun:</p><table><tr><th>Tahun</th><th>Jenis Kegiatan</th><th>Biaya (Juta Rp)</th><th>Peserta</th></tr><tr><td>2023</td><td>Kemah Bakti</td><td>5.0</td><td>50</td></tr><tr><td>2024</td><td>Kemah Bakti</td><td>7.5</td><td>60</td></tr><tr><td>2025</td><td>Kemah Bakti</td><td>10.0</td><td>55</td></tr></table>`,
+            question: "Pernyataan mana yang PALING SESUAI untuk menggambarkan tren efisiensi biaya per peserta?",
+            options: ["Biaya per peserta semakin murah setiap tahun.", "Biaya total naik, tetapi biaya per peserta turun.", "Terjadi inefisiensi atau kenaikan harga, karena biaya total naik tajam padahal peserta relatif stagnan.", "Peserta tahun 2025 adalah yang terbanyak.", "Kegiatan 2023 adalah yang paling boros."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>💻 Tren Framework Web</h3><p>Artikel teknologi menyebutkan: 'Pengembang web masa kini mulai meninggalkan arsitektur Monolitik menuju Microservices. Namun, bagi tim kecil, Microservices dianggap terlalu rumit (over-engineering). Solusi tengahnya adalah Modular Monolith.'</p>`,
+            question: "Jika Pak Alfi memiliki tim web development sekolah yang hanya berisi 2 orang, saran arsitektur apa yang paling logis berdasarkan teks?",
+            options: ["Wajib menggunakan Microservices agar keren.", "Tetap menggunakan Monolitik Tradisional selamanya.", "Mencoba Modular Monolith atau tetap Monolitik karena timnya kecil.", "Merekrut 10 orang baru.", "Berhenti membuat web."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>🌡️ Grafik Suhu Global</h3><p>Data rata-rata suhu permukaan bumi:</p><ul><li>1900: -0.1°C (anomali)</li><li>1950: -0.2°C</li><li>2000: +0.4°C</li><li>2020: +1.0°C</li><li>2023: +1.2°C</li></ul>`,
+            question: "Berdasarkan tren di atas, prediksi manakah yang paling mungkin terjadi di tahun 2030 jika tidak ada intervensi iklim?",
+            options: ["Suhu akan kembali dingin seperti tahun 1900.", "Suhu akan stabil di +1.2°C.", "Suhu akan terus naik, kemungkinan melampaui +1.3°C.", "Anomali suhu akan menjadi 0°C.", "Bumi akan membeku."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>🧑‍🎓 Teks: Karakter Siswa</h3><p>Siswa yang aktif di organisasi (OSIS/Pramuka) cenderung memiliki kemampuan *public speaking* yang lebih baik daripada siswa yang hanya fokus akademik (Kupu-kupu). Namun, nilai rata-rata akademik siswa aktivis seringkali sedikit di bawah siswa fokus akademik.</p>`,
+            question: "Apa simpulan yang TIDAK MUNGKIN (salah) berdasarkan teks?",
+            options: ["Organisasi melatih soft skill bicara.", "Ada trade-off (pertukaran) antara waktu organisasi dan waktu belajar akademik.", "Semua siswa aktivis pasti tidak lulus ujian.", "Siswa fokus akademik mungkin kurang terlatih bicara di depan umum.", "Menyeimbangkan keduanya adalah tantangan."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>🍊 Generalisasi Buah</h3><p>Jeruk mengandung Vitamin C. Lemon mengandung Vitamin C. Jambu biji mengandung Vitamin C.</p>`,
+            question: "Generalisasi induktif yang paling tepat (namun tetap hati-hati) adalah...",
+            options: ["Semua buah pasti mengandung Vitamin C.", "Hanya buah rasa asam yang punya Vitamin C.", "Banyak buah-buahan, terutama yang asam/segar, mengandung Vitamin C.", "Vitamin C hanya ada di Jeruk.", "Buah manis tidak bervitamin."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>📅 Tabel Kehadiran Siswa Kelas XII</h3><table><tr><th>Hari</th><th>Hadir</th><th>Sakit</th><th>Alpha</th></tr><tr><td>Senin</td><td>30</td><td>0</td><td>0</td></tr><tr><td>Selasa</td><td>29</td><td>1</td><td>0</td></tr><tr><td>Rabu</td><td>28</td><td>2</td><td>0</td></tr><tr><td>Kamis</td><td>25</td><td>0</td><td>5</td></tr><tr><td>Jumat</td><td>20</td><td>0</td><td>10</td></tr></table>`,
+            question: "Hipotesis apa yang paling mungkin menjelaskan fenomena hari Jumat?",
+            options: ["Siswa kelelahan belajar Fisika.", "Terjadi wabah penyakit di hari Jumat.", "Motivasi siswa menurun menjelang akhir pekan (weekend effect).", "Hari Jumat adalah hari libur nasional.", "Guru wali kelas tidak masuk."],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>🧠 Analogi Komputer</h3><p>CPU bertindak sebagai Otak.</p>`,
+            question: "Maka Harddisk/SSD bertindak sebagai...",
+            options: ["Mata", "Tangan", "Ingatan/Memori Jangka Panjang", "Kaki", "Jantung"],
+            answer: 2
+        },
+        {
+            type: "Induktif",
+            context: `<h3>🌊 Sebab Akibat: Banjir</h3><p>Kota A sering banjir. Pemerintah menemukan selokan tersumbat sampah plastik. Warga juga sering membeton halaman rumah sehingga tidak ada resapan air.</p>`,
+            question: "Manakah solusi jangka panjang yang paling efektif?",
+            options: ["Membeli pompa air raksasa.", "Melarang hujan turun.", "Edukasi pengelolaan sampah dan mewajibkan pembuatan lubang biopori/sumur resapan.", "Meninggikan semua rumah.", "Pindah kota."],
+            answer: 2
+        },
+        // --- 11-20 DEDUKTIF ---
+        {
+            type: "Deduktif",
+            context: `<h3>🥼 Aturan Laboratorium</h3><p>Premis 1: Semua siswa yang masuk laboratorium harus memakai jas lab.<br>Premis 2: Budi ada di dalam laboratorium.</p>`,
+            question: "Kesimpulan yang valid adalah...",
+            options: ["Budi sedang makan.", "Budi memakai jas lab.", "Budi adalah guru.", "Budi tidak memakai sepatu.", "Jas lab Budi berwarna putih."],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>🌐 Logika Website</h3><p>Jika koneksi database gagal (P), maka website menampilkan Error 500 (Q).<br>Fakta: Website menampilkan Error 500.</p>`,
+            question: "Apakah pasti koneksi database gagal?",
+            options: ["Ya, pasti.", "Tidak, mungkin ada penyebab lain (misal script error).", "Server meledak.", "Website kena hack.", "Tidak ada hubungan."],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>🏃 Urutan Lari</h3><p>Dalam lomba lari Pramuka: Andra finish sebelum Budi. Candra finish setelah Budi. Dedi finish sebelum Andra.</p>`,
+            question: "Siapakah juara 1?",
+            options: ["Andra", "Budi", "Candra", "Dedi", "Tidak tahu"],
+            answer: 3
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>🔦 Sandi Morse</h3><p>Jika titik (.) adalah E dan garis (-) adalah T. Maka gabungan ..- adalah...</p><p>Diketahui logika sandi: . (E), .. (I), ... (S), - (T), -- (M).</p>`,
+            question: "Soal Logika Pola: Apa huruf selanjutnya dari urutan E, I, S, H (....)?",
+            options: ["5 (.....)", "T", "A", "O", "M"],
+            answer: 0
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>🗓️ Jadwal Piket Guru</h3><p>Pak Alfi tidak bisa piket hari Selasa dan Kamis. Bu Ani hanya bisa piket hari Rabu. Pak Budi piket sehari sebelum Bu Ani.</p>`,
+            question: "Hari apa Pak Budi piket?",
+            options: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>💻 Logika Himpunan</h3><p>Semua Laptop ThinkPad tahan banting. Sebagian Laptop ThinkPad berwarna hitam.</p>`,
+            question: "Kesimpulan yang sah:",
+            options: ["Semua laptop hitam tahan banting.", "Sebagian laptop yang tahan banting berwarna hitam.", "Semua ThinkPad berwarna silver.", "Laptop yang tidak hitam tidak tahan banting.", "ThinkPad X270 tidak tahan banting."],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>🔌 Modus Tollens</h3><p>Premis 1: Jika listrik padam, maka WiFi mati.<br>Premis 2: WiFi menyala (Tidak mati).</p>`,
+            question: "Kesimpulan:",
+            options: ["Listrik padam.", "Listrik tidak padam.", "Paket data habis.", "Router rusak.", "Tidak bisa disimpulkan."],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>🧍 Posisi Berdiri</h3><p>Lima anggota Pramuka berbaris satu banjar. A di depan B. C di belakang D. D di depan A. E paling belakang.</p>`,
+            question: "Siapa yang berada di urutan ketiga?",
+            options: ["A", "B", "C", "D", "E"],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>👨‍👩‍👧 Keluarga</h3><p>Ayah Rina adalah kakeknya Budi. Budi adalah laki-laki.</p>`,
+            question: "Apa hubungan Rina dengan Budi? (Asumsi Rina anak tunggal)",
+            options: ["Nenek", "Ibu", "Bibi", "Kakak", "Adik"],
+            answer: 1
+        },
+        {
+            type: "Deduktif",
+            context: `<h3>🌦️ Kondisional</h3><p>Hanya jika cuaca cerah, kita akan berkemah. Kita tidak berkemah.</p>`,
+            question: "Apakah cuaca cerah?",
+            options: ["Pasti Hujan.", "Pasti Cerah.", "Mungkin Cerah, Mungkin Hujan.", "Mendung.", "Badai."],
+            answer: 2
+        },
+        // --- 21-30 KUANTITATIF ---
+        {
+            type: "Kuantitatif",
+            context: `<h3>🏷️ Diskon Toko Buku</h3><p>Buku Fisika seharga Rp 100.000 diskon 20% + 10% (Diskon ganda, bukan 30%).</p>`,
+            question: "Berapa harga akhirnya?",
+            options: ["Rp 70.000", "Rp 72.000", "Rp 80.000", "Rp 68.000", "Rp 75.000"],
+            answer: 1
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>🚀 Kecepatan Download</h3><p>Pak Alfi mendownload file ISO Linux sebesar 2 GB (2000 MB). Kecepatan internet sekolah 10 MB/detik.</p>`,
+            question: "Berapa detik waktu yang dibutuhkan?",
+            options: ["20 detik", "100 detik", "200 detik", "500 detik", "2000 detik"],
+            answer: 2
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>🍹 Rasio Campuran Minuman</h3><p>Untuk membuat es teh enak, rasionya Gula : Teh = 2 : 5. Jika ada 10 liter Teh...</p>`,
+            question: "Berapa liter gula cair yang dibutuhkan?",
+            options: ["2 liter", "4 liter", "5 liter", "10 liter", "2.5 liter"],
+            answer: 1
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>🔢 Barisan Aritmatika</h3><p>Jumlah peserta upacara baris pertama 10 orang, baris kedua 12, baris ketiga 14, dst.</p>`,
+            question: "Berapa orang di baris ke-10?",
+            options: ["20", "24", "28", "30", "32"],
+            answer: 2
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>📊 Statistika Nilai</h3><p>Nilai ulangan: 6, 7, 7, 8, 8, 8, 9, 9, 10.</p>`,
+            question: "Berapa Median (nilai tengah) data tersebut?",
+            options: ["7", "7.5", "8", "8.5", "9"],
+            answer: 2
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>🕰️ Logika Umur</h3><p>Tahun ini Umur Ayah = 3 kali umur Anak. 5 Tahun lalu umur Anak 5 tahun.</p>`,
+            question: "Berapa umur Ayah sekarang?",
+            options: ["15", "20", "30", "45", "50"],
+            answer: 2
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>🎲 Peluang Dadu</h3><p>Sebuah dadu dilempar satu kali.</p>`,
+            question: "Peluang muncul mata dadu Ganjil adalah...",
+            options: ["1/6", "2/6", "3/6 (1/2)", "4/6", "5/6"],
+            answer: 2
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>⛺ Luas Lahan Kemah</h3><p>Lahan kemah berbentuk persegi panjang 20m x 15m. Setiap tenda butuh lahan 3m x 2m.</p>`,
+            question: "Berapa maksimal tenda yang bisa didirikan (tanpa jalan)?",
+            options: ["10", "20", "30", "40", "50"],
+            answer: 4
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>💰 Pecahan Gaji</h3><p>Pak Guru menyisihkan 1/4 gaji untuk tabungan, 1/2 untuk kebutuhan.</p>`,
+            question: "Berapa sisa gaji untuk sedekah/hiburan?",
+            options: ["1/4", "1/3", "1/8", "1/2", "0"],
+            answer: 0
+        },
+        {
+            type: "Kuantitatif",
+            context: `<h3>🖨️ Pekerjaan Bersama</h3><p>Mesin A print 100 lembar dalam 20 menit. Mesin B print 100 lembar dalam 30 menit.</p>`,
+            question: "Kecepatan gabungan per menit?",
+            options: ["5 lbr/menit", "8.3 lbr/menit", "10 lbr/menit", "3 lbr/menit", "12 lbr/menit"],
+            answer: 1
+        }
+    ];
+
+    let currentIndex = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    const optionLetters = ['A', 'B', 'C', 'D', 'E'];
+
+    const contextEl = document.getElementById('context-content');
+    const questionEl = document.getElementById('question-text');
+    const optionsEl = document.getElementById('options-container');
+    const badgeEl = document.getElementById('type-badge');
+    const currentNumEl = document.getElementById('current-num');
+    const totalNumEl = document.getElementById('total-num');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const btnFinish = document.getElementById('btn-finish');
+
+    function loadQuestion() {
+        const q = questions[currentIndex];
+        
+        currentNumEl.innerText = currentIndex + 1;
+        totalNumEl.innerText = questions.length;
+
+        contextEl.innerHTML = q.context;
+        questionEl.innerHTML = q.question;
+        
+        badgeEl.textContent = q.type;
+        badgeEl.className = 'badge';
+        if(q.type.includes('Induktif')) badgeEl.classList.add('bg-induktif');
+        else if(q.type.includes('Deduktif')) badgeEl.classList.add('bg-deduktif');
+        else badgeEl.classList.add('bg-kuantitatif');
+
+        optionsEl.innerHTML = '';
+
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('div');
+            const isSelected = userAnswers[currentIndex] === idx ? 'selected' : '';
+            
+            btn.className = `option-btn ${isSelected}`;
+            btn.innerHTML = `<div class="option-letter">${optionLetters[idx]}</div><div>${opt}</div>`;
+            btn.onclick = () => selectOption(idx);
+            optionsEl.appendChild(btn);
+        });
+
+        btnPrev.disabled = currentIndex === 0;
+        
+        if (currentIndex === questions.length - 1) {
+            btnNext.style.display = 'none';
+            btnFinish.style.display = 'flex';
+        } else {
+            btnNext.style.display = 'flex';
+            btnFinish.style.display = 'none';
+        }
+
+        if(window.innerWidth > 900) {
+            document.querySelector('.context-panel').scrollTop = 0;
+        }
+    }
+
+    function selectOption(selectedIndex) {
+        userAnswers[currentIndex] = selectedIndex;
+        loadQuestion(); 
+    }
+
+    function prevQuestion() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            loadQuestion();
+        }
+    }
+
+    function nextQuestion() {
+        if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+        }
+    }
+
+    function finishExam() {
+        let score = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+
+        questions.forEach((q, index) => {
+            if (userAnswers[index] === q.answer) {
+                correctCount++;
+                score += 10; 
+            } else {
+                wrongCount++;
+            }
+        });
+
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('final-correct').innerText = correctCount;
+        document.getElementById('final-wrong').innerText = wrongCount;
+        document.getElementById('finish-modal').style.display = 'flex';
+    }
+
+    loadQuestion();
+</script>
+</body>
+</html>
