@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan SNBT - Penalaran Umum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body x-data="quizApp()">
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">PU</div>
+                <h1 class="text-lg font-bold text-slate-800 hidden sm:block">Prediksi SNBT 2026</h1>
+            </div>
+            <div class="flex items-center gap-2">
+                <input type="password" x-model="inputPass" placeholder="Mode Pembahasan..." 
+                    class="text-sm px-3 py-1.5 border rounded-full focus:ring-2 focus:ring-indigo-500 outline-none w-32 sm:w-48 transition-all">
+                <div x-show="isDiscussionMode" class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                    MODE GURU AKTIF
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        
+        <div class="mb-10 text-center">
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Penalaran Umum</h2>
+            <p class="text-slate-500">Silakan kerjakan soal-soal di bawah ini dengan teliti. Selamat berlatih!</p>
+        </div>
+
+        <div class="space-y-12">
+            <template x-for="(q, index) in questions" :key="index">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div x-show="q.stimulus" class="bg-slate-50 p-6 border-b border-slate-100 italic text-slate-700 text-sm leading-relaxed" x-html="q.stimulus"></div>
+                    
+                    <div class="p-6">
+                        <div class="flex gap-3 mb-6">
+                            <span class="flex-none w-8 h-8 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center font-bold text-sm" x-text="index + 1"></span>
+                            <p class="text-slate-800 font-semibold leading-relaxed" x-text="q.question"></p>
+                        </div>
+
+                        <div class="grid gap-3 ml-11">
+                            <template x-for="(opt, key) in q.options" :key="key">
+                                <button 
+                                    @click="selectAnswer(index, key)"
+                                    :disabled="finished"
+                                    :class="{
+                                        'border-indigo-600 bg-indigo-50 ring-1 ring-indigo-600': userAnswers[index] === key,
+                                        'border-slate-200 hover:border-indigo-300': userAnswers[index] !== key,
+                                        'opacity-60 cursor-not-allowed': finished
+                                    }"
+                                    class="text-left px-4 py-3 rounded-xl border-2 transition-all flex items-start gap-3 group">
+                                    <span :class="userAnswers[index] === key ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-indigo-100'" 
+                                          class="flex-none w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold" x-text="key"></span>
+                                    <span class="text-slate-700" x-text="opt"></span>
+                                </button>
+                            </template>
+                        </div>
+
+                        <div x-show="isDiscussionMode && showExplanation[index]" x-cloak 
+                             class="mt-6 ml-11 p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                            <p class="text-emerald-800 font-bold mb-1">Kunci: <span x-text="q.correct"></span></p>
+                            <p class="text-emerald-700 text-sm" x-text="q.explanation"></p>
+                        </div>
+                        
+                        <div x-show="isDiscussionMode" class="mt-4 ml-11">
+                            <button @click="showExplanation[index] = !showExplanation[index]" 
+                                    class="text-xs font-bold text-indigo-600 hover:underline">
+                                [ <span x-text="showExplanation[index] ? 'Sembunyikan Pembahasan' : 'Lihat Pembahasan'"></span> ]
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <div class="mt-12 mb-20">
+            <button x-show="!finished" @click="calculateResult()" 
+                    class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl hover:bg-indigo-600 transition-colors shadow-lg">
+                Selesai & Lihat Skor
+            </button>
+
+            <div x-show="finished" x-cloak class="bg-white p-8 rounded-3xl border-4 border-indigo-600 text-center shadow-2xl">
+                <h3 class="text-2xl font-bold mb-4">Hasil Latihan Kamu</h3>
+                <div class="flex justify-center gap-8 mb-6">
+                    <div>
+                        <p class="text-4xl font-black text-indigo-600" x-text="score"></p>
+                        <p class="text-slate-500 text-sm">Skor Akhir</p>
+                    </div>
+                    <div class="border-l border-slate-200"></div>
+                    <div>
+                        <p class="text-4xl font-black text-slate-800" x-text="correctCount + '/' + questions.length"></p>
+                        <p class="text-slate-500 text-sm">Benar</p>
+                    </div>
+                </div>
+                <button @click="window.location.reload()" class="text-indigo-600 font-bold text-sm hover:underline">Ulangi Latihan</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-10 text-center text-slate-400 text-sm">
+        &copy; 2026 Media Belajar Dalan Padhang - Solo
+    </footer>
+
+    <script>
+        function quizApp() {
+            return {
+                inputPass: '',
+                // PASSWORD GURU DISINI
+                teacherPass: 'ramadankarim', 
+                finished: false,
+                score: 0,
+                correctCount: 0,
+                userAnswers: {},
+                showExplanation: {},
+                
+                get isDiscussionMode() {
+                    return this.inputPass === this.teacherPass;
+                },
+
+                selectAnswer(qIndex, key) {
+                    this.userAnswers[qIndex] = key;
+                },
+
+                calculateResult() {
+                    if (Object.keys(this.userAnswers).length < this.questions.length) {
+                        if(!confirm("Masih ada soal yang belum dijawab. Yakin ingin mengakhiri?")) return;
+                    }
+                    
+                    let correct = 0;
+                    this.questions.forEach((q, i) => {
+                        if (this.userAnswers[i] === q.correct) correct++;
+                    });
+                    
+                    this.correctCount = correct;
+                    this.score = Math.round((correct / this.questions.length) * 100);
+                    this.finished = true;
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                },
+
+                questions: [
+                    // BAGIAN 1: PENALARAN INDUKTIF
+                    {
+                        stimulus: "<strong>TEKS 1:</strong> Penjualan mobil listrik (wholesales) 2025 mencapai 103.931 unit (naik 141% dari 2024). Namun, produksi dalam negeri susut 4% menjadi 24.727 unit. Mayoritas distribusi mengandalkan impor CBU.",
+                        question: "Berdasarkan teks tersebut, kesimpulan yang paling mungkin benar adalah...",
+                        options: { A: "Produksi mobil listrik dalam negeri akan terus menurun drastis.", B: "Lonjakan penjualan mobil listrik tidak diimbangi peningkatan produksi domestik.", C: "Masyarakat tidak menyukai mobil listrik lokal karena kualitas buruk.", D: "Infrastruktur SPKLU adalah satu-satunya alasan utama.", E: "Mayoritas produsen otomotif menutup pabriknya." },
+                        correct: "B",
+                        explanation: "Teks menunjukkan kontradiksi data: penjualan melonjak drastis sementara produksi domestik justru menurun."
+                    },
+                    {
+                        question: "Jika pada tahun 2026 pemerintah menaikkan pajak bea cukai impor mobil (CBU) secara signifikan, apa yang paling mungkin terjadi?",
+                        options: { A: "Penjualan mobil listrik akan semakin melonjak tinggi.", B: "Infrastruktur SPKLU akan berhenti dibangun.", C: "Laju pertumbuhan penjualan berpotensi melambat karena mayoritas mengandalkan impor.", D: "Produksi mobil bensin akan turun 100%.", E: "Pabrik mobil listrik Indonesia akan diekspor." },
+                        correct: "C",
+                        explanation: "Kenaikan pajak impor akan meningkatkan harga jual unit CBU yang menjadi tumpuan utama pasar saat ini, sehingga minat beli berpotensi melambat."
+                    },
+                    {
+                        question: "Pernyataan yang mendasari kesimpulan 'mayoritas mobil listrik yang didistribusikan masih mengandalkan impor (CBU)' adalah...",
+                        options: { A: "Produksi domestik tidak cukup secara kuantitas untuk memenuhi permintaan.", B: "Pabrik domestik dialihkan untuk memproduksi komponen SPKLU.", C: "Mobil impor selalu lebih canggih daripada buatan lokal.", D: "Sistem pendataan produksi sering mengalami kesalahan.", E: "Konsumen hanya mau membeli kendaraan tipe SUV besar." },
+                        correct: "A",
+                        explanation: "Selisih volume antara penjualan (103rb unit) dan produksi (24rb unit) membuktikan kebutuhan impor untuk menutupi kekurangan tersebut."
+                    },
+                    {
+                        stimulus: "<strong>TEKS 2:</strong> Pertumbuhan ekonomi Indonesia 2025 tercatat 5,11% (target APBN 5,2%). Kuartal IV menyentuh 5,39%. Sektor transportasi & pergudangan jadi katalis. Sektor pertambangan mengalami kontraksi.",
+                        question: "Berdasarkan teks tersebut, manakah pernyataan yang PASTI BENAR?",
+                        options: { A: "Seluruh sektor ekonomi mencatatkan pertumbuhan positif.", B: "Pemerintah berhasil merealisasikan target pertumbuhan APBN.", C: "Kinerja perekonomian pada triwulan keempat lebih kuat dibanding performa rata-rata setahun.", D: "Sektor transportasi darat mengalami kontraksi terbesar.", E: "Kuartal I, II, dan III menyentuh angka di atas 5,39%." },
+                        correct: "C",
+                        explanation: "Angka 5,39% (Kuartal IV) lebih tinggi dari angka kumulatif tahunan 5,11%."
+                    },
+                    {
+                        question: "Yang paling masuk akal menjadi pendorong kuatnya pertumbuhan ekonomi di kuartal IV/2025 adalah...",
+                        options: { A: "Melambungnya harga komoditas tambang global.", B: "Pergerakan mobilitas masyarakat, logistik, dan telekomunikasi di akhir tahun.", C: "Perubahan standar perhitungan persentase oleh BPS.", D: "Subsidi besar untuk sektor pertambangan.", E: "Penurunan drastis daya beli masyarakat." },
+                        correct: "B",
+                        explanation: "Transportasi, logistik (pergudangan), dan komunikasi berkaitan erat dengan aktivitas akhir tahun (liburan/belanja)."
+                    },
+                    {
+                        question: "Evaluasi tepat terhadap opini pengamat yang menyebut ekonomi 2025 'resesi dan gagal total' adalah...",
+                        options: { A: "Akurat karena meleset dari angka 5,2%.", B: "Keliru karena angka 5,11% membuktikan ekonomi tetap berekspansi positif.", C: "Tidak relevan karena data BPS hanya untuk inflasi.", D: "Benar karena pertambangan menyebabkan kehancuran sistem.", E: "Salah karena target APBN sebenarnya telah direvisi." },
+                        correct: "B",
+                        explanation: "Resesi berarti pertumbuhan negatif. Angka 5,11% adalah pertumbuhan positif, sehingga istilah resesi tidak tepat."
+                    },
+                    {
+                        question: "Penurunan panen padi >50% karena minim hujan. Manakah yang MEMPERKUAT alasan tersebut?",
+                        options: { A: "Curah hujan di provinsi tetangga normal.", B: "Saluran irigasi sangat bergantung pada tadah hujan (tidak ada bendungan).", C: "Petani mencoba pupuk organik jenis baru.", D: "Harga beras di distributor melonjak drastis.", E: "Petani beralih menanam jagung." },
+                        correct: "B",
+                        explanation: "Ketiadaan infrastruktur air (bendungan) membuat sawah sangat rentan terhadap ketiadaan hujan, memperkuat alasan gagal panen."
+                    },
+                    {
+                        question: "Studi: Makan sayur hijau rutin menurunkan kolesterol jahat 20%. Pak Anwar memiliki kolesterol sangat rendah. Simpulan yang paling mungkin:",
+                        options: { A: "Pak Anwar pasti makan sayur hijau 3 kali sehari.", B: "Pak Anwar anti makan daging merah seumur hidup.", C: "Kebiasaan makan sayur hijau mungkin menjadi salah satu faktor penjaga kolesterolnya.", D: "Tanpa sayur hijau, orang pasti terkena serangan jantung.", E: "Sayur hijau adalah obat kimiawi tercepat." },
+                        correct: "C",
+                        explanation: "Simpulan induktif harus bersifat kemungkinan (probabilistik), bukan kepastian mutlak."
+                    },
+                    {
+                        question: "Jalan Merdeka biasanya macet jam 07-09. Rabu ini pukul 08.00 jalanan justru lengang. Penjelasan paling logis:",
+                        options: { A: "Kendaraan menggunakan teknologi mesin terbaru.", B: "Banyak orang memilih jalan kaki 20 km.", C: "Terjadi perbaikan jalan bulan lalu.", D: "Hari Rabu ini bertepatan dengan tanggal merah/cuti bersama.", E: "Pemerintah mewajibkan mobil masuk bengkel tiap Rabu." },
+                        correct: "D",
+                        explanation: "Penyebab utama hilangnya kemacetan rutin di jam kerja biasanya adalah hari libur nasional."
+                    },
+                    {
+                        question: "Menjelang hari raya, tiket pesawat naik 300%. Hari ini aplikasi tiket mengalami antrean server penuh. Simpulan:",
+                        options: { A: "Ada kerusakan sistem pusat komputer.", B: "Maskapai menurunkan tarif serendah mungkin.", C: "Saat ini sedang momen beberapa waktu menjelang hari raya besar.", D: "Semua orang ingin pindah rumah ke desa.", E: "Masyarakat menerima kenaikan gaji 300%." },
+                        correct: "C",
+                        explanation: "Berdasarkan pola yang diberikan, lonjakan permintaan tiket adalah indikator momen menjelang hari raya."
+                    },
+
+                    // BAGIAN 2: PENALARAN DEDUKTIF
+                    {
+                        question: "Semua pelamar Perusahaan X wajib lulus tes logika >80. Sebagian alumni Universitas Y melamar di Perusahaan X. Kesimpulan:",
+                        options: { A: "Semua alumni Univ Y harus lulus tes >80.", B: "Sebagian orang yang harus lulus tes >80 adalah alumni Univ Y.", C: "Semua yang lulus tes >80 pasti diterima.", D: "Sebagian alumni Univ Y tidak perlu tes logika.", E: "Tidak ada alumni Univ Y yang nilainya di bawah 80." },
+                        correct: "B",
+                        explanation: "Hanya alumni Univ Y yang melamar yang terikat aturan tersebut. B adalah bentuk logis yang sah."
+                    },
+                    {
+                        question: "Jika pasokan gandum menurun, harga roti naik. Fakta: Harga roti stabil (tidak naik). Kesimpulan:",
+                        options: { A: "Pasokan gandum mungkin sedang naik.", B: "Produsen mengganti gandum dengan jagung.", C: "Pasokan gandum tidak menurun.", D: "Minat beli roti sedang rendah.", E: "Pemerintah memberi subsidi gandum." },
+                        correct: "C",
+                        explanation: "Menggunakan Modus Tollens: Jika P maka Q. Ternyata tidak Q, maka tidak P."
+                    },
+                    {
+                        question: "Andi tepat waktu -> Dapat bonus. Dapat bonus -> Traktir teman. Fakta: Andi tidak traktir teman. Kesimpulan:",
+                        options: { A: "Andi tepat waktu tapi bonus ditunda.", B: "Teman Andi tidak mau makan malam.", C: "Atasan Andi kehabisan dana.", D: "Andi tidak menyelesaikan proyek tepat waktu.", E: "Andi memilih menabung bonusnya." },
+                        correct: "D",
+                        explanation: "Silogisme: P -> Q -> R. Jika tidak R, maka tidak P (Andi tidak tepat waktu)."
+                    },
+                    {
+                        question: "Semua anggrek butuh sirkulasi udara agar akar tidak busuk. Bunga X adalah anggrek spesies langka. Kesimpulan:",
+                        options: { A: "Bunga X tidak butuh sirkulasi karena langka.", B: "Beberapa anggrek di hutan mati membusuk.", C: "Bunga X membutuhkan sirkulasi udara yang baik agar akarnya tidak busuk.", D: "Hanya bunga X yang butuh sirkulasi di hutan.", E: "Udara di hutan dipastikan bersirkulasi baik." },
+                        correct: "C",
+                        explanation: "Pernyataan spesifik (Bunga X) mengikuti aturan universal kelompoknya (Anggrek)."
+                    },
+                    {
+                        question: "Syarat lulus: Ikut 3 seminar ATAU serahkan jurnal nasional. Budi tidak ikut seminar sama sekali. Syarat mutlak agar Budi lulus:",
+                        options: { A: "Memohon keringanan panitia.", B: "Ikut seminar pengganti tahun depan.", C: "Dinyatakan gagal total.", D: "Budi harus menyerahkan jurnal ilmiah yang dipublikasi nasional.", E: "Menyerahkan dua draf jurnal belum terbit." },
+                        correct: "D",
+                        explanation: "Logika OR (Atau): Jika salah satu syarat gagal, syarat lainnya wajib dipenuhi."
+                    },
+                    {
+                        question: "Urutan mobil: MPV kiri Sedan. Pikap 2 tempat kanan SUV. Hatchback bukan di ujung. Pikap kanan Sedan. Urutan:",
+                        options: { A: "SUV, Hatchback, MPV, Sedan, Pikap", B: "Hatchback, SUV, MPV, Sedan, Pikap", C: "SUV, MPV, Sedan, Pikap, Hatchback", D: "MPV, Sedan, Pikap, SUV, Hatchback", E: "Pikap, Sedan, MPV, Hatchback, SUV" },
+                        correct: "A",
+                        explanation: "MPV-Sedan-Pikap membentuk blok. SUV di kiri dengan jarak 2 dari Pikap berarti SUV-Hatchback-MPV-Sedan-Pikap."
+                    },
+                    {
+                        question: "Tidak ada guru matematika Sekolah Cerdas yang tidak mahir catur. Pak Joni adalah guru matematika di sana.",
+                        options: { A: "Pak Joni tidak suka catur.", B: "Semua yang mahir catur adalah guru matematika.", C: "Pak Joni sangat mahir bermain catur.", D: "Sebagian guru cerdas mahir catur.", E: "Catur mata pelajaran wajib." },
+                        correct: "C",
+                        explanation: "Negasi ganda 'Tidak ada yang tidak' berarti 'Semua'. Jadi Pak Joni pasti mahir catur."
+                    },
+                    {
+                        question: "Gerbang buka JIKA kartu valid DAN beban >20kg. Gerbang saat ini TERBUKA. Maka:",
+                        options: { A: "Kartu valid tapi tidak ada beban.", B: "Beban <20kg tapi kartu valid.", C: "Sistem sedang diretas.", D: "Kartu akses valid dan beban di atas sensor >20 kg.", E: "Siapa saja >20kg bisa masuk." },
+                        correct: "D",
+                        explanation: "Logika AND: Gerbang terbuka hanya jika kedua syarat terpenuhi secara bersamaan."
+                    },
+                    {
+                        question: "Sebagian warga suka lari pagi. Semua yang suka lari pagi jantungnya sehat. Kesimpulan:",
+                        options: { A: "Semua warga jantungnya sehat.", B: "Tidak ada warga yang jantungnya buruk.", C: "Sebagian orang yang memiliki kebugaran jantung yang baik adalah warga kampung.", D: "Hanya warga kampung yang rajin lari.", E: "Sebagian warga kampung malas lari." },
+                        correct: "C",
+                        explanation: "Sebagian Warga = Lari. Lari = Jantung Sehat. Jadi Sebagian Warga = Jantung Sehat (atau sebaliknya)."
+                    },
+                    {
+                        question: "Rapat < 15.00 -> Pengumuman rilis. Pengumuman rilis -> Server down. Fakta: Server normal/stabil. Kesimpulan:",
+                        options: { A: "Rapat belum dimulai.", B: "Rapat dibatalkan.", C: "Rilis tadi pagi.", D: "Rapat dewan komite selesai setelah jam 15.00.", E: "Sekolah sewa server mahal." },
+                        correct: "D",
+                        explanation: "Modus Tollens: Jika server tidak down, berarti pengumuman tidak rilis, berarti rapat tidak selesai sebelum 15.00."
+                    },
+
+                    // BAGIAN 3: PENALARAN KUANTITATIF
+                    {
+                        question: "Deret: 4, 8, 10, 20, 22, 44, 46, ...",
+                        options: { A: "48", B: "68", C: "88", D: "92", E: "96" },
+                        correct: "D",
+                        explanation: "Pola: (x2) lalu (+2). 4x2=8, 8+2=10, 10x2=20, dst. Terakhir 46x2 = 92."
+                    },
+                    {
+                        question: "PDB 2024 = Rp20.000 T. Pertumbuhan 2025 = 5,11%. Estimasi PDB akhir 2025?",
+                        options: { A: "Rp20.511 T", B: "Rp21.022 T", C: "Rp25.110 T", D: "Rp21.110 T", E: "Rp30.220 T" },
+                        correct: "B",
+                        explanation: "5,11% dari 20.000 = 1.022. Total PDB = 20.000 + 1.022 = 21.022."
+                    },
+                    {
+                        question: "Penjualan 2024 = 43.125 unit. 2025 = 103.500 unit. % Kenaikan?",
+                        options: { A: "60%", B: "120%", C: "140%", D: "160%", E: "240%" },
+                        correct: "C",
+                        explanation: "Selisih = 60.375. % Kenaikan = (60.375 / 43.125) x 100% = 140%."
+                    },
+                    {
+                        question: "Deret: C, 6, E, 10, G, 14, I, 18, ..., ...",
+                        options: { A: "J, 20", B: "K, 20", C: "J, 22", D: "K, 22", E: "L, 24" },
+                        correct: "D",
+                        explanation: "Huruf: Loncat 1 (C-E-G-I-K). Angka: +4 (6-10-14-18-22)."
+                    },
+                    {
+                        question: "Total 24.000 cip. Seri A 30%, Seri B 45%, sisanya Seri Z. Jumlah Seri Z?",
+                        options: { A: "4.800", B: "5.500", C: "6.000", D: "7.200", E: "10.800" },
+                        correct: "C",
+                        explanation: "Seri Z = 100% - (30%+45%) = 25%. 25% dari 24.000 = 6.000."
+                    },
+                    {
+                        question: "5 thn lalu, Paman = 4x Keponakan. Sekarang Paman + Keponakan = 55. Umur Paman sekarang?",
+                        options: { A: "35 thn", B: "40 thn", C: "41 thn", D: "45 thn", E: "50 thn" },
+                        correct: "C",
+                        explanation: "Persamaan: (P-5)=4(K-5) dan P+K=55. Hasilnya P = 41."
+                    },
+                    {
+                        question: "4 tukang = 3 jam. Jika ditambah 2 tukang (total 6), berapa jam selesai?",
+                        options: { A: "1 jam", B: "1,5 jam", C: "2 jam", D: "2,5 jam", E: "4 jam" },
+                        correct: "C",
+                        explanation: "Beban kerja = 4 x 3 = 12 jam-orang. Jika 6 orang: 12 / 6 = 2 jam."
+                    },
+                    {
+                        question: "Kec: 60 km/jam. Jarak: 105 km. Berangkat 07.00. Tiba jam berapa?",
+                        options: { A: "08.15", B: "08.30", C: "08.45", D: "09.00", E: "09.30" },
+                        correct: "C",
+                        explanation: "Waktu = 105/60 = 1,75 jam (1 jam 45 menit). 07.00 + 01.45 = 08.45."
+                    },
+                    {
+                        question: "Isi: 5 Merah, 4 Hitam, 3 Biru. Peluang terambil BUKAN Merah?",
+                        options: { A: "1/3", B: "5/12", C: "1/2", D: "7/12", E: "3/4" },
+                        correct: "D",
+                        explanation: "Total = 12. Bukan merah (Hitam+Biru) = 7. Peluang = 7/12."
+                    },
+                    {
+                        question: "Survei 100 org: 60 Hardware, 50 Software, 15 Tidak keduanya. Jumlah HANYA Hardware?",
+                        options: { A: "25", B: "35", C: "40", D: "45", E: "50" },
+                        correct: "B",
+                        explanation: "Suka salah satu = 100-15 = 85. Irisan = (60+50)-85 = 25. Hanya Hardware = 60-25 = 35."
+                    }
+                ]
+            }
+        }
+    </script>
+</body>
+</html>
