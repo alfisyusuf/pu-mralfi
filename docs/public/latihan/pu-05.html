@@ -611,7 +611,7 @@
                 ],
 
                 checkCode() {
-                    if (this.inputCode.toUpperCase() === this.correctCode) {
+                    if (this.inputCode.toLowerCase() === this.correctCode) {
                         this.mode = 'pembahasan';
                         this.errorMsg = false;
                         this.inputCode = ''; 
