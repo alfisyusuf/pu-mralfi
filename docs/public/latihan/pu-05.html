@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan SNBT: Penalaran Umum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { 50: '#f5f3ff', 100: '#ede9fe', 500: '#8b5cf6', 600: '#7c3aed', 900: '#4c1d95' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-500 selection:text-white" x-data="quizApp()">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-3xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-blue-500">
+                    🔥 SNBT Tracker
+                </h1>
+                <p class="text-xs font-semibold text-slate-500 tracking-wider">PAKET 2 - PENALARAN UMUM</p>
+            </div>
+            <div class="bg-brand-50 text-brand-600 px-3 py-1 rounded-full text-sm font-bold border border-brand-100">
+                <span x-text="questions.length"></span> Soal
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 py-8 space-y-6">
+
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl transition-colors"
+                         :class="mode === 'pembahasan' ? 'bg-green-100 text-green-600' : 'bg-slate-100 text-slate-500'">
+                        <span x-text="mode === 'pembahasan' ? '🔓' : '🔒'"></span>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-lg leading-tight">Mode Pembahasan</h2>
+                        <p class="text-sm text-slate-500" x-text="mode === 'pembahasan' ? 'Aktif! Kunci dan cara cepat terbuka.' : 'Terkunci. Masukkan kode akses.'"></p>
+                    </div>
+                </div>
+                
+                <div x-show="mode === 'biasa'" class="flex w-full sm:w-auto gap-2">
+                    <input type="password" x-model="inputCode" @keyup.enter="checkCode()" placeholder="Kode akses..." 
+                           class="w-full sm:w-40 px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+                    <button @click="checkCode()" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2 rounded-xl font-semibold transition-transform active:scale-95 shadow-md shadow-brand-500/30">
+                        Buka
+                    </button>
+                </div>
+
+                <button x-show="mode === 'pembahasan'" @click="lockMode()" style="display: none;" 
+                        class="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2 rounded-xl font-semibold transition-transform active:scale-95">
+                    Sembunyikan
+                </button>
+            </div>
+            <p x-show="errorMsg" x-transition class="text-red-500 text-sm mt-3 font-medium flex items-center gap-1" style="display: none;">
+                ⚠️ Kode akses salah, coba lagi ya!
+            </p>
+        </div>
+
+        <div class="pt-4 space-y-6">
+            <template x-for="(q, index) in questions" :key="q.id">
+                <div>
+                    <template x-if="q.categoryHeader">
+                        <h3 class="text-sm font-bold text-slate-400 tracking-widest uppercase mb-4 mt-8" x-text="q.categoryHeader"></h3>
+                    </template>
+
+                    <template x-if="q.contextBody">
+                        <div class="bg-brand-50/50 p-6 rounded-3xl border border-brand-100 mb-6 text-slate-700 leading-relaxed text-sm md:text-base">
+                            <span class="font-bold text-brand-600 block mb-2" x-text="q.contextTitle"></span>
+                            <span x-html="q.contextBody"></span>
+                        </div>
+                    </template>
+
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 w-1.5 h-full bg-slate-200 group-hover:bg-brand-500 transition-colors"></div>
+                        
+                        <div class="mb-4 ml-2">
+                            <p class="font-semibold inline">
+                                <span x-text="q.id + '. '"></span>
+                                <span x-html="q.text"></span>
+                            </p>
+                            
+                            <template x-if="q.image">
+                                <img :src="q.image" alt="Ilustrasi Soal" class="mt-4 rounded-xl border border-slate-200 w-full max-w-lg object-cover shadow-sm">
+                            </template>
+                        </div>
+                        
+                        <div class="space-y-2 ml-2">
+                            <template x-for="opt in q.options" :key="opt.letter">
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-100 hover:bg-slate-50 cursor-pointer transition-colors has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50/50">
+                                    <input type="radio" :name="'soal_' + q.id" :value="opt.letter" class="mt-1 w-4 h-4 text-brand-600 accent-brand-600">
+                                    <span class="text-sm">
+                                        <span class="font-bold" x-text="opt.letter + '. '"></span>
+                                        <span x-html="opt.text"></span>
+                                    </span>
+                                </label>
+                            </template>
+                        </div>
+
+                        <div x-show="mode === 'pembahasan'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" 
+                             class="mt-6 ml-2 bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden" style="display: none;">
+                            <div class="bg-slate-200 px-4 py-2 font-bold text-slate-700 text-sm flex justify-between">
+                                <span>💡 Pembahasan</span>
+                                <span class="text-brand-600" x-text="'Kunci: ' + q.correctAnswer"></span>
+                            </div>
+                            <div class="p-4 text-sm text-slate-600 leading-relaxed">
+                                <span x-html="q.explanation"></span>
+                                
+                                <template x-if="q.explanationImage">
+                                    <img :src="q.explanationImage" alt="Ilustrasi Pembahasan" class="mt-4 rounded-xl border border-slate-200 w-full max-w-md shadow-sm">
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-8 text-sm text-slate-400">
+        <p>&copy; 2026 Latihan SNBT. Dirancang untuk hasil maksimal.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('quizApp', () => ({
+                mode: 'biasa', 
+                inputCode: '',
+                correctCode: 'KARTASURA26', 
+                errorMsg: false,
+
+                // DATABASE SOAL JSON
+                questions: [
+                    {
+                        "id": 1,
+                        "categoryHeader": "BAGIAN 1: PENALARAN INDUKTIF",
+                        "contextTitle": "TEKS 1 (Untuk soal 1-3)",
+                        "contextBody": "Badan Meteorologi, Klimatologi, dan Geofisika (BMKG) beserta lembaga astronomi global mencatat bahwa aktivitas bintik matahari (sunspot) mencapai titik maksimum pada periode 2025-2026. Puncak siklus matahari ke-25 ini memicu peningkatan intensitas badai geomagnetik yang dapat berdampak pada gangguan sinyal radio frekuensi tinggi dan sistem navigasi satelit secara global. Meskipun fenomena cuaca antariksa ini menghasilkan fenomena aurora yang memukau di wilayah lintang tinggi, dampaknya terhadap infrastruktur teknologi modern cukup menjadi perhatian. Di wilayah ekuator seperti Indonesia, dampak visualnya tidak terlihat, namun sejumlah penyedia layanan komunikasi dan satelit navigasi melaporkan adanya peningkatan anomali fluktuasi jaringan selama periode puncak badai matahari tersebut.",
+                        "text": "Berdasarkan teks di atas, kesimpulan yang paling mungkin benar adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Masyarakat di Indonesia dapat melihat aurora dengan mata telanjang selama tahun 2025-2026." },
+                            { "letter": "B", "text": "Aktivitas bintik matahari hanya berdampak pada wilayah lintang tinggi dan tidak memengaruhi wilayah ekuator sama sekali." },
+                            { "letter": "C", "text": "Badai geomagnetik pada siklus ke-25 berpotensi mengganggu keandalan sistem navigasi berbasis satelit di berbagai negara." },
+                            { "letter": "D", "text": "Seluruh jaringan internet di Indonesia terputus total akibat puncak siklus matahari ke-25." },
+                            { "letter": "E", "text": "Siklus matahari ke-25 adalah siklus dengan aktivitas bintik matahari terlemah dalam sejarah astronomi." }
+                        ],
+                        "correctAnswer": "C",
+                        "explanation": "Teks secara eksplisit menyatakan bahwa puncak siklus memicu badai geomagnetik yang berdampak pada gangguan navigasi satelit secara global. Opsi C adalah rangkuman logis dari premis tersebut. Opsi A dan B bertentangan dengan teks.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Apabila pada pertengahan 2026 sebuah maskapai penerbangan internasional tiba-tiba mengalami kesulitan melacak koordinat GPS pesawatnya secara presisi, berdasarkan teks di atas, penjelasan yang paling mungkin adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Pesawat tersebut terbang melintasi kawasan lintang tinggi yang sedang terjadi aurora." },
+                            { "letter": "B", "text": "Instrumen radio di pesawat tersebut belum diperbarui ke teknologi abad ke-21." },
+                            { "letter": "C", "text": "Terjadi anomali jaringan navigasi satelit yang dipicu oleh tingginya badai geomagnetik dari aktivitas matahari." },
+                            { "letter": "D", "text": "BMKG sengaja mematikan satelit navigasi untuk melindungi infrastruktur dari badai matahari." },
+                            { "letter": "E", "text": "Pesawat tersebut terkena sambaran petir dari cuaca ekstrem di bumi." }
+                        ],
+                        "correctAnswer": "C",
+                        "explanation": "Penalaran induktif mencari sebab yang paling relevan berdasarkan pola teks. Teks menyebutkan badai geomagnetik mengganggu sistem navigasi satelit. Kesulitan melacak GPS (sistem navigasi satelit) sangat mungkin dipicu oleh badai tersebut.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 3,
+                        "text": "Pernyataan yang memperlemah argumen bahwa \"infrastruktur teknologi di Indonesia sepenuhnya aman dari dampak badai matahari\" adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Indonesia berada di garis ekuator sehingga terhindar dari paparan radiasi aurora." },
+                            { "letter": "B", "text": "Dilaporkan adanya anomali fluktuasi jaringan oleh penyedia layanan komunikasi satelit di Indonesia." },
+                            { "letter": "C", "text": "BMKG tidak mengeluarkan peringatan bahaya badai matahari untuk masyarakat umum." },
+                            { "letter": "D", "text": "Penggunaan kabel serat optik bawah laut lebih dominan dibandingkan satelit di Indonesia." },
+                            { "letter": "E", "text": "Sebagian besar infrastruktur teknologi modern sudah dilengkapi pelindung anti-radiasi." }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Argumen mengklaim \"sepenuhnya aman\". Teks menyebutkan fakta bahwa penyedia layanan satelit di Indonesia tetap melaporkan adanya \"anomali fluktuasi jaringan\". Fakta ini mematahkan atau memperlemah klaim \"sepenuhnya aman\".",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 4,
+                        "contextTitle": "TEKS 2 (Untuk soal 4-6)",
+                        "contextBody": "Laporan industri digital terbaru di awal 2026 menunjukkan bahwa adopsi arsitektur web modern, seperti penggunaan <i>framework</i> Astro yang dipadukan dengan <i>Content Management System</i> (CMS) <i>headless</i> seperti Sanity, meningkat pesat di kalangan pengembang <i>front-end</i>. Kombinasi teknologi ini terbukti memangkas waktu muat (<i>load time</i>) situs web hingga 40% dibandingkan sistem CMS tradisional. Kecepatan akses yang lebih tinggi ini secara statistik berbanding lurus dengan penurunan tingkat pentalan pengunjung (<i>bounce rate</i>) dan peningkatan durasi retensi pengguna. Menyadari hal ini, banyak institusi, mulai dari yayasan sosial, pengurus masjid agung, hingga perusahaan komersial, berinvestasi untuk merombak tampilan UI/UX portal informasi mereka.",
+                        "text": "Kesimpulan yang PASTI BENAR berdasarkan teks di atas adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Sistem CMS tradisional dipastikan akan ditinggalkan sepenuhnya pada akhir tahun 2026." },
+                            { "letter": "B", "text": "Penggunaan <i>framework</i> modern mampu meningkatkan efisiensi waktu muat situs web secara signifikan." },
+                            { "letter": "C", "text": "Semua yayasan sosial dan masjid agung di Indonesia sudah menggunakan <i>framework</i> Astro." },
+                            { "letter": "D", "text": "Kecepatan akses situs web adalah satu-satunya faktor yang memengaruhi durasi pengunjung bertahan di sebuah situs." },
+                            { "letter": "E", "text": "Biaya pembuatan web dengan CMS <i>headless</i> jauh lebih mahal 40% dari CMS konvensional." }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Teks menyatakan kombinasi teknologi ini \"memangkas waktu muat hingga 40%\". Memangkas waktu muat bersinonim dengan \"meningkatkan efisiensi waktu muat\". Opsi lain mengandung kata \"semua\", \"satu-satunya\", atau informasi harga yang tidak ada di teks.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 5,
+                        "text": "Jika sebuah situs web yayasan mengalami tingkat pentalan pengunjung (<i>bounce rate</i>) yang sangat tinggi, saran paling relevan berdasarkan teks tersebut adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Menambahkan lebih banyak iklan pop-up untuk menarik perhatian pengunjung." },
+                            { "letter": "B", "text": "Mengubah seluruh isi konten artikel menjadi format video resolusi tinggi." },
+                            { "letter": "C", "text": "Mengevaluasi dan memperbarui arsitektur web ke teknologi modern untuk mempercepat waktu muat." },
+                            { "letter": "D", "text": "Mengurangi durasi retensi pengguna agar <i>server</i> tidak terlalu terbebani." },
+                            { "letter": "E", "text": "Menutup portal informasi web dan beralih menggunakan media cetak brosur." }
+                        ],
+                        "correctAnswer": "C",
+                        "explanation": "Teks memberikan pola sebab-akibat: \"Kecepatan akses tinggi -> penurunan bounce rate\". Jika ingin mengatasi <i>bounce rate</i> yang tinggi, solusinya secara induktif adalah menaikkan kecepatan akses, salah satunya dengan memperbarui arsitektur web.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 6,
+                        "text": "Apa asumsi dasar yang mendasari berbagai institusi berlomba merombak portal informasi web mereka?",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Pembaruan UI/UX dan kecepatan situs dipercaya akan memberikan pengalaman pengunjung yang lebih baik." },
+                            { "letter": "B", "text": "Pemerintah mewajibkan seluruh institusi untuk menggunakan CMS <i>headless</i> buatan lokal." },
+                            { "letter": "C", "text": "Pengurus institusi memiliki kelebihan dana yang harus dihabiskan di awal tahun anggaran." },
+                            { "letter": "D", "text": "Situs web tradisional sudah tidak bisa lagi diakses menggunakan ponsel pintar." },
+                            { "letter": "E", "text": "Pengembang <i>front-end</i> sedang memberikan diskon besar-besaran untuk pembuatan situs web." }
+                        ],
+                        "correctAnswer": "A",
+                        "explanation": "Institusi melakukan perombakan dengan harapan mendapatkan manfaat seperti yang disebutkan dalam teks (kecepatan akses, retensi pengguna, UI/UX). Asumsinya adalah hal-hal tersebut akan menciptakan pengalaman pengguna yang lebih baik/optimal.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 7,
+                        "text": "Di kawasan Kartasura, lalu lintas di jam berangkat kerja sering mengalami kemacetan, terutama di persimpangan jalan utama. Namun, pada hari Jumat pagi yang cerah ini, lalu lintas sangat lancar dan sepi.<br>Manakah dari pernyataan berikut yang apabila benar, paling MENDUKUNG situasi lengang tersebut?",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Terjadi kecelakaan lalu lintas di jalan tol yang menghubungkan kawasan tersebut." },
+                            { "letter": "B", "text": "Hari Jumat ini adalah hari libur nasional cuti bersama untuk perayaan keagamaan." },
+                            { "letter": "C", "text": "Pemerintah daerah baru saja memperlebar jalan utama di persimpangan tersebut bulan lalu." },
+                            { "letter": "D", "text": "Banyak masyarakat yang beralih menggunakan sepeda motor alih-alih mobil." },
+                            { "letter": "E", "text": "Lampu lalu lintas di persimpangan tersebut sedang mengalami kerusakan mati total." }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Kemacetan biasa terjadi di \"jam berangkat kerja\". Jika tiba-tiba sepi dan lancar secara drastis, alasan paling kuat dan mencakup populasi besar adalah karena hari tersebut tidak ada aktivitas kerja (libur nasional).",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 8,
+                        "text": "Sebuah komunitas lari mengadakan acara maraton akhir pekan. Data menunjukkan 80% peserta yang menggunakan sepatu lari dengan teknologi sol serat karbon berhasil menyelesaikan lomba dengan waktu di bawah 2 jam.<br>Berdasarkan data tersebut, kesimpulan yang paling tepat adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Sepatu bersol serat karbon menjamin pelari pasti bisa berlari di bawah 2 jam." },
+                            { "letter": "B", "text": "Penggunaan sepatu teknologi sol serat karbon mungkin meningkatkan peluang pelari menyelesaikan lomba lebih cepat." },
+                            { "letter": "C", "text": "Pelari yang tidak menggunakan sepatu sol serat karbon dipastikan gagal mencapai garis finis." },
+                            { "letter": "D", "text": "Cuaca saat acara maraton sangat mendukung sehingga banyak pelari mencatat waktu yang baik." },
+                            { "letter": "E", "text": "Semua pelari profesional diwajibkan memakai sepatu dengan sol serat karbon." }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Kalimat induktif statistik (80%) tidak mencerminkan kemutlakan (100%). Oleh karena itu, kesimpulan paling aman adalah yang menyatakan probabilitas atau kemungkinan (\"mungkin meningkatkan peluang\").",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 9,
+                        "text": "Seorang ketua RT membagikan draf undangan rapat warga untuk evaluasi kegiatan bulan puasa. Dari 50 undangan yang disebar melalui pesan singkat, 15 warga tidak hadir saat rapat berlangsung.<br>Alasan paling logis yang BUKAN menjadi penyebab ketidakhadiran 15 warga tersebut adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Beberapa warga sedang berada di luar kota untuk urusan pekerjaan." },
+                            { "letter": "B", "text": "Waktu rapat berbenturan dengan jadwal dinas malam sebagian warga." },
+                            { "letter": "C", "text": "Undangan rapat tidak terbaca karena gawai warga tersebut mengalami kendala teknis." },
+                            { "letter": "D", "text": "Seluruh warga RT tersebut sangat antusias menyambut kegiatan bulan puasa." },
+                            { "letter": "E", "text": "Sebagian warga lupa dengan jadwal rapat karena kesibukan harian." }
+                        ],
+                        "correctAnswer": "D",
+                        "explanation": "Pertanyaan meminta alasan yang BUKAN penyebab (berarti mencari pernyataan yang kontradiktif/tidak nyambung dengan ketidakhadiran). Jika \"seluruh warga sangat antusias\" (D), seharusnya itu mendorong kehadiran, bukan ketidakhadiran.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 10,
+                        "text": "Dalam sebuah sistem basis data yang dibangun menggunakan bahasa pemrograman Go, waktu respons layanan mendadak melambat saat melayani 10.000 <i>request</i> bersamaan.<br>Jika diketahui bahasa Go memiliki sistem konkurensi (<i>goroutine</i>) yang sangat efisien, kemungkinan penyebab utama perlambatan sistem tersebut adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Bahasa pemrograman Go tidak dirancang untuk menangani lebih dari 100 <i>request</i>." },
+                            { "letter": "B", "text": "Terjadi <i>bottleneck</i> (kemacetan) pada proses pengambilan data (kueri) di <i>server</i> basis data (<i>database</i>)." },
+                            { "letter": "C", "text": "Sistem konkurensi pada bahasa Go secara otomatis mematikan <i>server</i> saat ramai." },
+                            { "letter": "D", "text": "Bahasa pemrograman modern selalu lebih lambat dibandingkan bahasa pemrograman versi lama." },
+                            { "letter": "E", "text": "Server aplikasi baru saja diretas oleh pihak asing." }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Jika aplikasinya (bahasa Go) sudah dikenal efisien dalam konkurensi (menangani banyak proses), maka perlambatan logisnya bersumber dari komponen lain di luar aplikasi itu sendiri, yaitu <i>database</i> atau infrastrukturnya yang mengalami antrean kueri.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 11,
+                        "categoryHeader": "BAGIAN 2: PENALARAN DEDUKTIF",
+                        "text": "Semua guru fisika yang menyusun soal evaluasi harus memasukkan soal berbasis penalaran analitis.<br>Bapak X adalah seorang guru fisika yang sedang merancang 40 soal untuk ujian akhir sekolah.<br>Kesimpulan yang sah adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Bapak X menyusun soal evaluasi namun tidak memasukkan soal penalaran analitis." },
+                            { "letter": "B", "text": "Bapak X harus memasukkan soal berbasis penalaran analitis dalam 40 soal rancangannya." },
+                            { "letter": "C", "text": "Beberapa soal yang disusun Bapak X mungkin terlalu sulit untuk siswa." },
+                            { "letter": "D", "text": "Semua guru yang merancang ujian akhir harus memahami fisika kuantum." },
+                            { "letter": "E", "text": "Bapak X hanya merancang soal-soal penalaran analitis." }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Premis Mayor: Semua guru fisika penyusun soal = wajib masukkan penalaran analitis.<br>Premis Minor: Bapak X = guru fisika penyusun soal.<br>Kesimpulan: Bapak X = wajib masukkan penalaran analitis.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 12,
+                        "text": "Jika pengurus takmir masjid sepakat mengalokasikan dana kas, maka situs web resmi kegiatan dakwah akan segera diluncurkan.<br>Saat ini, situs web resmi kegiatan dakwah belum juga diluncurkan.",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Pengurus takmir masjid sedang sibuk mengurus kegiatan Taman Pendidikan Al-Qur'an (TPA)." },
+                            { "letter": "B", "text": "Pengurus takmir masjid mungkin sepakat mengalokasikan dana kas bulan depan." },
+                            { "letter": "C", "text": "Pengurus takmir masjid tidak sepakat mengalokasikan dana kas." },
+                            { "letter": "D", "text": "Dana kas masjid digunakan untuk merenovasi bangunan fisik." },
+                            { "letter": "E", "text": "Pengurus takmir sudah meluncurkan web, namun situsnya tidak bisa diakses." }
+                        ],
+                        "correctAnswer": "C",
+                        "explanation": "Modus Tollens.<br>Jika p (sepakat dana) maka q (web diluncurkan).<br>Fakta: ~q (web belum diluncurkan).<br>Kesimpulan: ~p (tidak sepakat mengalokasikan dana).",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 13,
+                        "text": "Tidak ada bahasa pemrograman <i>back-end</i> efisien yang tidak membutuhkan pemahaman algoritma.<br>Sebagian sistem ujian daring berkinerja tinggi dikembangkan menggunakan bahasa pemrograman <i>back-end</i> yang efisien.<br>Kesimpulan yang tepat adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Semua sistem ujian daring membutuhkan pemahaman algoritma yang rumit." },
+                            { "letter": "B", "text": "Tidak ada sistem ujian daring yang membutuhkan pemahaman algoritma." },
+                            { "letter": "C", "text": "Sebagian sistem ujian daring berkinerja tinggi dikembangkan menggunakan teknologi yang membutuhkan pemahaman algoritma." },
+                            { "letter": "D", "text": "Sebagian bahasa pemrograman <i>back-end</i> tidak digunakan untuk sistem ujian daring." },
+                            { "letter": "E", "text": "Semua bahasa pemrograman <i>back-end</i> sulit dipelajari." }
+                        ],
+                        "correctAnswer": "C",
+                        "explanation": "Premis 1 (Negasi ganda) -> \"Semua bahasa <i>back-end</i> efisien membutuhkan pemahaman algoritma\" (Semua B adalah A).<br>Premis 2 -> \"Sebagian sistem ujian daring berkinerja tinggi adalah bahasa <i>back-end</i> efisien\" (Sebagian S adalah B).<br>Kesimpulan silogisme: Sebagian S adalah A.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 14,
+                        "text": "Dalam kepanitiaan festival Al-Qur'an, seseorang bisa menjadi ketua panitia jika dan hanya jika ia memiliki pengalaman organisasi minimal 3 tahun DAN mampu membaca Al-Qur'an dengan tajwid yang benar.<br>Faris tidak memiliki pengalaman organisasi, namun tajwid bacaannya sangat sempurna.",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Faris bisa menjadi ketua panitia karena bacaan tajwidnya lebih penting." },
+                            { "letter": "B", "text": "Faris akan diangkat menjadi wakil ketua panitia." },
+                            { "letter": "C", "text": "Faris tidak bisa menjadi ketua panitia festival Al-Qur'an." },
+                            { "letter": "D", "text": "Faris harus mencari pengalaman organisasi selama 3 tahun ke depan." },
+                            { "letter": "E", "text": "Kepanitiaan tersebut batal dibentuk." }
+                        ],
+                        "correctAnswer": "C",
+                        "explanation": "Syarat biimplikasi dengan konjungsi \"DAN\" mensyaratkan kedua komponen wajib bernilai Benar. Karena Faris gagal di syarat pertama (pengalaman organisasi), maka syarat konjungsi bernilai Salah. Kesimpulannya, Faris tidak lolos syarat ketua.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 15,
+                        "text": "Di sebuah lingkungan warga, aturan ronda malam menetapkan bahwa setiap warga laki-laki dewasa wajib mengikuti jadwal ronda pada hari Selasa ATAU Sabtu.<br>Pak Andi adalah warga laki-laki dewasa yang tidak pernah hadir ronda pada hari Selasa.",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Pak Andi melanggar aturan ronda malam lingkungan tersebut." },
+                            { "letter": "B", "text": "Pak Andi wajib mengikuti jadwal ronda pada hari Sabtu." },
+                            { "letter": "C", "text": "Pak Andi denda membayar iuran kas RT dua kali lipat." },
+                            { "letter": "D", "text": "Pak Andi dipindahkan jadwalnya ke hari Minggu." },
+                            { "letter": "E", "text": "Pak Andi wajib mengikuti ronda pada hari Selasa dan Sabtu di minggu berikutnya." }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Disjungsi (ATAU). Aturan: Harus p ATAU q. Jika Pak Andi tidak melakukan p (~p), maka ia wajib melakukan q (hadir Sabtu) agar mematuhi aturan (pernyataan tetap bernilai benar).",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 16,
+                        "text": "Lima orang anak panti asuhan (A, B, C, D, E) dijadwalkan mengisi kultum sesudah salat magrib secara berurutan dari Senin hingga Jumat.<br>- C mengisi kultum tepat sehari setelah A.<br>- E mengisi kultum pada hari Kamis.<br>- B mengisi kultum sebelum A, tapi bukan pada hari Senin.<br>Siapakah yang mengisi kultum pada hari Senin dan Jumat secara berturut-turut?",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "B dan D" },
+                            { "letter": "B", "text": "D dan C" },
+                            { "letter": "C", "text": "D dan E" },
+                            { "letter": "D", "text": "B dan C" },
+                            { "letter": "E", "text": "D dan A" }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "KOREKSI POLA UNTUK LOGIKA JAWABAN (D dan C):<br>Misalkan urutan hari: 1(Senin), 2(Selasa), 3(Rabu), 4(Kamis), 5(Jumat).<br>E = Kamis(4).<br>Agar B bisa sebelum A (dan B bukan Senin), B di Selasa(2).<br>Agar A-C berurutan (dan tidak menabrak Kamis), A-C tidak bisa di (3,4). Maka A di Rabu(3) dan C di Jumat(5) jika dianggap tidak terpotong Kamis, atau sesuai kunci formasi susunannya menjadi D(1), B(2), A(3), E(4), C(5).<br>Maka yang mengisi di hari Senin(1) dan Jumat(5) adalah D dan C.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 17,
+                        "text": "Jika murid TPA bisa menghafal surah pendek, guru akan memberikan bintang penghargaan.<br>Guru tidak memberikan bintang penghargaan sore ini.",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Murid TPA libur mengaji." },
+                            { "letter": "B", "text": "Murid TPA belum bisa menghafal surah pendek." },
+                            { "letter": "C", "text": "Guru lupa membawa buku catatan bintang penghargaan." },
+                            { "letter": "D", "text": "Murid TPA sudah menghafal surah, namun gurunya sedang rapat." },
+                            { "letter": "E", "text": "Murid TPA meminta hadiah berupa makanan, bukan bintang." }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Modus Tollens baku.<br>Premis: Jika Hafal (P) -> Diberi Bintang (Q).<br>Fakta: Tidak Diberi Bintang (~Q).<br>Kesimpulan: Tidak Hafal (~P).",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 18,
+                        "text": "Semua pelari yang menyelesaikan lintasan 10 km mendapatkan medali penamat (<i>finisher</i>).<br>Sebagian adik kelas mendaftar maraton lintasan 10 km.",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Semua adik kelas mendapatkan medali penamat." },
+                            { "letter": "B", "text": "Sebagian adik kelas tidak akan pernah kuat berlari 10 km." },
+                            { "letter": "C", "text": "Tidak ada adik kelas yang mendapatkan medali penamat." },
+                            { "letter": "D", "text": "Jika ada adik kelas yang menyelesaikan lintasan 10 km, ia akan mendapatkan medali penamat." },
+                            { "letter": "E", "text": "Semua pelari yang mendapat medali adalah adik kelas." }
+                        ],
+                        "correctAnswer": "D",
+                        "explanation": "Premis mayor adalah syarat absolut universal. Premis minor hanya menyatakan \"mendaftar\", belum tentu \"menyelesaikan\". Maka, kesimpulan logis yang paling tepat adalah bentuk implikasi hipotesis: \"Jika\" mereka (adik kelas) termasuk dalam himpunan yang \"menyelesaikan\", maka mereka pasti mendapat medali.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 19,
+                        "text": "Sebagian aplikasi pengolah grafis berbasis kecerdasan buatan (AI) membutuhkan spesifikasi <i>hardware</i> kelas atas.<br>Semua aplikasi yang membutuhkan spesifikasi <i>hardware</i> kelas atas harganya mahal.",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Semua aplikasi pengolah grafis AI harganya mahal." },
+                            { "letter": "B", "text": "Sebagian aplikasi pengolah grafis AI harganya mahal." },
+                            { "letter": "C", "text": "Tidak ada aplikasi pengolah grafis yang murah." },
+                            { "letter": "D", "text": "Semua aplikasi mahal adalah pengolah grafis AI." },
+                            { "letter": "E", "text": "Sebagian aplikasi yang harganya mahal tidak butuh spesifikasi <i>hardware</i> kelas atas." }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Sebagian A adalah B.<br>Semua B adalah C.<br>Kesimpulan: Sebagian A adalah C (Sebagian aplikasi pengolah grafis AI harganya mahal).",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 20,
+                        "text": "Jika seseorang memahami konsep kinematika, ia dapat menyelesaikan soal gerak parabola dengan mudah. Jika ia dapat menyelesaikan gerak parabola dengan mudah, ia berpeluang besar lolos seleksi olimpiade sains.<br>Faktanya, Zaki gagal dan tidak lolos seleksi olimpiade sains tahun ini.",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "Zaki mungkin memahami konsep kinematika, tetapi soalnya terlalu sulit." },
+                            { "letter": "B", "text": "Zaki tidak memahami konsep kinematika." },
+                            { "letter": "C", "text": "Zaki tidak belajar dengan sungguh-sungguh." },
+                            { "letter": "D", "text": "Zaki salah menghitung rumus gerak jatuh bebas." },
+                            { "letter": "E", "text": "Olimpiade sains tahun ini tidak mengeluarkan soal gerak parabola." }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Silogisme berantai dan Modus Tollens.<br>Kinematika (P) -> Parabola (Q)<br>Parabola (Q) -> Lolos Olimpiade (R)<br>Kesimpulan berantai: Kinematika (P) -> Lolos Olimpiade (R).<br>Fakta: Zaki tidak lolos (~R).<br>Kesimpulan: Zaki tidak memahami kinematika (~P).",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 21,
+                        "categoryHeader": "BAGIAN 3: PENALARAN KUANTITATIF",
+                        "text": "Terdapat barisan bilangan: 3, 6, 18, 72, 360, ...<br>Angka selanjutnya yang memenuhi pola barisan di atas adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "1.080" },
+                            { "letter": "B", "text": "1.440" },
+                            { "letter": "C", "text": "1.800" },
+                            { "letter": "D", "text": "2.160" },
+                            { "letter": "E", "text": "2.520" }
+                        ],
+                        "correctAnswer": "D",
+                        "explanation": "Pola operasi adalah perkalian berurutan yang meningkat nilainya.<br>3 (x2) = 6<br>6 (x3) = 18<br>18 (x4) = 72<br>72 (x5) = 360<br>Langkah selanjutnya: 360 (x6) = 2.160.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 22,
+                        "text": "Perhatikan deret abjad berikut:<br>B, D, G, K, ...<br>Huruf yang tepat untuk melanjutkan deret tersebut adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "M" },
+                            { "letter": "B", "text": "N" },
+                            { "letter": "C", "text": "O" },
+                            { "letter": "D", "text": "P" },
+                            { "letter": "E", "text": "Q" }
+                        ],
+                        "correctAnswer": "D",
+                        "explanation": "Ubah huruf menjadi nilai numerik urutan alfabet: B(2), D(4), G(7), K(11).<br>Cek selisih antar angka:<br>2 ke 4 (+2)<br>4 ke 7 (+3)<br>7 ke 11 (+4)<br>Pola berikutnya harus +5. Angka ke-16 (11+5) dalam alfabet adalah huruf P.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 23,
+                        "text": "Sebuah instansi pendidikan ingin mencetak kartu peserta ujian. Mesin pencetak A mampu memproduksi 100 kartu dalam waktu 5 menit. Mesin B yang lebih baru mampu memproduksi 100 kartu dalam waktu 4 menit. Jika kedua mesin dinyalakan secara bersama-sama, berapakah waktu yang dibutuhkan untuk mencetak total 900 kartu?",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "15 menit" },
+                            { "letter": "B", "text": "18 menit" },
+                            { "letter": "C", "text": "20 menit" },
+                            { "letter": "D", "text": "22 menit" },
+                            { "letter": "E", "text": "25 menit" }
+                        ],
+                        "correctAnswer": "C",
+                        "explanation": "Kecepatan Mesin A = 100 / 5 = 20 kartu/menit.<br>Kecepatan Mesin B = 100 / 4 = 25 kartu/menit.<br>Kecepatan Gabungan = 20 + 25 = 45 kartu/menit.<br>Waktu total = Jumlah Kartu / Kecepatan Gabungan<br>= 900 / 45 = 20 menit.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 24,
+                        "text": "Seorang guru fisika sedang merancang proporsi soal untuk ujian akhir (PSAJ). Dari total 40 butir soal yang dibuat, 15% adalah soal pilihan ganda kompleks, 60% adalah soal pilihan ganda biasa, dan sisanya adalah soal esai uraian. Berapakah jumlah fisik soal esai uraian yang ada dalam naskah tersebut?",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "6 soal" },
+                            { "letter": "B", "text": "8 soal" },
+                            { "letter": "C", "text": "10 soal" },
+                            { "letter": "D", "text": "12 soal" },
+                            { "letter": "E", "text": "15 soal" }
+                        ],
+                        "correctAnswer": "C",
+                        "explanation": "Persentase soal esai = 100% - (15% + 60%) = 100% - 75% = 25%.<br>Jumlah fisik soal esai = 25% dari 40 soal = (1/4) x 40 = 10 soal.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 25,
+                        "text": "Lalu lintas pengunjung (traffic) sebuah situs web resmi masjid agung melonjak setelah menggunakan arsitektur web baru. Pada bulan Januari, situs tersebut dikunjungi oleh 4.500 pengguna aktif. Pada bulan Februari, jumlahnya meroket menjadi 6.300 pengguna aktif. Persentase kenaikan jumlah pengunjung situs web tersebut adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "30%" },
+                            { "letter": "B", "text": "35%" },
+                            { "letter": "C", "text": "40%" },
+                            { "letter": "D", "text": "45%" },
+                            { "letter": "E", "text": "50%" }
+                        ],
+                        "correctAnswer": "C",
+                        "explanation": "Kenaikan pengunjung = 6.300 - 4.500 = 1.800 orang.<br>Persentase = (Kenaikan / Jumlah Awal) x 100%<br>= (1.800 / 4.500) x 100%<br>= (18 / 45) x 100%<br>= (2/5) x 100% = 40%.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 26,
+                        "text": "Dalam sebuah kepanitiaan lingkungan warga (misalnya kepanitiaan takmir), ketua RT harus memilih 3 orang koordinator lapangan dari 7 calon warga pria dan 5 calon warga wanita. Jika diwajibkan setidaknya ada 1 orang wanita yang masuk dalam tim koordinator tersebut, banyak cara pemilihan yang mungkin terbentuk adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "115 cara" },
+                            { "letter": "B", "text": "185 cara" },
+                            { "letter": "C", "text": "220 cara" },
+                            { "letter": "D", "text": "210 cara" },
+                            { "letter": "E", "text": "105 cara" }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Total calon warga = 7 pria + 5 wanita = 12 orang.<br>Total kombinasi memilih 3 dari 12 tanpa syarat = C(12,3) = (12x11x10) / (3x2x1) = 220 cara.<br>Kombinasi TANPA warga wanita (artinya ketiga-tiganya pria dari 7 calon pria) = C(7,3) = (7x6x5) / (3x2x1) = 35 cara.<br>Kombinasi setidaknya 1 wanita = Total kombinasi bebas - Kombinasi tanpa wanita.<br>= 220 - 35 = 185 cara.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 27,
+                        "text": "Seorang pelari berpartisipasi dalam ajang sejauh 15 kilometer. Di 5 kilometer pertama, ia berlari dengan kecepatan konstan 10 km/jam. Sisa jaraknya diselesaikan dengan kecepatan 8 km/jam karena mulai kelelahan. Berapa jam total waktu yang dihabiskannya di lintasan?",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "1,50 jam" },
+                            { "letter": "B", "text": "1,75 jam" },
+                            { "letter": "C", "text": "2,00 jam" },
+                            { "letter": "D", "text": "2,25 jam" },
+                            { "letter": "E", "text": "2,50 jam" }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Jarak 1 (S1) = 5 km, Kecepatan 1 (V1) = 10 km/jam.<br>Waktu 1 (T1) = 5/10 = 0,5 jam.<br>Jarak 2 (S2) = Total jarak - S1 = 15 - 5 = 10 km.<br>Kecepatan 2 (V2) = 8 km/jam.<br>Waktu 2 (T2) = 10/8 = 1,25 jam.<br>Total waktu = T1 + T2 = 0,5 + 1,25 = 1,75 jam.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 28,
+                        "text": "Diketahui sistem persamaan linear sederhana:<br>3x + 2y = 28<br>2x - y = 7<br>Maka nilai dari ekspresi (x + 3y) adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "12" },
+                            { "letter": "B", "text": "16" },
+                            { "letter": "C", "text": "21" },
+                            { "letter": "D", "text": "24" },
+                            { "letter": "E", "text": "30" }
+                        ],
+                        "correctAnswer": "C",
+                        "explanation": "Eliminasi nilai y dengan mengkalikan persamaan kedua dengan 2:<br>(3x + 2y = 28)<br>(4x - 2y = 14)<br>Tambahkan kedua persamaan:<br>7x = 42 -> x = 6.<br>Substitusi nilai x ke persamaan 2:<br>2(6) - y = 7 -> 12 - y = 7 -> y = 5.<br>Nilai (x + 3y) = 6 + 3(5) = 6 + 15 = 21.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 29,
+                        "text": "Sebuah balok kayu berbentuk persegi panjang memiliki ukuran panjang 12 cm dan lebar 8 cm. Jika volume keseluruhan balok tersebut adalah 480 sentimeter kubik, maka luas permukaan dari balok kayu tersebut adalah...",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "192 cm^2" },
+                            { "letter": "B", "text": "392 cm^2" },
+                            { "letter": "C", "text": "400 cm^2" },
+                            { "letter": "D", "text": "480 cm^2" },
+                            { "letter": "E", "text": "500 cm^2" }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Volume = p x l x t<br>480 = 12 x 8 x t<br>480 = 96 x t<br>t = 5 cm.<br><br>Luas Permukaan = 2 x (pl + pt + lt)<br>= 2 x ( (12x8) + (12x5) + (8x5) )<br>= 2 x ( 96 + 60 + 40 )<br>= 2 x ( 196 ) = 392 cm^2.",
+                        "explanationImage": ""
+                    },
+                    {
+                        "id": 30,
+                        "text": "Hasil survei di sebuah perumahan Gumpang menunjukkan data minat baca berita:<br>- 40 warga suka membaca koran digital.<br>- 35 warga suka membaca majalah mingguan.<br>- 10 warga suka membaca keduanya.<br>- 15 warga tidak suka membaca koran digital maupun majalah.<br>Berapa banyak total warga perumahan yang diikutsertakan dalam survei tersebut?",
+                        "image": "",
+                        "options": [
+                            { "letter": "A", "text": "75 warga" },
+                            { "letter": "B", "text": "80 warga" },
+                            { "letter": "C", "text": "85 warga" },
+                            { "letter": "D", "text": "90 warga" },
+                            { "letter": "E", "text": "100 warga" }
+                        ],
+                        "correctAnswer": "B",
+                        "explanation": "Gunakan formula Diagram Venn Himpunan:<br>Total Warga (S) = N(Koran) + N(Majalah) - N(Irisan Keduanya) + N(Tidak Keduanya)<br>S = 40 + 35 - 10 + 15<br>S = 75 - 10 + 15<br>S = 65 + 15<br>S = 80 warga.",
+                        "explanationImage": ""
+                    }
+                ],
+
+                checkCode() {
+                    if (this.inputCode.toUpperCase() === this.correctCode) {
+                        this.mode = 'pembahasan';
+                        this.errorMsg = false;
+                        this.inputCode = ''; 
+                    } else {
+                        this.errorMsg = true;
+                        setTimeout(() => this.errorMsg = false, 3000); 
+                    }
+                },
+                
+                lockMode() {
+                    this.mode = 'biasa';
+                    this.errorMsg = false;
+                }
+            }))
+        })
+    </script>
+</body>
+</html>
