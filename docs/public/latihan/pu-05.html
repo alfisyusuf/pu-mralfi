@@ -45,7 +45,21 @@
 
     <main class="max-w-3xl mx-auto px-4 py-8 space-y-6">
 
-        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 transition-all duration-300">
+        <div x-show="isFinished" style="display: none;" class="bg-gradient-to-r from-brand-600 to-blue-500 p-8 rounded-3xl shadow-lg text-white text-center mb-8" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
+            <h2 class="text-3xl font-extrabold mb-2">Latihan Selesai! 🎉</h2>
+            <p class="text-brand-100 mb-6 font-medium">Skor Penalaran Umum kamu:</p>
+            <div class="text-7xl font-black mb-6 drop-shadow-md" x-text="score"></div>
+            <p class="mb-6 bg-white/20 inline-block px-5 py-2 rounded-xl text-sm font-semibold backdrop-blur-sm">
+                Benar <span x-text="correctCount"></span> dari <span x-text="questions.length"></span> soal
+            </p>
+            <div>
+                <button @click="ulangiLatihan()" class="bg-white text-brand-600 hover:bg-slate-50 px-8 py-3 rounded-xl font-bold transition-transform active:scale-95 shadow-md">
+                    Ulangi Latihan
+                </button>
+            </div>
+        </div>
+
+        <div x-show="!isFinished" class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 transition-all duration-300">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl transition-colors"
@@ -107,8 +121,8 @@
                         <div class="space-y-2 ml-2">
                             <template x-for="opt in q.options" :key="opt.letter">
                                 <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-100 hover:bg-slate-50 cursor-pointer transition-colors has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50/50">
-                                    <input type="radio" :name="'soal_' + q.id" :value="opt.letter" class="mt-1 w-4 h-4 text-brand-600 accent-brand-600">
-                                    <span class="text-sm">
+                                    <input type="radio" :name="'soal_' + q.id" :value="opt.letter" x-model="answers[q.id]" :disabled="isFinished" class="mt-1 w-4 h-4 text-brand-600 accent-brand-600 disabled:opacity-50">
+                                    <span class="text-sm" :class="isFinished && answers[q.id] === opt.letter && answers[q.id] !== q.correctAnswer ? 'text-red-500 font-medium' : ''">
                                         <span class="font-bold" x-text="opt.letter + '. '"></span>
                                         <span x-html="opt.text"></span>
                                     </span>
@@ -116,13 +130,18 @@
                             </template>
                         </div>
 
-                        <div x-show="mode === 'pembahasan'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" 
+                        <div x-show="mode === 'pembahasan' || isFinished" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" 
                              class="mt-6 ml-2 bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden" style="display: none;">
-                            <div class="bg-slate-200 px-4 py-2 font-bold text-slate-700 text-sm flex justify-between">
+                            <div class="bg-slate-200 px-4 py-2 font-bold text-slate-700 text-sm flex justify-between items-center">
                                 <span>💡 Pembahasan</span>
-                                <span class="text-brand-600" x-text="'Kunci: ' + q.correctAnswer"></span>
+                                <span class="bg-white px-2 py-0.5 rounded text-brand-600 shadow-sm" x-text="'Kunci: ' + q.correctAnswer"></span>
                             </div>
                             <div class="p-4 text-sm text-slate-600 leading-relaxed">
+                                <div x-show="isFinished" class="mb-3">
+                                    <span x-show="answers[q.id] === q.correctAnswer" class="text-green-600 font-bold bg-green-100 px-2 py-1 rounded text-xs">Jawabanmu Benar</span>
+                                    <span x-show="answers[q.id] !== q.correctAnswer && answers[q.id]" class="text-red-500 font-bold bg-red-100 px-2 py-1 rounded text-xs">Jawabanmu Salah</span>
+                                    <span x-show="!answers[q.id]" class="text-slate-500 font-bold bg-slate-200 px-2 py-1 rounded text-xs">Tidak Dijawab</span>
+                                </div>
                                 <span x-html="q.explanation"></span>
                                 
                                 <template x-if="q.explanationImage">
@@ -133,6 +152,12 @@
                     </div>
                 </div>
             </template>
+        </div>
+
+        <div class="mt-10 flex justify-center" x-show="!isFinished">
+            <button @click="hitungSkor()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-transform active:scale-95 shadow-lg shadow-blue-500/30 flex items-center gap-2">
+                ✅ Selesai & Hitung Skor
+            </button>
         </div>
 
     </main>
@@ -148,6 +173,26 @@
                 inputCode: '',
                 correctCode: 'ramadankurindu', 
                 errorMsg: false,
+                
+                // State baru untuk fitur skor & penyimpanan
+                answers: {}, 
+                isFinished: false,
+                score: 0,
+                correctCount: 0,
+
+                // Fungsi yang dijalankan pertama kali web dibuka
+                init() {
+                    // Cek apakah ada jawaban tersimpan di browser
+                    const savedAnswers = localStorage.getItem('snbt_answers_paket2');
+                    if (savedAnswers) {
+                        this.answers = JSON.parse(savedAnswers);
+                    }
+
+                    // Pantau setiap perubahan pada 'answers', lalu simpan otomatis ke Local Storage
+                    this.$watch('answers', (value) => {
+                        localStorage.setItem('snbt_answers_paket2', JSON.stringify(value));
+                    }, { deep: true });
+                },
 
                 // DATABASE SOAL JSON
                 questions: [
@@ -624,6 +669,33 @@
                 lockMode() {
                     this.mode = 'biasa';
                     this.errorMsg = false;
+                },
+
+                hitungSkor() {
+                    if (!confirm('Apakah kamu yakin ingin menyelesaikan latihan ini?')) return;
+
+                    this.correctCount = 0;
+                    this.questions.forEach(q => {
+                        if (this.answers[q.id] === q.correctAnswer) {
+                            this.correctCount++;
+                        }
+                    });
+
+                    this.score = Math.round((this.correctCount / this.questions.length) * 1000);
+                    this.isFinished = true;
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                },
+
+                ulangiLatihan() {
+                    if (confirm('Yakin ingin mengulang? Semua jawabanmu akan dihapus.')) {
+                        this.answers = {};
+                        this.isFinished = false;
+                        this.score = 0;
+                        this.correctCount = 0;
+                        localStorage.removeItem('snbt_answers_paket2'); 
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
                 }
             }))
         })
