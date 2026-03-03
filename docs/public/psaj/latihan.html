@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Fisika | Kelas Pak Alfi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            min-height: 100vh;
+        }
+        .option-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+
+    <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden">
+        
+        <div class="bg-indigo-600 p-6 text-white flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight">Simulasi PSAJ Fisika</h1>
+                <p class="text-indigo-200 text-sm mt-1">Latihan Mandiri &bull; Persiapan Ujian</p>
+            </div>
+            <div class="bg-indigo-800 px-4 py-2 rounded-lg font-semibold text-sm">
+                Soal <span id="current-q">1</span> / <span id="total-q">5</span>
+            </div>
+        </div>
+
+        <div class="w-full bg-gray-200 h-2">
+            <div id="progress-bar" class="bg-pink-500 h-2 transition-all duration-500" style="width: 0%;"></div>
+        </div>
+
+        <div class="p-8">
+            <div id="quiz-container">
+                <span id="q-topic" class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">Topik</span>
+                
+                <h2 id="q-text" class="text-xl text-gray-800 font-semibold mb-6 leading-relaxed">Pertanyaan dimuat...</h2>
+                
+                <div id="options-container" class="space-y-3">
+                    </div>
+
+                <div id="feedback-container" class="mt-8 hidden border-l-4 rounded-r-lg p-5">
+                    <h3 id="feedback-title" class="font-bold text-lg mb-2">Jawaban</h3>
+                    <p id="feedback-tutor" class="text-gray-700 text-sm italic leading-relaxed"></p>
+                    <button id="next-btn" class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-xl transition-colors hidden">Selanjutnya &rarr;</button>
+                </div>
+            </div>
+
+            <div id="result-container" class="hidden text-center py-8">
+                <div class="text-6xl mb-4">🏆</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Latihan Selesai!</h2>
+                <p class="text-gray-600 mb-6">Skor akhir kamu:</p>
+                <div class="text-5xl font-extrabold text-indigo-600 mb-8"><span id="final-score">0</span>%</div>
+                <button onclick="location.reload()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all hover:-translate-y-1">Coba Lagi</button>
+            </div>
+        </div>
+    </div>
+
+    <script id="database-soal" type="application/json">
+    [
+        {
+            "id": 1,
+            "topic": "Pengukuran & Angka Penting",
+            "type": "theory",
+            "question": "Seorang siswa mengukur tebal pelat logam menggunakan Mikrometer Sekrup dan menuliskan hasilnya sebagai <b>4,20 mm</b>. Mengapa penulisan angka nol di akhir (4,20) sangat penting dalam fisika?",
+            "options": [
+                "A. Membuat angka terlihat lebih panjang dan ilmiah.",
+                "B. Menunjukkan bahwa alat tersebut memiliki ketelitian hingga 0,01 mm.",
+                "C. Membuktikan bahwa pengukuran tersebut tidak memiliki kesalahan sama sekali.",
+                "D. Angka nol di belakang desimal sebenarnya tidak perlu ditulis."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Angka nol di belakang koma pada hasil pengukuran bukanlah pajangan. Ia menunjukkan 'kejujuran' dan batas ketelitian alat ukur. Menulis 4,2 mm (mistar) maknanya sangat berbeda dengan 4,20 mm (mikrometer) di mata fisika."
+        },
+        {
+            "id": 2,
+            "topic": "Kinematika - GLBB (Soal Modifikasi Angka)",
+            "type": "calc",
+            "question": "Sebuah mobil yang melaju <b>30 km/jam</b> membutuhkan jarak 8 meter untuk berhenti mendadak setelah direm. Jika mobil tersebut melaju dengan kecepatan <b>90 km/jam</b> (3 kali lebih cepat), berapakah jarak minimal pengereman yang dibutuhkan?",
+            "options": [
+                "A. 24 meter",
+                "B. 36 meter",
+                "C. 64 meter",
+                "D. 72 meter"
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Jarak pengereman berbanding lurus dengan KUADRAT kecepatan (v&sup2;). Jika kecepatan naik 3x lipat, maka jarak henti akan naik 3&sup2; = 9x lipat. Jarak awal 8 meter &rarr; 8 x 9 = 72 meter."
+        },
+        {
+            "id": 3,
+            "topic": "Dinamika - Hukum II Newton (Soal Modifikasi Angka)",
+            "type": "calc",
+            "question": "Sebuah gaya konstan F diberikan pada balok bermassa <i>m</i>, menghasilkan percepatan sebesar <b>6 m/s&sup2;</b>. Jika gaya yang sama diberikan pada balok dengan massa <b>3m</b> (tiga kali lipat lebih berat), berapakah percepatan barunya?",
+            "options": [
+                "A. 18 m/s&sup2;",
+                "B. 9 m/s&sup2;",
+                "C. 2 m/s&sup2;",
+                "D. 1 m/s&sup2;"
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Ingat rumus a = F/m. Massa dan percepatan berbanding terbalik. Jika massa benda menjadi 3x lebih besar (makin berat), maka percepatannya menjadi 1/3 dari semula. 6 dibagi 3 sama dengan 2 m/s&sup2;."
+        },
+        {
+            "id": 4,
+            "topic": "Usaha & Energi - Literasi",
+            "type": "theory",
+            "question": "Dalam desain Roller Coaster, kereta tidak memiliki mesin penggerak setelah turun dari bukit pertama. Kereta meluncur murni mengandalkan Hukum Kekekalan Energi. Pernyataan mana yang paling tepat menggambarkan transformasi energi pada kereta saat meluncur turun ke lembah?",
+            "options": [
+                "A. Energi Totalnya semakin berkurang karena terpakai untuk bergerak cepat.",
+                "B. Energi Potensialnya berkurang, diubah menjadi Energi Kinetik, sementara Energi Totalnya tetap.",
+                "C. Baik Energi Kinetik maupun Energi Potensialnya bertambah secara bersamaan.",
+                "D. Energi Kinetiknya menurun karena efek gravitasi bumi."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Energi tidak bisa hilang, hanya bertukar wujud. Saat turun, ketinggian menyusut (Energi Potensial turun), namun kecepatannya melesat (Energi Kinetik naik). Total gabungannya (Energi Mekanik) selalu konstan."
+        },
+        {
+            "id": 5,
+            "topic": "Listrik Statis - Hukum Coulomb (Soal Modifikasi Angka)",
+            "type": "calc",
+            "question": "Dua partikel bermuatan saling tolak-menolak dengan gaya sebesar <b>360 N</b>. Jika posisi keduanya dijauhkan sehingga jaraknya menjadi <b>3 kali lipat</b> dari jarak semula, berapakah gaya tolak-menolaknya sekarang?",
+            "options": [
+                "A. 120 N",
+                "B. 90 N",
+                "C. 60 N",
+                "D. 40 N"
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Gaya listrik sangat sensitif terhadap jarak dengan pola kuadrat terbalik (1/r&sup2;). Jika jarak dijauhkan 3x, gayanya melemah menjadi 1/(3&sup2;) atau 1/9 kalinya. 360 N dibagi 9 = 40 N."
+        }
+    ]
+    </script>
+
+    <script>
+        // 1. Ambil data JSON dari tag script
+        const rawData = document.getElementById('database-soal').textContent;
+        const questions = JSON.parse(rawData);
+
+        // 2. Deklarasi Variabel State
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // Element DOM
+        const qTopic = document.getElementById('q-topic');
+        const qText = document.getElementById('q-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQEl = document.getElementById('current-q');
+        const totalQEl = document.getElementById('total-q');
+        const progressBar = document.getElementById('progress-bar');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackTutor = document.getElementById('feedback-tutor');
+        const nextBtn = document.getElementById('next-btn');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultContainer = document.getElementById('result-container');
+        const finalScoreEl = document.getElementById('final-score');
+
+        // Inisialisasi awal
+        totalQEl.innerText = questions.length;
+        loadQuestion();
+
+        function loadQuestion() {
+            // Reset UI
+            feedbackContainer.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+            optionsContainer.innerHTML = '';
+            
+            const q = questions[currentQuestionIndex];
+            
+            // Update Text & Progress
+            qTopic.innerText = q.topic;
+            qText.innerHTML = q.question; // Pakai innerHTML agar tag <b> atau <i> di JSON bisa dirender
+            currentQEl.innerText = currentQuestionIndex + 1;
+            progressBar.style.width = `${((currentQuestionIndex) / questions.length) * 100}%`;
+
+            // Render Options
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full text-left bg-gray-50 hover:bg-indigo-50 border-2 border-gray-200 hover:border-indigo-400 text-gray-700 font-medium py-3 px-5 rounded-xl";
+                btn.innerHTML = opt;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            const q = questions[currentQuestionIndex];
+            const isCorrect = (selectedIndex === q.answer);
+            const allButtons = optionsContainer.querySelectorAll('button');
+
+            // Disable all buttons
+            allButtons.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                score++;
+                btnElement.classList.replace('bg-gray-50', 'bg-green-100');
+                btnElement.classList.replace('border-gray-200', 'border-green-500');
+                btnElement.classList.add('text-green-800');
+                
+                feedbackContainer.className = "mt-8 border-l-4 rounded-r-lg p-5 bg-green-50 border-green-500 animate-fade-in";
+                feedbackTitle.innerText = "✨ Tepat Sekali!";
+                feedbackTitle.className = "font-bold text-lg mb-2 text-green-700";
+            } else {
+                btnElement.classList.replace('bg-gray-50', 'bg-red-100');
+                btnElement.classList.replace('border-gray-200', 'border-red-500');
+                btnElement.classList.add('text-red-800');
+
+                // Highlight correct answer
+                allButtons[q.answer].classList.replace('bg-gray-50', 'bg-green-100');
+                allButtons[q.answer].classList.replace('border-gray-200', 'border-green-500');
+                
+                feedbackContainer.className = "mt-8 border-l-4 rounded-r-lg p-5 bg-orange-50 border-orange-500 animate-fade-in";
+                feedbackTitle.innerText = "💡 Kurang Tepat, Mari Pelajari!";
+                feedbackTitle.className = "font-bold text-lg mb-2 text-orange-700";
+            }
+
+            // Tampilkan Bisikan Tutor
+            feedbackTutor.innerHTML = q.tutor;
+            feedbackContainer.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+        }
+
+        nextBtn.onclick = () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        };
+
+        function showResult() {
+            quizContainer.classList.add('hidden');
+            progressBar.style.width = `100%`;
+            resultContainer.classList.remove('hidden');
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            finalScoreEl.innerText = percentage;
+        }
+    </script>
+</body>
+</html>
