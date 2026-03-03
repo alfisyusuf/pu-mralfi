@@ -3,64 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulasi Fisika | Kelas Pak Alfi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Simulasi Fisika | Candy Pop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 40%, #A18CD1 100%);
+            background-attachment: fixed;
             min-height: 100vh;
         }
-        .option-btn {
+        .bouncy-btn {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .bouncy-btn:hover:not(:disabled) {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+        }
+        .nav-btn {
             transition: all 0.2s ease-in-out;
         }
-        .option-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        
+        /* Animasi untuk buka/tutup panel navigasi */
+        .nav-grid-wrapper {
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
         }
+        .nav-grid-wrapper.open {
+            /* Max-height diset besar agar cukup untuk 40 soal, bisa disesuaikan jika soal tambah banyak */
+            max-height: 500px; 
+            opacity: 1;
+            /* Tambahkan scroll vertical di dalam panel jika layarnya kecil */
+            overflow-y: auto; 
+        }
+
+        /* Scrollbar cantik untuk panel navigasi (opsional) */
+        .nav-grid-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+        .nav-grid-wrapper::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 8px;
+        }
+        .nav-grid-wrapper::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 8px;
+        }
+        .nav-grid-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
     </style>
 </head>
-<body class="flex items-center justify-center p-4">
+<body class="flex flex-col items-center p-4 md:p-8">
 
-    <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden">
+    <div class="w-full max-w-4xl mb-6 text-center text-white">
+        <h1 class="text-3xl md:text-4xl font-extrabold drop-shadow-md mb-2">🍭 Simulasi PSAJ Fisika</h1>
+        <p class="text-white/90 font-semibold tracking-wide">Latihan Mandiri &bull; Mr Alfi & Mr Azhar</p>
+    </div>
+
+    <div id="app-container" class="bg-white/95 backdrop-blur-sm w-full max-w-4xl rounded-[2rem] shadow-2xl border-4 border-white flex flex-col">
         
-        <div class="bg-indigo-600 p-6 text-white flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold tracking-tight">Simulasi PSAJ Fisika</h1>
-                <p class="text-indigo-200 text-sm mt-1">Latihan Mandiri &bull; Persiapan Ujian</p>
-            </div>
-            <div class="bg-indigo-800 px-4 py-2 rounded-lg font-semibold text-sm">
-                Soal <span id="current-q">1</span> / <span id="total-q">5</span>
-            </div>
-        </div>
-
-        <div class="w-full bg-gray-200 h-2">
-            <div id="progress-bar" class="bg-pink-500 h-2 transition-all duration-500" style="width: 0%;"></div>
-        </div>
-
-        <div class="p-8">
-            <div id="quiz-container">
-                <span id="q-topic" class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">Topik</span>
-                
-                <h2 id="q-text" class="text-xl text-gray-800 font-semibold mb-6 leading-relaxed">Pertanyaan dimuat...</h2>
-                
-                <div id="options-container" class="space-y-3">
+        <div class="bg-gray-50 border-b-2 border-gray-100 rounded-t-[1.8rem]">
+            
+            <div class="p-4 sm:p-6 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition-colors rounded-t-[1.8rem]" onclick="toggleNav()">
+                <div class="flex items-center gap-3">
+                    <button id="toggle-nav-icon" class="text-pink-500 font-bold text-xl w-8 h-8 flex items-center justify-center bg-pink-100 rounded-full transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-lg leading-tight">Navigasi Soal</h3>
+                        <p class="text-xs text-gray-500">Klik untuk melihat seluruh nomor</p>
                     </div>
+                </div>
+                <span id="progress-text" class="text-sm font-extrabold text-pink-600 bg-pink-100 border border-pink-200 px-4 py-1.5 rounded-full shadow-sm">
+                    0/40 Terjawab
+                </span>
+            </div>
 
-                <div id="feedback-container" class="mt-8 hidden border-l-4 rounded-r-lg p-5">
-                    <h3 id="feedback-title" class="font-bold text-lg mb-2">Jawaban</h3>
-                    <p id="feedback-tutor" class="text-gray-700 text-sm italic leading-relaxed"></p>
-                    <button id="next-btn" class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-xl transition-colors hidden">Selanjutnya &rarr;</button>
+            <div id="nav-grid-wrapper" class="nav-grid-wrapper bg-white border-t border-gray-100 px-4 pb-6 pt-2">
+                <div id="nav-container" class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2 sm:gap-3">
+                    </div>
+            </div>
+        </div>
+
+        <div class="p-5 sm:p-8 flex-grow" id="quiz-container">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <span id="q-topic" class="inline-block bg-cyan-100 text-cyan-700 text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-wider border-2 border-cyan-200 shadow-sm">
+                    Topik
+                </span>
+                <span class="text-gray-400 font-bold text-sm bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
+                    Soal <span id="current-q-num" class="text-gray-800 text-lg">1</span> / 40
+                </span>
+            </div>
+            
+            <h2 id="q-text" class="text-xl sm:text-2xl text-gray-800 font-bold mb-8 leading-relaxed">Pertanyaan dimuat...</h2>
+            
+            <div id="options-container" class="space-y-4">
+                </div>
+
+            <div id="feedback-container" class="mt-8 hidden border-l-4 rounded-xl p-5 sm:p-6 shadow-sm">
+                <h3 id="feedback-title" class="font-extrabold text-xl mb-2 flex items-center gap-2">Jawaban</h3>
+                <p id="feedback-tutor" class="text-gray-700 text-base leading-relaxed bg-white/60 p-4 rounded-lg mt-3"></p>
+                
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button id="next-btn" class="bouncy-btn bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hidden">
+                        Soal Selanjutnya &rarr;
+                    </button>
+                    <button id="finish-btn" class="bouncy-btn bg-gradient-to-r from-pink-400 to-rose-500 hover:from-pink-500 hover:to-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hidden">
+                        🎉 Selesai & Lihat Skor
+                    </button>
                 </div>
             </div>
+        </div>
 
-            <div id="result-container" class="hidden text-center py-8">
-                <div class="text-6xl mb-4">🏆</div>
-                <h2 class="text-3xl font-bold text-gray-800 mb-2">Latihan Selesai!</h2>
-                <p class="text-gray-600 mb-6">Skor akhir kamu:</p>
-                <div class="text-5xl font-extrabold text-indigo-600 mb-8"><span id="final-score">0</span>%</div>
-                <button onclick="location.reload()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all hover:-translate-y-1">Coba Lagi</button>
+        <div id="result-container" class="hidden text-center py-12 px-6">
+            <div class="text-7xl mb-6 bouncy-btn inline-block">🏆</div>
+            <h2 class="text-4xl font-extrabold text-gray-800 mb-2">Latihan Selesai!</h2>
+            <p class="text-gray-500 font-medium mb-8 text-lg">Kerja bagus! Ini dia hasil akhir kamu:</p>
+            
+            <div class="inline-block bg-gradient-to-br from-pink-100 to-purple-100 border-4 border-white shadow-xl rounded-[2rem] p-8 mb-8">
+                <div class="text-6xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500 mb-2">
+                    <span id="final-score">0</span>
+                </div>
+                <p class="text-purple-600 font-bold uppercase tracking-widest text-sm">Nilai Kamu</p>
+            </div>
+
+            <div>
+                <button onclick="location.reload()" class="bouncy-btn bg-gray-800 hover:bg-gray-900 text-white font-bold py-4 px-10 rounded-full shadow-xl text-lg">
+                    🔄 Coba Lagi
+                </button>
             </div>
         </div>
     </div>
@@ -69,183 +145,813 @@
     [
         {
             "id": 1,
-            "topic": "Pengukuran & Angka Penting",
+            "topic": "Pengukuran (Angka Penting)",
             "type": "theory",
-            "question": "Seorang siswa mengukur tebal pelat logam menggunakan Mikrometer Sekrup dan menuliskan hasilnya sebagai <b>4,20 mm</b>. Mengapa penulisan angka nol di akhir (4,20) sangat penting dalam fisika?",
+            "question": "Seorang siswa mengukur ketebalan kawat menggunakan Mikrometer Sekrup dan mencatat hasilnya <b>2,50 mm</b>. Mengapa angka nol di akhir tersebut (2,50) berstatus sebagai angka penting?",
             "options": [
-                "A. Membuat angka terlihat lebih panjang dan ilmiah.",
-                "B. Menunjukkan bahwa alat tersebut memiliki ketelitian hingga 0,01 mm.",
-                "C. Membuktikan bahwa pengukuran tersebut tidak memiliki kesalahan sama sekali.",
-                "D. Angka nol di belakang desimal sebenarnya tidak perlu ditulis."
+                "A. Membuat angka terlihat lebih ilmiah.",
+                "B. Menunjukkan bahwa instrumen memiliki ketelitian hingga 0,01 mm.",
+                "C. Menunjukkan kawat tepat 2,5 mm tanpa error.",
+                "D. Angka nol setelah titik desimal tidak pernah signifikan.",
+                "E. Hanya sebagai penempat posisi (placeholder)."
             ],
             "answer": 1,
-            "tutor": "♟️ Bisikan Tutor: Angka nol di belakang koma pada hasil pengukuran bukanlah pajangan. Ia menunjukkan 'kejujuran' dan batas ketelitian alat ukur. Menulis 4,2 mm (mistar) maknanya sangat berbeda dengan 4,20 mm (mikrometer) di mata fisika."
+            "tutor": "♟️ Bisikan Tutor: Angka nol di belakang desimal menunjukkan <b>ketelitian alat</b>. Menulis 2,5 mm (mistar biasa) berbeda maknanya dengan 2,50 mm (mikrometer). Ini soal tentang 'kejujuran' kepresisian alat ukur."
         },
         {
             "id": 2,
-            "topic": "Kinematika - GLBB (Soal Modifikasi Angka)",
+            "topic": "Pengukuran (Analisis Dimensi)",
+            "type": "theory",
+            "question": "Rumus periode (T) sebuah bandul bergantung pada panjang tali (L) dan gravitasi (g). Diketahui dimensi T adalah [T], L adalah [L], dan g adalah [L][T]&supmin;&sup2;. Manakah rumus di bawah ini yang paling konsisten secara dimensional?",
+            "options": [
+                "A. T = 2&pi; &radic;(g/L)",
+                "B. T = 2&pi; &radic;(L/g)",
+                "C. T = 2&pi; (L &middot; g)",
+                "D. T = 2&pi; (g / L&sup2;)",
+                "E. T = 2&pi; (L + g)"
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Cek dimensi ruas kanan. L/g = [L] / ([L][T]&supmin;&sup2;) = [T]&sup2;. Jika diakar (&radic;), menjadi [T]. Cocok dengan ruas kiri! Cukup cocoklogi dimensi saja."
+        },
+        {
+            "id": 3,
+            "topic": "Pengukuran (Metode Ilmiah)",
+            "type": "theory",
+            "question": "<b>[LITERASI]</b> Andi menggunakan timbangan digital. Sebelum menimbang, layar sudah menunjukkan angka <b>0,5 gram</b> (Andi lupa menekan tombol Tare/Nol). Hasil akhir di layar menunjukkan <b>10,5 gram</b>. Berdasarkan kasus ini, apa jenis kesalahan Andi dan berapa massa zat sebenarnya?",
+            "options": [
+                "A. Kesalahan Acak; massa sebenarnya 10,5 gram.",
+                "B. Kesalahan Paralaks; massa sebenarnya 10,0 gram.",
+                "C. Kesalahan Sistematis; massa sebenarnya 10,0 gram.",
+                "D. Kesalahan Sistematis; massa sebenarnya 11,0 gram.",
+                "E. Kesalahan Hitung; massa sebenarnya 10,5 gram."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Kesalahan yang 'selalu bergeser sama' di awal adalah Kesalahan Sistematis (Zero Error). Logika: Total (10,5) = Wadah/Error (0,5) + Isi. Maka Isi sebenarnya = 10,0 gram."
+        },
+        {
+            "id": 4,
+            "topic": "Kinematika (Skalar vs Vektor)",
+            "type": "theory",
+            "question": "Seorang pelari berlari satu putaran penuh pada lintasan melingkar 400 meter dan kembali tepat ke garis start. Pernyataan mana yang benar mengenai geraknya?",
+            "options": [
+                "A. Jarak tempuh 0 m, perpindahannya 400 m.",
+                "B. Jarak tempuh 400 m, perpindahannya 400 m.",
+                "C. Jarak tempuh 400 m, perpindahannya 0 m.",
+                "D. Baik jarak maupun perpindahan adalah 0 m.",
+                "E. Kecepatannya 400 m/s."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Jarak (Distance) = langkah kaki/usaha. Perpindahan (Displacement) = perubahan posisi akhir vs awal. Balik ke awal berarti posisi tidak berubah (Perpindahan = 0)."
+        },
+        {
+            "id": 5,
+            "topic": "Kinematika (Grafik v-t)",
+            "type": "theory",
+            "question": "Pada grafik kecepatan terhadap waktu (v-t) pergerakan sebuah kereta, bagian manakah yang menunjukkan kereta bergerak dengan <b>kecepatan konstan</b> (percepatan nol)?",
+            "options": [
+                "A. Garis yang bergerak naik (menanjak).",
+                "B. Garis yang horizontal (mendatar).",
+                "C. Garis yang bergerak turun.",
+                "D. Luas area di bawah kurva grafik.",
+                "E. Titik perpotongan pada sumbu nol."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Di grafik v-t, cari garis datar. Mendatar berarti nilainya tetap = kecepatan konstan = tidak digas dan tidak direm."
+        },
+        {
+            "id": 6,
+            "topic": "Kinematika (Jatuh Bebas vs Parabola)",
+            "type": "theory",
+            "question": "Bola logam A dan B dilepaskan dari ketinggian yang sama pada waktu bersamaan. Bola A dijatuhkan lurus ke bawah (Jatuh Bebas), sedangkan Bola B dilempar horizontal ke kanan (Parabola). Jika hambatan udara diabaikan, bola mana yang menyentuh tanah lebih dulu?",
+            "options": [
+                "A. Bola A, karena jarak tempuhnya lebih pendek.",
+                "B. Bola B, karena memiliki kecepatan awal.",
+                "C. Bola A, karena gravitasi lebih kuat menariknya.",
+                "D. Keduanya menyentuh tanah pada waktu bersamaan.",
+                "E. Tergantung seberapa kuat Bola B dilempar."
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Gerak vertikal dan horizontal itu independen (tidak saling mengganggu). Ke bawah, keduanya hanya ditarik gravitasi (g) dari ketinggian (h) yang sama. Maka waktu jatuhnya sama!"
+        },
+        {
+            "id": 7,
+            "topic": "Kinematika (Grafik s-t)",
+            "type": "theory",
+            "question": "Pada grafik posisi terhadap waktu (s-t) yang membentuk sebuah garis lurus diagonal ke atas, apakah makna fisis dari <b>kemiringan (slope)</b> garis tersebut?",
+            "options": [
+                "A. Total jarak yang ditempuh.",
+                "B. Percepatan benda.",
+                "C. Kecepatan benda.",
+                "D. Gaya yang diberikan pada benda.",
+                "E. Waktu yang dibutuhkan."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Matematika Visual. Kemiringan grafik posisi (s) terhadap waktu (t) adalah &Delta;s / &Delta;t, yang mana itu adalah rumus dari Kecepatan."
+        },
+        {
+            "id": 8,
+            "topic": "Kinematika (Kecepatan Relatif)",
+            "type": "logic",
+            "question": "Sebuah perahu ingin menyeberang sungai lurus menuju titik di seberangnya (Utara). Jika arus sungai mengalir deras ke arah <b>Timur</b>, ke arah manakah kapten harus mengarahkan kemudi perahu agar lintasan aslinya tetap lurus ke Utara?",
+            "options": [
+                "A. Lurus ke Utara.",
+                "B. Timur Laut (mengikuti arus).",
+                "C. Barat Laut (melawan arus).",
+                "D. Timur (searah arus).",
+                "E. Mustahil menyeberang secara lurus."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Jika arus menyeret perahu ke Kanan (Timur), kapten harus mengarahkan moncong perahu serong ke Kiri (Barat) sedikit agar resultannya lurus ke Utara. Arahnya: Barat Laut (North-West)."
+        },
+        {
+            "id": 9,
+            "topic": "GLBB - Jarak Pengereman (Modifikasi Angka)",
             "type": "calc",
-            "question": "Sebuah mobil yang melaju <b>30 km/jam</b> membutuhkan jarak 8 meter untuk berhenti mendadak setelah direm. Jika mobil tersebut melaju dengan kecepatan <b>90 km/jam</b> (3 kali lebih cepat), berapakah jarak minimal pengereman yang dibutuhkan?",
+            "question": "<b>[LITERASI]</b> Menurut Fisika lalu lintas, jarak pengereman mobil sebanding dengan kuadrat kecepatannya (v&sup2;). Jika mobil melaju <b>30 km/jam</b> membutuhkan jarak 8 meter untuk berhenti mendadak, berapakah jarak minimal untuk berhenti jika mobil melaju <b>90 km/jam</b> (3 kali lebih cepat)?",
             "options": [
                 "A. 24 meter",
                 "B. 36 meter",
                 "C. 64 meter",
-                "D. 72 meter"
+                "D. 72 meter",
+                "E. 144 meter"
             ],
             "answer": 3,
-            "tutor": "♟️ Bisikan Tutor: Jarak pengereman berbanding lurus dengan KUADRAT kecepatan (v&sup2;). Jika kecepatan naik 3x lipat, maka jarak henti akan naik 3&sup2; = 9x lipat. Jarak awal 8 meter &rarr; 8 x 9 = 72 meter."
+            "tutor": "♟️ Bisikan Tutor: Kecepatan naik 3x. Karena rumus jarak sebanding v&sup2;, maka jarak henti naik 3&sup2; = 9x lipat. Jarak awal 8 m &rarr; 8 x 9 = 72 meter."
         },
         {
-            "id": 3,
-            "topic": "Dinamika - Hukum II Newton (Soal Modifikasi Angka)",
+            "id": 10,
+            "topic": "Dinamika (Kecepatan Terminal)",
+            "type": "theory",
+            "question": "Seorang penerjun payung melompat dari pesawat. Awalnya ia melesat jatuh, namun gesekan udara yang mendorongnya ke atas semakin membesar seiring kecepatannya. Saat gaya gesek udara menjadi <b>sama besar</b> dengan gaya beratnya, apa yang terjadi pada geraknya?",
+            "options": [
+                "A. Ia langsung berhenti melayang di udara.",
+                "B. Ia mulai bergerak naik ke atas.",
+                "C. Ia terus jatuh namun dengan kecepatan konstan (Terminal Velocity).",
+                "D. Ia terus jatuh dan percepatannya bertambah.",
+                "E. Berat badannya menjadi nol."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Gaya ke bawah (Berat) = Gaya ke atas (Gesekan), maka Total Gaya = 0. Menurut Hukum I Newton, jika Total Gaya 0, benda akan mempertahankan geraknya dengan kecepatan konstan."
+        },
+        {
+            "id": 11,
+            "topic": "Hukum I Newton",
+            "type": "theory",
+            "question": "Ketika bus yang bergerak cepat direm mendadak, para penumpang akan terdorong ke depan. Sifat fisika apa yang menyebabkan penolakan terhadap perubahan gerak ini?",
+            "options": [
+                "A. Gravitasi",
+                "B. Gaya Gesek",
+                "C. Inersia (Kelembaman)",
+                "D. Aksi-Reaksi",
+                "E. Kecepatan Relatif"
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Ini adalah definisi klasik dari Inersia (Kelembaman). Benda yang sedang bergerak ingin terus mempertahankan geraknya ke depan."
+        },
+        {
+            "id": 12,
+            "topic": "Hukum II Newton (Modifikasi Angka)",
             "type": "calc",
-            "question": "Sebuah gaya konstan F diberikan pada balok bermassa <i>m</i>, menghasilkan percepatan sebesar <b>6 m/s&sup2;</b>. Jika gaya yang sama diberikan pada balok dengan massa <b>3m</b> (tiga kali lipat lebih berat), berapakah percepatan barunya?",
+            "question": "Gaya konstan F diberikan pada balok bermassa m, menghasilkan percepatan <b>6 m/s&sup2;</b>. Jika gaya yang sama diberikan pada balok dengan massa <b>3m</b> (tiga kali lipat lebih berat), berapakah percepatan yang dihasilkan?",
             "options": [
                 "A. 18 m/s&sup2;",
                 "B. 9 m/s&sup2;",
-                "C. 2 m/s&sup2;",
-                "D. 1 m/s&sup2;"
+                "C. 3 m/s&sup2;",
+                "D. 2 m/s&sup2;",
+                "E. 1 m/s&sup2;"
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Dari rumus a = F/m, jika penyebut (massa) menjadi 3x lebih besar, maka hasil bagi (percepatan) menjadi 1/3 kalinya. 6 dibagi 3 = 2 m/s&sup2;."
+        },
+        {
+            "id": 13,
+            "topic": "Hukum III Newton",
+            "type": "theory",
+            "question": "Sebuah truk besar bertabrakan secara frontal dengan seekor nyamuk. Berdasarkan Hukum III Newton, pernyataan mana yang benar mengenai gaya benturan yang terjadi?",
+            "options": [
+                "A. Truk memberikan gaya yang jauh lebih besar pada nyamuk.",
+                "B. Nyamuk memberikan gaya yang jauh lebih besar pada truk.",
+                "C. Nyamuk memberikan gaya nol pada truk.",
+                "D. Truk dan nyamuk saling memberikan gaya yang SAMA besar.",
+                "E. Gaya benturan tergantung siapa yang melaju lebih cepat."
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Jebakan klasik! Gaya aksi-reaksi PASTI SAMA BESAR, hanya saja efek/kerusakannya beda. Nyamuk hancur karena massanya kecil, truk tidak lecet karena massanya raksasa."
+        },
+        {
+            "id": 14,
+            "topic": "Gaya Gesek Statis (Modifikasi Angka)",
+            "type": "calc",
+            "question": "Kamu mendorong sebuah lemari kayu di lantai dengan gaya sebesar <b>80 N</b>, namun lemari tersebut <b>sama sekali tidak bergerak</b>. Berapakah besar gaya gesek statis yang bekerja pada lemari tersebut?",
+            "options": [
+                "A. 0 N",
+                "B. Kurang dari 80 N",
+                "C. Tepat 80 N",
+                "D. Lebih dari 80 N",
+                "E. Tergantung berat lemari"
             ],
             "answer": 2,
-            "tutor": "♟️ Bisikan Tutor: Ingat rumus a = F/m. Massa dan percepatan berbanding terbalik. Jika massa benda menjadi 3x lebih besar (makin berat), maka percepatannya menjadi 1/3 dari semula. 6 dibagi 3 sama dengan 2 m/s&sup2;."
+            "tutor": "♟️ Bisikan Tutor: Jika benda DIAM, maka Total Gaya = 0. Artinya, Gaya Dorong ke depan = Gaya Gesek ke belakang. Kamu dorong 80 N, dia diam, berarti lantai melawan persis 80 N juga."
         },
         {
-            "id": 4,
-            "topic": "Usaha & Energi - Literasi",
+            "id": 15,
+            "topic": "Berat Semu",
             "type": "theory",
-            "question": "Dalam desain Roller Coaster, kereta tidak memiliki mesin penggerak setelah turun dari bukit pertama. Kereta meluncur murni mengandalkan Hukum Kekekalan Energi. Pernyataan mana yang paling tepat menggambarkan transformasi energi pada kereta saat meluncur turun ke lembah?",
+            "question": "Seorang pria berdiri di atas timbangan berat badan di dalam lift. Tiba-tiba kabel lift putus dan lift jatuh bebas (free fall). Angka berapa yang akan terbaca pada timbangan tersebut?",
             "options": [
-                "A. Energi Totalnya semakin berkurang karena terpakai untuk bergerak cepat.",
-                "B. Energi Potensialnya berkurang, diubah menjadi Energi Kinetik, sementara Energi Totalnya tetap.",
-                "C. Baik Energi Kinetik maupun Energi Potensialnya bertambah secara bersamaan.",
-                "D. Energi Kinetiknya menurun karena efek gravitasi bumi."
+                "A. Berat normalnya (mg).",
+                "B. Nol (0 N).",
+                "C. Dua kali lipat berat normalnya.",
+                "D. Sedikit lebih ringan dari berat normal.",
+                "E. Angkanya akan bergerak naik turun."
             ],
             "answer": 1,
-            "tutor": "♟️ Bisikan Tutor: Energi tidak bisa hilang, hanya bertukar wujud. Saat turun, ketinggian menyusut (Energi Potensial turun), namun kecepatannya melesat (Energi Kinetik naik). Total gabungannya (Energi Mekanik) selalu konstan."
+            "tutor": "♟️ Bisikan Tutor: Saat jatuh bebas, kaki orang tersebut dan papan timbangan jatuh dengan percepatan yang sama (g). Tidak ada gaya tekan di antara keduanya, sehingga terbaca 0 (tanpa bobot)."
         },
         {
-            "id": 5,
-            "topic": "Listrik Statis - Hukum Coulomb (Soal Modifikasi Angka)",
+            "id": 16,
+            "topic": "Resultan Vektor (Modifikasi Angka)",
+            "type": "logic",
+            "question": "Dua orang menarik sebuah perahu. Orang A menarik dengan gaya <b>150 N ke arah Utara</b>, sedangkan Orang B menarik dengan gaya <b>150 N ke arah Timur</b>. Ke arah manakah perahu tersebut akan melaju?",
+            "options": [
+                "A. Utara",
+                "B. Timur",
+                "C. Timur Laut (North-East)",
+                "D. Tenggara (South-East)",
+                "E. Perahu tidak akan bergerak"
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Bayangkan panah ditarik ke Atas (Utara) dan ke Kanan (Timur). Paduan (Resultan) keduanya pasti berada di tengah-tengahnya, yaitu miring ke kanan atas (Timur Laut)."
+        },
+        {
+            "id": 17,
+            "topic": "Impuls & Momentum",
+            "type": "theory",
+            "question": "<b>[LITERASI]</b> Mobil modern dirancang dengan Crumple Zone (area yang mudah penyok saat tabrakan) dengan tujuan memanipulasi Impuls (F &middot; &Delta;t). Mengapa mobil tua yang bodinya kaku justru lebih mematikan bagi penumpangnya saat terjadi tabrakan?",
+            "options": [
+                "A. Karena mobil tua lebih berat sehingga sulit direm.",
+                "B. Waktu tabrakan sangat singkat (&Delta;t kecil), sehingga gaya hentakan (F) yang diterima penumpang sangat besar.",
+                "C. Karena mobil tua tidak memiliki rem bersistem ABS.",
+                "D. Karena energi tabrakan langsung hilang menguap.",
+                "E. Bodi yang kaku memantulkan mobil terlalu jauh."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Dari rumus F = &Delta;p / &Delta;t. Bodi kaku membuat mobil berhenti seketika (&Delta;t sangat kecil). Karena waktunya pendek, Gaya fatal (F) yang menembus kabin menjadi raksasa."
+        },
+        {
+            "id": 18,
+            "topic": "Gravitasi",
+            "type": "theory",
+            "question": "Seorang astronot pergi dari Bumi ke Bulan. Diketahui gravitasi Bulan jauh lebih lemah (sekitar 1/6 gravitasi Bumi). Bagaimana perubahan Massa dan Berat astronot tersebut?",
+            "options": [
+                "A. Massa dan Berat keduanya berkurang.",
+                "B. Massa berkurang, Berat tetap sama.",
+                "C. Massa tetap sama, Berat berkurang.",
+                "D. Massa dan Berat keduanya tetap sama.",
+                "E. Massa bertambah, Berat berkurang."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Massa adalah jumlah materi (dibawa dari lahir, selalu TETAP di mana saja). Berat adalah gaya tarik planet (W = mg), jadi Berat akan berkurang jika gravitasinya lemah."
+        },
+        {
+            "id": 19,
+            "topic": "Usaha Fisika",
+            "type": "theory",
+            "question": "Seorang pelayan menahan nampan makanan yang berat (Gaya angkat ke atas) dan berjalan 10 meter secara horizontal ke meja. Secara definisi fisika, berapa besar Usaha (Work) yang dilakukan pelayan terhadap nampan?",
+            "options": [
+                "A. 10 Joule",
+                "B. 100 Joule",
+                "C. Usaha Maksimal",
+                "D. Nol (0 Joule)",
+                "E. Tergantung berat nampannya"
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Usaha fisika terjadi jika Gaya sejajar dengan Perpindahan. Pelayan mengangkat ke ATAS, tapi berjalan ke SAMPING (tegak lurus 90 derajat). Maka Usaha secara fisika = 0."
+        },
+        {
+            "id": 20,
+            "topic": "Energi Mekanik",
+            "type": "theory",
+            "question": "<b>[LITERASI]</b> Roller coaster meluncur turun murni mengandalkan perubahan Energi. Mengabaikan gaya gesek, pernyataan mana yang benar mengenai energi roller coaster saat meluncur merosot ke bawah?",
+            "options": [
+                "A. Energi totalnya semakin berkurang karena terpakai bergerak.",
+                "B. Energi Potensialnya bertambah, Energi Kinetiknya berkurang.",
+                "C. Energi Potensialnya berkurang, Energi Kinetiknya bertambah, Energi Totalnya tetap.",
+                "D. Energi Kinetik dan Potensial keduanya bertambah.",
+                "E. Energi Totalnya bertambah seiring peningkatan kecepatan."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Ketinggian merosot berarti Energi Potensial turun, berubah wujud menjadi kecepatan (Energi Kinetik naik). Keduanya saling bertukar, tapi jumlah totalnya (Mekanik) selalu tetap."
+        },
+        {
+            "id": 21,
+            "topic": "Usaha & Daya (Modifikasi Angka)",
+            "type": "logic",
+            "question": "Ali dan Budi memiliki massa tubuh yang sama persis. Mereka menaiki tangga yang sama ke lantai dua. Ali berlari naik dalam <b>15 detik</b>, sedangkan Budi berjalan santai dalam <b>30 detik</b>. Siapa yang menghasilkan Usaha (W) dan Daya (P) lebih besar?",
+            "options": [
+                "A. Ali: Usaha lebih besar, Daya lebih besar.",
+                "B. Budi: Usaha lebih besar, Daya lebih kecil.",
+                "C. Keduanya: Usaha SAMA, tetapi Daya Ali lebih besar.",
+                "D. Keduanya: Usaha SAMA, tetapi Daya Budi lebih besar.",
+                "E. Keduanya menghasilkan Usaha dan Daya yang sama persis."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Massa sama & Tinggi tangga sama = Usaha (W) mereka PASTI SAMA. Daya (P = W/t) adalah kecepatan melakukan usaha. Ali waktunya lebih singkat, maka Dayanya lebih besar."
+        },
+        {
+            "id": 22,
+            "topic": "Kekekalan Momentum",
+            "type": "theory",
+            "question": "Saat senapan ditembakkan, peluru melesat ke depan dengan sangat cepat, sementara senapan terdorong ke belakang (recoil) dengan kecepatan yang lambat. Mengapa kecepatan mundur senapan jauh lebih lambat dari peluru?",
+            "options": [
+                "A. Massa senapan jauh lebih besar daripada massa peluru.",
+                "B. Gaya yang bekerja pada senapan lebih kecil dari pada peluru.",
+                "C. Senapan tertahan oleh gesekan bahu penembak.",
+                "D. Momentum tidak berlaku pada ledakan.",
+                "E. Bentuk peluru lebih aerodinamis menembus udara."
+            ],
+            "answer": 0,
+            "tutor": "♟️ Bisikan Tutor: Momentum sebelum dan sesudah tembakan harus sama. Peluru: Massa kecil x Kecepatan Raksasa. Agar seimbang, Senapan: Massa Besar x Kecepatan Kecil."
+        },
+        {
+            "id": 23,
+            "topic": "Tumbukan",
+            "type": "theory",
+            "question": "Dua mobil bertabrakan. Kasus A: Keduanya saling memantul sempurna (Lenting Sempurna). Kasus B: Bodinya penyok dan saling menempel (Tidak Lenting Sama Sekali). Pada kasus manakah kehilangan energi (kerusakan fisik mobil) paling besar terjadi?",
+            "options": [
+                "A. Kasus A (Lenting Sempurna).",
+                "B. Kasus B (Tidak Lenting Sama Sekali).",
+                "C. Kerusakan pada kedua kasus sama parahnya.",
+                "D. Bergantung pada kecepatan awal mobil.",
+                "E. Tidak ada energi yang hilang pada kedua kasus."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Lenting Sempurna = Energi Kinetik kekal, memantul utuh. Tidak Lenting = Energi Kinetik 'hilang' karena diubah menjadi energi panas dan deformasi bodi (penyok rusak)."
+        },
+        {
+            "id": 24,
+            "topic": "Impuls & Keselamatan",
+            "type": "theory",
+            "question": "<b>[LITERASI]</b> Secara konsep Fisika impuls, bagaimana cara kerja Airbag (kantung udara) melindungi kepala pengemudi dari cedera fatal saat terjadi benturan keras?",
+            "options": [
+                "A. Memberikan dorongan berlawanan agar tubuh terpental ke kursi.",
+                "B. Memperpanjang waktu kontak benturan (&Delta;t), sehingga Gaya (F) yang diterima kepala menjadi lebih kecil.",
+                "C. Menyerap seluruh momentum mobil hingga nol seketika.",
+                "D. Memperpendek waktu benturan agar rasa sakit cepat hilang.",
+                "E. Menghilangkan inersia pada tubuh pengemudi."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Airbag yang mengempis perlahan memperlama waktu pengereman kepala (&Delta;t membesar). Sesuai rumus I = F x &Delta;t, waktu yang lama akan membuat Gaya fatal (F) mengecil."
+        },
+        {
+            "id": 25,
+            "topic": "Fluida (Archimedes)",
+            "type": "theory",
+            "question": "Sebuah balok kayu terapung di atas Air dengan 50% volumenya tercelup. Jika balok yang sama dipindahkan ke kolam berisi Minyak (massa jenis minyak lebih ringan dari air), apa yang akan terjadi pada balok tersebut?",
+            "options": [
+                "A. Terapung dengan volume tercelup kurang dari 50% (naik).",
+                "B. Terapung dengan volume tercelup lebih dari 50% (tenggelam lebih dalam).",
+                "C. Terapung tepat 50% volumenya.",
+                "D. Langsung tenggelam ke dasar kolam minyak.",
+                "E. Balok akan melayang di tengah-tengah minyak."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Cairan yang 'lemah' (massa jenis kecil) gaya angkat per volumenya kecil. Agar bisa menopang berat balok, balok harus mencelupkan lebih banyak badannya ke dalam cairan tersebut."
+        },
+        {
+            "id": 26,
+            "topic": "Fluida Dinamis (Bernoulli)",
+            "type": "theory",
+            "question": "Sayap pesawat dirancang melengkung di atas dan datar di bawah. Menurut asas Bernoulli, bagaimana desain ini bisa menghasilkan Gaya Angkat (Lift)?",
+            "options": [
+                "A. Udara di atas mengalir LEBIH CEPAT, menciptakan TEKANAN RENDAH di atas sayap.",
+                "B. Udara di atas mengalir LEBIH LAMBAT, menciptakan TEKANAN TINGGI di atas sayap.",
+                "C. Udara di atas dan bawah mengalir sama cepat, tapi sayap memukul angin.",
+                "D. Mesin jet secara langsung mendorong sayap ke atas.",
+                "E. Massa jenis udara memadat di bagian atas sayap."
+            ],
+            "answer": 0,
+            "tutor": "♟️ Bisikan Tutor: Prinsip Bernoulli: Udara cepat = Tekanan turun. Atas melengkung memaksa udara lari lebih cepat sehingga tekanannya rendah (Low). Tekanan Tinggi dari bawah akan mendorong sayap naik."
+        },
+        {
+            "id": 27,
+            "topic": "Tekanan Hidrostatis",
+            "type": "theory",
+            "question": "<b>[LITERASI]</b> Dinding bendungan raksasa selalu dirancang dengan struktur bagian bawah yang sangat tebal dibanding bagian atasnya. Apa alasan fisika di balik rancangan asitektur ini?",
+            "options": [
+                "A. Agar terlihat estetik dan menghemat material semen.",
+                "B. Karena tekanan hidrostatis zat cair semakin membesar seiring bertambahnya kedalaman air.",
+                "C. Karena bagian bawah harus kuat menahan jembatan di atasnya.",
+                "D. Agar lumpur di dasar bendungan tidak merembes.",
+                "E. Karena massa jenis air di dasar selalu lebih pekat."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Rumus tekanan P = &rho; g h. Tekanan murni bergantung pada kedalaman (h). Semakin dalam di dasar sungai, pukulan tekanan air makin mematikan, sehingga dinding harus super tebal."
+        },
+        {
+            "id": 28,
+            "topic": "Suhu & Pemuaian",
+            "type": "theory",
+            "question": "Mengapa pada konstruksi rel kereta api baja, insinyur selalu memberikan celah kecil pada setiap sambungannya?",
+            "options": [
+                "A. Untuk menghemat penggunaan baja.",
+                "B. Agar roda kereta memiliki cengkraman yang lebih baik.",
+                "C. Memberi ruang pemuaian saat cuaca panas agar rel tidak melengkung.",
+                "D. Memudahkan air hujan mengalir dan tidak menggenang.",
+                "E. Untuk menciptakan bunyi ritmik khas kereta api."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Benda padat (baja) memuai panjangnya jika terkena panas terik. Celah itu adalah 'ruang toleransi' agar baja tidak saling mendesak dan bengkok/patah."
+        },
+        {
+            "id": 29,
+            "topic": "Perpindahan Kalor",
+            "type": "theory",
+            "question": "Di dalam ruangan ber-AC yang bersuhu 20&deg;C, Anda menyentuh meja kayu dan sendok logam. Mengapa sendok logam terasa lebih 'dingin' di kulit dibanding kayu?",
+            "options": [
+                "A. Sendok logam secara fisik memiliki suhu yang lebih rendah dari kayu.",
+                "B. Logam adalah konduktor panas yang baik; ia menyerap kalor dari tangan Anda dengan cepat.",
+                "C. Kayu menghasilkan panasnya sendiri dari sisa pohon.",
+                "D. Logam memiliki massa jenis yang lebih tinggi.",
+                "E. Saraf kulit lebih sensitif terhadap unsur logam."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Di ruangan yang sama, suhu keduanya SAMA (20&deg;C). Logam terasa dingin karena ia konduktor super, langsung menyedot panas tubuhmu dengan cepat. Otakmu menerjemahkannya sebagai rasa 'dingin'."
+        },
+        {
+            "id": 30,
+            "topic": "Kalor Jenis",
+            "type": "theory",
+            "question": "<b>[LITERASI]</b> Di siang terik, pasir pantai terasa membakar kaki sedangkan air laut sejuk, karena Air memiliki Kalor Jenis (c) yang sangat besar. Apa arti fisis dari pernyataan tersebut?",
+            "options": [
+                "A. Air lebih mudah menghantarkan panas dibandingkan pasir.",
+                "B. Air butuh menyerap energi yang sangat banyak hanya untuk menaikkan suhunya sedikit saja (susah panas).",
+                "C. Air mengunci panas hanya di lapisan atas permukaannya.",
+                "D. Pasir menolak radiasi matahari, air menyerapnya utuh.",
+                "E. Air selalu lebih dingin secara alami dari benda padat."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Kalor jenis besar berarti benda tersebut sangat 'malas' berubah suhu. Air butuh energi kalor raksasa dari matahari agar suhunya naik 1 derajat, makanya air pantai tetap terasa sejuk di siang hari."
+        },
+        {
+            "id": 31,
+            "topic": "Gelombang",
+            "type": "theory",
+            "question": "Pernyataan mana di bawah ini yang secara tepat mendeskripsikan perbedaan mendasar antara gelombang Bunyi dan gelombang Cahaya?",
+            "options": [
+                "A. Bunyi adalah gelombang transversal, Cahaya longitudinal.",
+                "B. Bunyi membutuhkan medium (udara/air) untuk merambat, Cahaya dapat merambat di ruang hampa (vakum).",
+                "C. Bunyi merambat lebih cepat dari pada Cahaya.",
+                "D. Keduanya merupakan gelombang Elektromagnetik.",
+                "E. Cahaya membawa partikel materi, Bunyi membawa energi."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Bunyi itu gelombang mekanik yang 'manja', butuh perantara (partikel udara) untuk bergerak. Cahaya itu gelombang elektromagnetik mandiri, bisa menembus ruang hampa angkasa."
+        },
+        {
+            "id": 32,
+            "topic": "Persamaan Gelombang",
+            "type": "logic",
+            "question": "Satu senar gitar diputar makin kencang, sehingga kecepatan rambat gelombang (v) di dalamnya meningkat. Karena panjang senarnya tetap (panjang gelombangnya tetap), apa dampaknya terhadap suara yang dihasilkan?",
+            "options": [
+                "A. Frekuensi bertambah, nada yang dihasilkan menjadi lebih TINGGI (pitch tinggi).",
+                "B. Frekuensi menurun, nada yang dihasilkan menjadi lebih RENDAH (bass).",
+                "C. Frekuensi tetap tidak berubah.",
+                "D. Amplitudo bertambah, suara menjadi lebih Keras.",
+                "E. Suara menjadi lebih pelan/senyap."
+            ],
+            "answer": 0,
+            "tutor": "♟️ Bisikan Tutor: Rumusnya v = &lambda; x f. Jika v (kecepatan) naik sementara &lambda; (panjang) ditahan tetap, maka f (frekuensi) harus ikut NAIK. Frekuensi tinggi artinya nada melengking/pitch tinggi."
+        },
+        {
+            "id": 33,
+            "topic": "Efek Doppler",
+            "type": "theory",
+            "question": "Sebuah mobil ambulans dengan sirene menyala bergerak <b>mendekati</b> Anda dengan kecepatan tinggi. Dibandingkan saat ambulans diam, bagaimana perubahan suara yang Anda dengar?",
+            "options": [
+                "A. Nada lebih rendah (frekuensi turun) dan volume lebih pelan.",
+                "B. Nada lebih rendah (frekuensi turun) dan volume lebih keras.",
+                "C. Nada lebih tinggi (frekuensi naik) dan volume lebih keras.",
+                "D. Nada lebih tinggi (frekuensi naik) tapi volume konstan.",
+                "E. Nada tetap sama persis namun volume lebih keras."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Makin mendekat = gelombang suara makin 'tertekan' sehingga frekuensi memadat/naik (Nada makin melengking/Tinggi). Sekaligus energinya makin dekat ke telinga (Volume Keras)."
+        },
+        {
+            "id": 34,
+            "topic": "Resonansi",
+            "type": "theory",
+            "question": "<b>[LITERASI]</b> Jembatan Tacoma Narrows runtuh bukan karena beban berlebih, melainkan akibat tiupan angin yang beresonansi. Apa prinsip fisika yang harus dihindari insinyur dari kejadian resonansi mematikan ini?",
+            "options": [
+                "A. Jembatan harus dibuat seberat mungkin tanpa melihat kelenturan.",
+                "B. Mencegah frekuensi dorongan angin luar SAMA PERSIS dengan Frekuensi Alami struktur jembatan.",
+                "C. Jembatan baja dilarang dibangun di atas sungai berarus deras.",
+                "D. Menghilangkan seluruh fleksibilitas material baja.",
+                "E. Jembatan harus dibuat aerodinamis layaknya sayap pesawat."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Resonansi terjadi saat frekuensi usikan luar SAMA dengan frekuensi bawaan benda. Seperti mendorong ayunan pas pada ritmenya, amplitudo jembatan akan membesar tak terkendali hingga putus."
+        },
+        {
+            "id": 35,
+            "topic": "Listrik Statis (Triboelektrik)",
+            "type": "theory",
+            "question": "Ketika penggaris plastik digosokkan berulang kali ke kain wol, penggaris menjadi bermuatan negatif. Secara atomik, apa yang sebenarnya berpindah selama proses gosokan tersebut?",
+            "options": [
+                "A. Proton berpindah dari kain wol ke penggaris.",
+                "B. Elektron berpindah dari kain wol ke penggaris.",
+                "C. Elektron berpindah dari penggaris ke kain wol.",
+                "D. Inti atom pada plastik membelah menyerap kain.",
+                "E. Panas gosokan menciptakan listrik baru di penggaris."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Aturan emas: Proton terikat kuat di inti atom, tidak bisa pindah! Hanya ELEKTRON (di kulit terluar) yang lincah pindah. Karena plastik jadi negatif, berarti plastik menerima tambahan Elektron dari wol."
+        },
+        {
+            "id": 36,
+            "topic": "Hukum Coulomb (Modifikasi Angka)",
             "type": "calc",
-            "question": "Dua partikel bermuatan saling tolak-menolak dengan gaya sebesar <b>360 N</b>. Jika posisi keduanya dijauhkan sehingga jaraknya menjadi <b>3 kali lipat</b> dari jarak semula, berapakah gaya tolak-menolaknya sekarang?",
+            "question": "Dua partikel bermuatan listrik saling tolak-menolak dengan gaya Coulomb sebesar <b>360 N</b>. Jika keduanya dijauhkan sehingga jaraknya menjadi <b>3 kali lipat</b> lebih jauh, berapakah gaya tolak-menolaknya sekarang?",
             "options": [
                 "A. 120 N",
                 "B. 90 N",
-                "C. 60 N",
-                "D. 40 N"
+                "C. 40 N",
+                "D. 20 N",
+                "E. 0 N"
             ],
-            "answer": 3,
-            "tutor": "♟️ Bisikan Tutor: Gaya listrik sangat sensitif terhadap jarak dengan pola kuadrat terbalik (1/r&sup2;). Jika jarak dijauhkan 3x, gayanya melemah menjadi 1/(3&sup2;) atau 1/9 kalinya. 360 N dibagi 9 = 40 N."
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Gaya listrik melemah secara KUADRAT jika dijauhkan (1/r&sup2;). Jika jarak 3x lipat, gaya akan melemah menjadi 1/(3&sup2;) atau 1/9 kalinya. 360 N dibagi 9 sama dengan 40 N."
+        },
+        {
+            "id": 37,
+            "topic": "Rangkaian Listrik",
+            "type": "logic",
+            "question": "Anda menyusun dua lampu identik. Pada Rangkaian A, lampu disusun <b>Seri</b>. Pada Rangkaian B, lampu disusun <b>Paralel</b>. Menggunakan baterai yang sama kuat, manakah yang menyala lebih terang totalnya dan mengapa?",
+            "options": [
+                "A. Rangkaian Seri, karena arus difokuskan pada satu jalur utuh.",
+                "B. Rangkaian Paralel, karena masing-masing lampu mendapat tegangan/voltase penuh dari baterai.",
+                "C. Keduanya menyala sama terangnya.",
+                "D. Rangkaian Seri, karena hambatan totalnya lebih kecil.",
+                "E. Rangkaian Paralel, karena mengkonsumsi listrik paling hemat."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Seri itu berbagi jatah (tegangan 12V dibagi dua jadi 6V) sehingga meredup. Paralel itu jalur mandiri, tiap lampu dapat jatah tegangan penuh (12V) sehingga menyala terang maksimal."
+        },
+        {
+            "id": 38,
+            "topic": "Korsleting (Short Circuit)",
+            "type": "logic",
+            "question": "Sebuah bola lampu dihubungkan ke baterai, namun di tengah jalan ada kabel kosong tanpa hambatan yang menghubungkan langsung kutub positif ke negatif. Mengapa lampu tersebut tidak mau menyala?",
+            "options": [
+                "A. Baterai otomatis rusak saat mendeteksi kabel cabang.",
+                "B. Arus listrik di kabel terbelah dua sama rata.",
+                "C. Arus memilih melewati jalur termudah (kabel kosong) dan sama sekali 'mencuekin' hambatan lampu.",
+                "D. Tegangan di lampu menjadi terlalu besar hingga putus.",
+                "E. Elektron kehilangan arah tujuannya."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Filosofi air sungai: Arus listrik itu malas, selalu mencari 'Jalan Tol' dengan hambatan terkecil. Adanya kabel bypass tanpa hambatan membuat semua arus lewat situ. Inilah definisi Korsleting."
+        },
+        {
+            "id": 39,
+            "topic": "Keamanan Listrik",
+            "type": "theory",
+            "question": "Sekering (fuse) adalah perangkat keamanan rumah yang berisi kawat tipis di dalamnya. Bagaimana cara kerja sekering dalam melindungi rumah dari ancaman kebakaran akibat korsleting?",
+            "options": [
+                "A. Meniupkan udara dingin untuk menetralisir suhu kabel panas.",
+                "B. Bertindak sebagai resistor permanen untuk mengerem laju arus.",
+                "C. Kawat tipis sengaja dibuat cepat meleleh dan putus saat arus kepanasan, sehingga mematikan total listrik.",
+                "D. Menambah ekstra tegangan untuk menstabilkan arus liarnya.",
+                "E. Mengalirkan sisa arus berlebih langsung ke tanah (grounding)."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Fuse adalah 'pahlawan tumbal'. Saat arus berlebih bikin kabel panas (risiko kebakaran), kawat di dalam fuse akan kepanasan lebih dulu, lalu putus. Rangkaian mati seketika, rumah pun selamat."
+        },
+        {
+            "id": 40,
+            "topic": "Listrik Statis (Penangkal Petir)",
+            "type": "theory",
+            "question": "<b>[LITERASI]</b> Gedung pencakar langit menggunakan penangkal petir berbahan logam murni. Secara konsep distribusi muatan listrik statis, mengapa ujung atas penangkal petir selalu dibuat <b>runcing dan tajam</b>, bukan tumpul seperti kubah?",
+            "options": [
+                "A. Agar desainnya menyatu secara estetik dengan gedung pencakar langit.",
+                "B. Muatan listrik statis sangat mudah berkumpul padat di area sempit/runcing, mempermudah ionisasi udara menangkap petir.",
+                "C. Ujung runcing lebih hemat material tembaga.",
+                "D. Agar petir yang datang tertusuk dan terpantul kembali ke langit.",
+                "E. Memudahkan air hujan jatuh agar tidak berkarat."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Sifat listrik statis di konduktor: elektron selalu suka berdesak-desakan di ujung yang melengkung tajam/runcing. Kepadatan elektron ini mempermudah alat tersebut menembak ion ke udara untuk menjemput kilat."
         }
     ]
     </script>
 
     <script>
-        // 1. Ambil data JSON dari tag script
+        // 1. Ambil data JSON
         const rawData = document.getElementById('database-soal').textContent;
         const questions = JSON.parse(rawData);
 
-        // 2. Deklarasi Variabel State
-        let currentQuestionIndex = 0;
-        let score = 0;
+        // 2. State Management
+        let currentIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null); 
+        let isNavOpen = true; // Default navigasi terbuka saat awal dimuat
 
         // Element DOM
+        const navGridWrapper = document.getElementById('nav-grid-wrapper');
+        const navContainer = document.getElementById('nav-container');
+        const toggleNavIcon = document.getElementById('toggle-nav-icon');
         const qTopic = document.getElementById('q-topic');
         const qText = document.getElementById('q-text');
         const optionsContainer = document.getElementById('options-container');
-        const currentQEl = document.getElementById('current-q');
-        const totalQEl = document.getElementById('total-q');
-        const progressBar = document.getElementById('progress-bar');
+        const currentQNum = document.getElementById('current-q-num');
+        const progressText = document.getElementById('progress-text');
+        
         const feedbackContainer = document.getElementById('feedback-container');
         const feedbackTitle = document.getElementById('feedback-title');
         const feedbackTutor = document.getElementById('feedback-tutor');
         const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        
         const quizContainer = document.getElementById('quiz-container');
         const resultContainer = document.getElementById('result-container');
         const finalScoreEl = document.getElementById('final-score');
 
-        // Inisialisasi awal
-        totalQEl.innerText = questions.length;
-        loadQuestion();
+        // Inisialisasi
+        initQuiz();
 
-        function loadQuestion() {
-            // Reset UI
+        function initQuiz() {
+            // Set navigasi terbuka
+            navGridWrapper.classList.add('open');
+            renderNav();
+            loadQuestion(currentIndex);
+        }
+
+        // Fungsi Buka/Tutup Navigasi (Accordion style)
+        function toggleNav() {
+            isNavOpen = !isNavOpen;
+            if (isNavOpen) {
+                navGridWrapper.classList.add('open');
+                toggleNavIcon.style.transform = "rotate(0deg)";
+            } else {
+                navGridWrapper.classList.remove('open');
+                toggleNavIcon.style.transform = "rotate(-90deg)"; // Panah menghadap kanan jika ditutup
+            }
+        }
+
+        // Render Navigasi Grid
+        function renderNav() {
+            navContainer.innerHTML = '';
+            let answeredCount = 0;
+
+            questions.forEach((q, i) => {
+                const btn = document.createElement('button');
+                // Mengubah desain tombol agar pas di dalam grid
+                btn.className = `nav-btn aspect-square w-full rounded-xl font-bold flex items-center justify-center border-2 border-transparent text-sm sm:text-base`;
+                
+                if (userAnswers[i] !== null) {
+                    answeredCount++;
+                    if (userAnswers[i].isCorrect) {
+                        btn.classList.add('bg-teal-400', 'text-white', 'shadow-sm'); 
+                    } else {
+                        btn.classList.add('bg-rose-400', 'text-white', 'shadow-sm'); 
+                    }
+                } else {
+                    btn.classList.add('bg-gray-100', 'text-gray-600', 'hover:bg-gray-200'); 
+                }
+
+                if (i === currentIndex) {
+                    btn.classList.add('ring-4', 'ring-pink-300', 'scale-105', 'z-10');
+                }
+
+                btn.innerText = i + 1;
+                btn.onclick = () => loadQuestion(i);
+                navContainer.appendChild(btn);
+            });
+
+            progressText.innerText = `${answeredCount}/${questions.length} Terjawab`;
+
+            if (answeredCount === questions.length) {
+                nextBtn.classList.add('hidden');
+                finishBtn.classList.remove('hidden');
+            }
+        }
+
+        function loadQuestion(index) {
+            currentIndex = index;
+            const q = questions[currentIndex];
+            const ansState = userAnswers[currentIndex];
+            
+            renderNav();
+
             feedbackContainer.classList.add('hidden');
             nextBtn.classList.add('hidden');
             optionsContainer.innerHTML = '';
             
-            const q = questions[currentQuestionIndex];
-            
-            // Update Text & Progress
             qTopic.innerText = q.topic;
-            qText.innerHTML = q.question; // Pakai innerHTML agar tag <b> atau <i> di JSON bisa dirender
-            currentQEl.innerText = currentQuestionIndex + 1;
-            progressBar.style.width = `${((currentQuestionIndex) / questions.length) * 100}%`;
+            qText.innerHTML = q.question;
+            currentQNum.innerText = currentIndex + 1;
 
-            // Render Options
-            q.options.forEach((opt, index) => {
+            q.options.forEach((opt, optIndex) => {
                 const btn = document.createElement('button');
-                btn.className = "option-btn w-full text-left bg-gray-50 hover:bg-indigo-50 border-2 border-gray-200 hover:border-indigo-400 text-gray-700 font-medium py-3 px-5 rounded-xl";
+                btn.className = "bouncy-btn w-full text-left bg-white border-4 border-gray-100 hover:border-pink-200 text-gray-700 font-semibold py-4 px-6 rounded-2xl";
                 btn.innerHTML = opt;
-                btn.onclick = () => checkAnswer(index, btn);
+                
+                if (ansState === null) {
+                    btn.onclick = () => handleAnswer(optIndex);
+                } else {
+                    btn.disabled = true;
+                    btn.classList.remove('bouncy-btn', 'hover:border-pink-200');
+                    
+                    if (optIndex === q.answer) {
+                        btn.classList.replace('border-gray-100', 'border-teal-400');
+                        btn.classList.replace('bg-white', 'bg-teal-50');
+                    } else if (optIndex === ansState.selected && !ansState.isCorrect) {
+                        btn.classList.replace('border-gray-100', 'border-rose-400');
+                        btn.classList.replace('bg-white', 'bg-rose-50');
+                    }
+                }
                 optionsContainer.appendChild(btn);
             });
+
+            if (ansState !== null) {
+                showFeedback(ansState.isCorrect, q);
+            }
         }
 
-        function checkAnswer(selectedIndex, btnElement) {
-            const q = questions[currentQuestionIndex];
+        function handleAnswer(selectedIndex) {
+            const q = questions[currentIndex];
             const isCorrect = (selectedIndex === q.answer);
-            const allButtons = optionsContainer.querySelectorAll('button');
 
-            // Disable all buttons
-            allButtons.forEach(btn => btn.disabled = true);
+            userAnswers[currentIndex] = {
+                selected: selectedIndex,
+                isCorrect: isCorrect
+            };
 
-            if (isCorrect) {
-                score++;
-                btnElement.classList.replace('bg-gray-50', 'bg-green-100');
-                btnElement.classList.replace('border-gray-200', 'border-green-500');
-                btnElement.classList.add('text-green-800');
-                
-                feedbackContainer.className = "mt-8 border-l-4 rounded-r-lg p-5 bg-green-50 border-green-500 animate-fade-in";
-                feedbackTitle.innerText = "✨ Tepat Sekali!";
-                feedbackTitle.className = "font-bold text-lg mb-2 text-green-700";
-            } else {
-                btnElement.classList.replace('bg-gray-50', 'bg-red-100');
-                btnElement.classList.replace('border-gray-200', 'border-red-500');
-                btnElement.classList.add('text-red-800');
-
-                // Highlight correct answer
-                allButtons[q.answer].classList.replace('bg-gray-50', 'bg-green-100');
-                allButtons[q.answer].classList.replace('border-gray-200', 'border-green-500');
-                
-                feedbackContainer.className = "mt-8 border-l-4 rounded-r-lg p-5 bg-orange-50 border-orange-500 animate-fade-in";
-                feedbackTitle.innerText = "💡 Kurang Tepat, Mari Pelajari!";
-                feedbackTitle.className = "font-bold text-lg mb-2 text-orange-700";
+            // Otomatis tutup navigasi saat user menjawab soal agar fokus
+            if (isNavOpen) {
+                toggleNav();
             }
 
-            // Tampilkan Bisikan Tutor
-            feedbackTutor.innerHTML = q.tutor;
+            loadQuestion(currentIndex);
+        }
+
+        function showFeedback(isCorrect, q) {
             feedbackContainer.classList.remove('hidden');
-            nextBtn.classList.remove('hidden');
+            
+            if (isCorrect) {
+                feedbackContainer.className = "mt-8 border-l-8 rounded-2xl p-6 bg-teal-50 border-teal-400 shadow-sm animate-fade-in";
+                feedbackTitle.innerHTML = "✅ Tepat Sekali!";
+                feedbackTitle.className = "font-extrabold text-xl mb-2 text-teal-700";
+            } else {
+                feedbackContainer.className = "mt-8 border-l-8 rounded-2xl p-6 bg-rose-50 border-rose-400 shadow-sm animate-fade-in";
+                feedbackTitle.innerHTML = "💡 Kurang Tepat, Mari Pelajari!";
+                feedbackTitle.className = "font-extrabold text-xl mb-2 text-rose-700";
+            }
+
+            feedbackTutor.innerHTML = q.tutor;
+
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            
+            if (answeredCount === questions.length) {
+                nextBtn.classList.add('hidden');
+                finishBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                finishBtn.classList.add('hidden');
+            }
         }
 
         nextBtn.onclick = () => {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                loadQuestion();
-            } else {
-                showResult();
+            let nextIndex = currentIndex + 1;
+            while (nextIndex < questions.length && userAnswers[nextIndex] !== null) {
+                nextIndex++;
+            }
+            if (nextIndex >= questions.length) {
+                nextIndex = userAnswers.indexOf(null);
+            }
+            
+            if (nextIndex !== -1) {
+                loadQuestion(nextIndex);
             }
         };
 
-        function showResult() {
-            quizContainer.classList.add('hidden');
-            progressBar.style.width = `100%`;
+        finishBtn.onclick = () => {
+            document.getElementById('app-container').classList.add('hidden');
             resultContainer.classList.remove('hidden');
             
-            const percentage = Math.round((score / questions.length) * 100);
-            finalScoreEl.innerText = percentage;
-        }
+            const correctCount = userAnswers.filter(a => a && a.isCorrect).length;
+            const percentage = Math.round((correctCount / questions.length) * 100);
+            
+            let currentScore = 0;
+            const scoreInterval = setInterval(() => {
+                finalScoreEl.innerText = currentScore;
+                if (currentScore >= percentage) {
+                    clearInterval(scoreInterval);
+                    finalScoreEl.innerText = percentage;
+                }
+                currentScore++;
+            }, 15);
+        };
     </script>
 </body>
 </html>
