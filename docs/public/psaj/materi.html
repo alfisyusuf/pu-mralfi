@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Rangkuman PSAJ Fisika | Candy Pop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 40%, #A18CD1 100%);
+            background-attachment: fixed;
+        }
+        
+        /* Typography Styling */
+        .prose p, .prose li { 
+            margin-bottom: 0.75rem; 
+            line-height: 1.6; 
+            color: #4b5563; 
+            font-size: 1.05rem;
+        }
+        .prose strong { 
+            color: #1f2937; 
+            font-weight: 800;
+            background: linear-gradient(120deg, #fbcfe8 0%, #fbcfe8 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 30%;
+            background-position: 0 80%;
+        }
+        
+        .bouncy-btn { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .bouncy-btn:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15); }
+        
+        .toc-link { transition: all 0.2s ease; border-left: 3px solid transparent; }
+        .toc-link:hover { border-left: 3px solid #ec4899; padding-left: 0.5rem; color: #db2777; background-color: #fdf2f8; }
+
+        #read-progress { transform-origin: left; transform: scaleX(0); transition: transform 0.1s ease; }
+    </style>
+</head>
+<body class="min-h-screen text-gray-800">
+
+    <div class="fixed top-0 left-0 w-full h-1.5 bg-white/30 z-[60]">
+        <div id="read-progress" class="h-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500"></div>
+    </div>
+
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b-2 border-pink-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+            <div class="flex flex-col">
+                <h1 class="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500 tracking-tight">
+                    🍭 Rangkuman PSAJ
+                </h1>
+                <span class="text-xs font-bold text-gray-400">Mr. Alfi</span>
+            </div>
+            <a href="latihan-psaj.html" class="bouncy-btn bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-bold py-2.5 px-6 rounded-full shadow-md text-sm sm:text-base flex items-center gap-2">
+                <span>Tes Kemampuanmu</span>
+                <span>&rarr;</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col lg:flex-row gap-8 items-start">
+        
+        <aside class="w-full lg:w-1/4 shrink-0 lg:sticky lg:top-28 z-10">
+            <div class="bg-white/95 backdrop-blur-sm rounded-[2rem] shadow-xl border-4 border-white p-6">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="text-2xl">⚡</span>
+                    <h2 class="text-lg font-black text-gray-800 uppercase tracking-widest text-sm bg-pink-100 text-pink-600 px-3 py-1 rounded-full inline-block">Peta Konsep</h2>
+                </div>
+                <ul class="space-y-2 text-sm sm:text-base font-bold text-gray-500 mt-4">
+                    <li><a href="#bab-1" class="toc-link block py-2 rounded-lg text-gray-700">1. Pengukuran & Gerak</a></li>
+                    <li><a href="#bab-2" class="toc-link block py-2 rounded-lg text-gray-700">2. Gaya & Newton</a></li>
+                    <li><a href="#bab-3" class="toc-link block py-2 rounded-lg text-gray-700">3. Usaha & Energi</a></li>
+                    <li><a href="#bab-4" class="toc-link block py-2 rounded-lg text-gray-700">4. Fluida & Kalor</a></li>
+                    <li><a href="#bab-5" class="toc-link block py-2 rounded-lg text-gray-700">5. Gelombang & Listrik</a></li>
+                </ul>
+
+                <div class="mt-8 p-4 bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl border-2 border-cyan-100 text-center">
+                    <p class="text-xs font-bold text-cyan-700 mb-1">💡 Tips Mr. Alfi</p>
+                    <p class="text-xs text-cyan-600 font-semibold leading-relaxed">Fisika itu tentang logika sebab-akibat. Pahami konsepnya di sini agar tidak terjebak di ujian!</p>
+                </div>
+            </div>
+        </aside>
+
+        <article class="w-full lg:w-3/4 bg-white/95 backdrop-blur-sm rounded-[2.5rem] shadow-2xl border-4 border-white p-6 sm:p-10 md:p-12 prose max-w-none relative overflow-hidden">
+            
+            <div class="border-b-4 border-gray-100 pb-6 mb-8 text-center relative z-10">
+                <h1 class="text-3xl md:text-5xl font-black text-gray-800 leading-tight mb-2">Cheat Sheet <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">PSAJ Fisika</span></h1>
+                <p class="text-gray-500 font-semibold text-lg max-w-2xl mx-auto">Ringkasan "Bisikan Tutor" untuk menjawab semua tipe soal.</p>
+            </div>
+
+            <section id="bab-1" class="mb-14 scroll-mt-32">
+                <div class="flex items-center gap-3 mb-4 bg-pink-100 p-3 rounded-2xl">
+                    <span class="text-3xl">📏</span>
+                    <h2 class="text-2xl font-extrabold text-pink-700 m-0">BAB 1: Pengukuran & Kinematika Gerak</h2>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                    <ul class="list-disc pl-5 space-y-3">
+                        <li><strong>Angka Penting:</strong> Angka nol di belakang koma (misal 2,50 mm) BUKAN pajangan. Itu menunjukkan <em>ketelitian</em> alat ukur (seperti Mikrometer).</li>
+                        <li><strong>Zero Error:</strong> Jika timbangan kosong sudah menunjuk angka 0,5 gram, itu adalah <em>Kesalahan Sistematis</em>. Kurangi hasil akhir dengan angka ini!</li>
+                        <li><strong>Jarak vs Perpindahan:</strong> Pelari lari 1 putaran balik ke start. Jarak = keliling lapangan. Perpindahan = 0 (karena posisi awal dan akhir sama).</li>
+                        <li><strong>Grafik Kecepatan (v-t):</strong> Benda bergerak dengan kecepatan konstan (tanpa gas/rem) ditunjukkan oleh garis yang <strong>mendatar (horizontal)</strong>.</li>
+                        <li><strong>Jatuh Bebas vs Parabola:</strong>  Gerak vertikal dan horizontal itu <em>independen</em>. Benda jatuh lurus dan benda dilempar mendatar dari ketinggian yang sama akan <strong>jatuh bersamaan</strong>!</li>
+                        <li><strong>Jarak Pengereman (GLBB):</strong> Jarak henti berbanding lurus dengan kuadrat kecepatan ($v^2$). Jika kecepatan naik 3x lipat, jarak henti melonjak <strong>9x lipat</strong> ($3^2 = 9$).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="bab-2" class="mb-14 scroll-mt-32">
+                <div class="flex items-center gap-3 mb-4 bg-violet-100 p-3 rounded-2xl">
+                    <span class="text-3xl">🍎</span>
+                    <h2 class="text-2xl font-extrabold text-violet-700 m-0">BAB 2: Dinamika (Hukum Newton) & Gravitasi</h2>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                    <ul class="list-disc pl-5 space-y-3">
+                        <li><strong>Hukum 1 (Inersia):</strong> Alasan kita terdorong ke depan saat bus direm adalah <em>Inersia</em> (sifat malas benda untuk mengubah geraknya).</li>
+                        <li><strong>Hukum 2 (F = m.a):</strong> Massa dan percepatan berbanding terbalik. Jika benda diubah jadi 3x lebih berat, percepatannya menjadi <strong>1/3 kalinya</strong>.</li>
+                        <li><strong>Hukum 3 (Aksi-Reaksi):</strong> Truk menabrak nyamuk. Gaya keduanya <strong>SAMA BESAR</strong>. Nyamuk hancur cuma karena massanya sangat kecil.</li>
+                        <li><strong>Gaya Gesek Statis:</strong> Jika kamu dorong lemari dengan gaya 80 N dan lemari TETAP DIAM, berarti gaya gesek lantainya persis <strong>80 N</strong>.</li>
+                        <li><strong>Berat Semu Lift:</strong> Jika kabel lift putus (jatuh bebas), timbangan di bawah kaki akan membaca <strong>Nol (0)</strong>.</li>
+                        <li><strong>Massa vs Berat:</strong> Massa (jumlah zat) <strong>selalu tetap</strong> di mana saja. Berat (W=mg) <strong>berubah</strong> tergantung tarikan gravitasi planet.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="bab-3" class="mb-14 scroll-mt-32">
+                <div class="flex items-center gap-3 mb-4 bg-cyan-100 p-3 rounded-2xl">
+                    <span class="text-3xl">🎢</span>
+                    <h2 class="text-2xl font-extrabold text-cyan-700 m-0">BAB 3: Usaha, Energi & Momentum</h2>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                    <ul class="list-disc pl-5 space-y-3">
+                        <li><strong>Usaha Nol:</strong> Jika pelayan menahan nampan (gaya ke ATAS) lalu berjalan lurus ke SAMPING (sudut 90 derajat), maka Usaha fisikanya = <strong>Nol</strong>.</li>
+                        <li><strong>Energi Roller Coaster:</strong> Saat meluncur turun, Energi Potensial berkurang, diubah jadi Energi Kinetik. Tapi total keduanya (Energi Mekanik) <strong>selalu konstan</strong>.</li>
+                        <li><strong>Usaha vs Daya:</strong> Dua anak bermassa sama naik tangga yang sama. Usaha mereka SAMA. Tapi anak yang berlarinya lebih cepat menghasilkan <strong>Daya (Power) yang lebih besar</strong>.</li>
+                        <li><strong>Airbag & Crumple Zone:</strong>  Tujuannya memanipulasi Impuls. Dengan memperpanjang <em>waktu benturan</em> ($\Delta t$), maka <em>Gaya mematikan</em> ($F$) yang diterima tubuh akan mengecil drastis.</li>
+                        <li><strong>Tumbukan:</strong> Tumbukan <em>Tidak Lenting Sama Sekali</em> adalah jenis tabrakan yang paling banyak "menghilangkan" energi kinetik (berubah jadi bodi penyok/kerusakan parah).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="bab-4" class="mb-14 scroll-mt-32">
+                <div class="flex items-center gap-3 mb-4 bg-amber-100 p-3 rounded-2xl">
+                    <span class="text-3xl">🌊</span>
+                    <h2 class="text-2xl font-extrabold text-amber-700 m-0">BAB 4: Fluida & Suhu Kalor</h2>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                    <ul class="list-disc pl-5 space-y-3">
+                        <li><strong>Hukum Archimedes:</strong> Benda terapung di air. Jika dipindah ke minyak (cairan yang lebih ringan), benda harus mencelupkan bodinya <strong>lebih dalam</strong> agar tetap mengapung.</li>
+                        <li><strong>Asas Bernoulli:</strong> 
+
+[Image of airplane wing cross section showing Bernoulli principle]
+ Sayap pesawat melengkung di atas agar udara lari lebih <em>Cepat</em>, sehingga Tekanannya <em>Turun</em>. Tekanan tinggi dari bawah akan mengangkat sayap.</li>
+                        <li><strong>Bendungan (Hidrostatis):</strong> Tekanan air sebanding dengan kedalaman. Tembok bendungan di bagian dasar <strong>sangat tebal</strong> untuk menahan tekanan air bawah yang raksasa.</li>
+                        <li><strong>Rasa Dingin Logam:</strong> Logam terasa dingin bukan karena suhunya rendah, tapi karena logam adalah <strong>konduktor super</strong> yang menyedot panas tubuh kita dengan cepat.</li>
+                        <li><strong>Kalor Jenis:</strong> Air laut sejuk di siang terik karena Air memiliki <em>Kalor Jenis ($c$) yang besar</em> (butuh energi sangat banyak hanya untuk memanaskannya sedikit).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="bab-5" class="mb-14 scroll-mt-32">
+                <div class="flex items-center gap-3 mb-4 bg-emerald-100 p-3 rounded-2xl">
+                    <span class="text-3xl">⚡</span>
+                    <h2 class="text-2xl font-extrabold text-emerald-700 m-0">BAB 5: Gelombang, Bunyi & Kelistrikan</h2>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                    <ul class="list-disc pl-5 space-y-3">
+                        <li><strong>Sifat Gelombang:</strong> Bunyi butuh medium/udara (Mekanik). Cahaya bisa lewat ruang hampa angkasa (Elektromagnetik).</li>
+                        <li><strong>Efek Doppler:</strong> Ambulans mendekat kencang -> gelombang tertekan padat -> Frekuensi naik (Nada/Pitch makin <strong>tinggi</strong>) dan Volume makin <strong>keras</strong>.</li>
+                        <li><strong>Resonansi:</strong> Jembatan runtuh tertiup angin jika frekuensi angin SAMA PERSIS dengan <strong>frekuensi alami</strong> jembatan (ayunan makin membesar).</li>
+                        <li><strong>Hukum Coulomb:</strong> Gaya listrik sensitif jarak. Jika jarak dijauhkan 3x lipat, gaya tolaknya melemah secara kuadrat menjadi <strong>1/9 kalinya</strong> ($3^2=9$).</li>
+                        <li><strong>Rangkaian Listrik:</strong> Dirangkai <em>Seri</em> nyala redup (tegangan dibagi). Dirangkai <em>Paralel</em> menyala <strong>terang</strong> (tiap lampu dapat tegangan penuh).</li>
+                        <li><strong>Korsleting:</strong> Arus listrik itu malas. Jika ada kabel kosong menyambung langsung kutub +/- tanpa hambatan, arus akan memilih "jalan tol" itu dan mencuekin lampu.</li>
+                        <li><strong>Penangkal Petir:</strong>  Ujungnya dibuat tajam/runcing karena muatan statis <strong>paling padat berkumpul di area sempit</strong>, sehingga mempermudah proses menangkap petir.</li>
+                    </ul>
+                </div>
+            </section>
+
+        </article>
+    </main>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height);
+            document.getElementById('read-progress').style.transform = `scaleX(${scrolled})`;
+        });
+    </script>
+</body>
+</html>
