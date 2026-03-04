@@ -1,0 +1,604 @@
+<script id="database-soal" type="application/json">
+[
+    {
+        "id": 1,
+        "topic": "Measurement & Vectors",
+        "type": "theory",
+        "question": "A student measures the thickness of a wire using a Micrometer Screw Gauge and records the result as <b>2.50 mm</b>. Why is the zero at the end (2.50) significant?",
+        "options": [
+            "A. It makes the number look more scientific.",
+            "B. It indicates the instrument measures up to 0.01 mm precision.",
+            "C. It shows that the wire is exactly 2.5 mm with no error.",
+            "D. Zeros after a decimal point are never significant.",
+            "E. It is just a placeholder and has no meaning."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Angka nol di belakang koma itu penting! Menulis 2,5 mm (pakai penggaris biasa) beda artinya dengan 2,50 mm (pakai alat ukur super teliti). Nol ini bukti bahwa alatnya sangat akurat."
+    },
+    {
+        "id": 2,
+        "topic": "Measurement & Vectors",
+        "type": "theory",
+        "question": "The formula for the period (T) of a simple pendulum depends on the length of the string (L) and gravity (g). Given that T has dimension [T], L has dimension [L], and g has dimension [L][T]&supmin;&sup2;. Which of the following formulas is <b>dimensionally consistent</b> (logically correct)?",
+        "options": [
+            "A. T = 2&pi; &radic;(g/L)",
+            "B. T = 2&pi; &radic;(L/g)",
+            "C. T = 2&pi; (L &middot; g)",
+            "D. T = 2&pi; (g / L&sup2;)",
+            "E. T = 2&pi; (L + g)"
+        ],
+        "answer": 0,
+        "tutor": "♟️ Bisikan Tutor: Coba cek rumus di sebelah kanan. L dibagi g itu jadinya T&sup2;. Nah, karena ada tanda akar (&radic;), T&sup2; berubah jadi T saja. Cocok kan dengan huruf T di sebelah kiri? Tinggal disamakan saja!"
+    },
+    {
+        "id": 3,
+        "topic": "Pengukuran (Metode Ilmiah)",
+        "type": "theory",
+        "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Kemajuan teknologi telah membawa timbangan digital ke laboratorium, menggantikan neraca manual. Namun, kemudahan ini sering membuat pengguna lengah terhadap kalibrasi titik nol.</p><p class='mb-2'>Sebuah insiden lazim adalah <i>Zero Error</i> (Kesalahan Nol). Ini terjadi ketika layar sudah membaca angka tertentu padahal timbangan kosong, atau lupa menekan tombol 'Tare'. Penyimpangan ini dikategorikan sebagai Kesalahan Sistematis.</p><p class='mb-2'>Sifat dasar kesalahan sistematis adalah sangat konsisten. Jika sejak awal timbangan sudah memiliki 'kelebihan beban' 0,5 gram, dan hasil akhir menimbang zat menunjukkan 10,5 gram, apa jenis kesalahan Andi dan berapa massa zat sebenarnya?</p>",
+        "options": [
+            "A. Kesalahan Acak; massa sebenarnya 10,5 gram.",
+            "B. Kesalahan Paralaks; massa sebenarnya 10,0 gram.",
+            "C. Kesalahan Sistematis; massa sebenarnya 10,0 gram.",
+            "D. Kesalahan Sistematis; massa sebenarnya 11,0 gram.",
+            "E. Kesalahan Hitung; massa sebenarnya 10,5 gram."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Kalau timbangan kosong tapi angkanya sudah ada (0,5), itu namanya 'Kesalahan Sistematis'. Cara benarnya gampang: Total angka (10,5) tinggal dikurangi angka eror tadi (0,5). Jadi aslinya 10,0 gram."
+    },
+    {
+        "id": 4,
+        "topic": "Kinematics",
+        "type": "theory",
+        "question": "A runner completes one full lap around a 400-meter circular track and returns exactly to the starting line. Which statement is correct about his motion?",
+        "options": [
+            "A. His distance is 0 m, and displacement is 400 m.",
+            "B. His distance is 400 m, and displacement is 400 m.",
+            "C. His distance is 400 m, and displacement is 0 m.",
+            "D. Both distance and displacement are 0 m.",
+            "E. Velocity is 400 m/s."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Jarak (Distance) itu total langkah kaki kita (400 m). Perpindahan (Displacement) itu cuma dilihat posisi awal dan akhir. Kalau pelari balik lagi ke garis start, berarti posisinya tidak berubah sama sekali, jadi perpindahannya 0."
+    },
+    {
+        "id": 5,
+        "topic": "Kinematics",
+        "type": "theory",
+        "question": "The graph above shows the velocity of a train moving between two stations. Which part of the graph represents the train moving with <b>constant velocity</b> (zero acceleration)?",
+        "options": [
+            "A. The part where the line goes up.",
+            "B. The part where the line is horizontal (flat).",
+            "C. The part where the line goes down.",
+            "D. The area under the graph.",
+            "E. The point where velocity is zero."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Di grafik v-t, cari garis yang lurus mendatar. Mendatar artinya angkanya tetap. Kecepatan tetap = keretanya tidak ngegas dan tidak ngerem."
+    },
+    {
+        "id": 6,
+        "topic": "Kinematics",
+        "type": "theory",
+        "question": "Two identical metal balls, A and B, are released from the same height at the exact same time. Ball A is dropped straight down (Free Fall). Ball B is thrown horizontally to the right (Projectile). Ignoring air resistance, which ball hits the ground first?",
+        "options": [
+            "A. Ball A hits first because it travels a shorter distance.",
+            "B. Ball B hits first because it has initial speed.",
+            "C. Ball A hits first because gravity acts stronger on it.",
+            "D. Both hit the ground at the same time.",
+            "E. It depends on how fast Ball B is thrown."
+        ],
+        "answer": 3,
+        "tutor": "♟️ Bisikan Tutor: Gerak jatuh ke bawah dan gerak maju ke samping itu beda urusan. Ke arah bawah, dua-duanya cuma ditarik gravitasi bumi dari tinggi yang sama. Jadi, mau dilempar sekuat apa pun ke depan, pasti jatuhnya barengan!"
+    },
+    {
+        "id": 7,
+        "topic": "Kinematics",
+        "type": "theory",
+        "question": "Look at the position-time graph below for a moving car. (Visual: A straight diagonal line going up, representing constant positive velocity). What does the <b>slope</b> (steepness) of this line represent?",
+        "options": [
+            "A. The total distance traveled.",
+            "B. The acceleration of the car.",
+            "C. The velocity of the car.",
+            "D. The force applied to the car.",
+            "E. The time taken."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Garis miring di grafik posisi/jarak (s) terhadap waktu (t) itu menunjukkan Kecepatan. Makin miring garisnya ke atas, berarti bendanya makin cepat bergeraknya."
+    },
+    {
+        "id": 8,
+        "topic": "Kinematics",
+        "type": "logic",
+        "question": "A boat wants to cross a river directly to the opposite bank. The river current flows fast to the <b>East</b>. To reach the point directly across (North), in which direction should the captain steer the boat?",
+        "options": [
+            "A. Directly North.",
+            "B. North-East (following the current).",
+            "C. North-West (fighting against the current).",
+            "D. East (with the current).",
+            "E. It is impossible to cross directly."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Kalau air sungai mendorong perahu ke arah Kanan (Timur), kapten harus mengarahkan kemudi agak belok ke Kiri (Barat) biar jalannya tetap lurus ke depan (Utara). Jadi arahnya Barat Laut (North-West)."
+    },
+    {
+        "id": 9,
+        "topic": "GLBB - Jarak Pengereman",
+        "type": "calc",
+        "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Polisi lalu lintas rutin mengampanyekan slogan 'Jangan Ngebut'. Secara fisika, menekan pedal rem tidak membuat mobil berhenti seketika. Ada jarak pengereman (<i>braking distance</i>) yang ditempuh sejak rem diinjak hingga berhenti total.</p><p class='mb-2'>Secara matematis, jarak pengereman tidak berbanding lurus dengan kecepatan, melainkan berbanding lurus dengan <b>kuadrat kecepatannya (v&sup2;)</b>. Hal ini terkait Hukum Kekekalan Energi, di mana kerja rem harus setara dengan energi kinetik mobil.</p><p class='mb-2'>Jika sebuah mobil yang melaju 20 km/jam membutuhkan jarak 5 meter untuk berhenti mendadak, berapakah jarak minimal yang dibutuhkan untuk berhenti jika mobil tersebut melaju dengan kecepatan 60 km/jam (3 kali lebih cepat)?</p>",
+        "options": [
+            "A. 15 meter",
+            "B. 25 meter",
+            "C. 30 meter",
+            "D. 45 meter",
+            "E. 90 meter"
+        ],
+        "answer": 3,
+        "tutor": "♟️ Bisikan Tutor: Kecepatan mobilnya naik 3x lipat. Ingat, jarak rem itu rumusnya dikuadratkan (pangkat dua). Jadi jaraknya naik 3&sup2; = 9x lipat! Jarak awal 5 meter dikali 9 = 45 meter."
+    },
+    {
+        "id": 10,
+        "topic": "Kinematics",
+        "type": "theory",
+        "question": "A skydiver jumps from a plane. Initially, he accelerates down. As his speed increases, the air resistance pushing him up also increases. Eventually, the air resistance force becomes <b>equal</b> to his weight (gravity). What happens to his motion at that specific moment?",
+        "options": [
+            "A. He stops moving instantly in mid-air.",
+            "B. He starts moving upwards.",
+            "C. He continues falling but with constant velocity (Terminal Velocity).",
+            "D. He continues accelerating but at a slower rate.",
+            "E. His weight becomes zero."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Gaya tarik ke bawah (berat badan) sama dengan gaya dorong ke atas (angin). Karena sudah seimbang (total gaya = 0), penerjun tidak tambah cepat lagi, tapi terus turun dengan kecepatan tetap."
+    },
+    {
+        "id": 11,
+        "topic": "Dynamics",
+        "type": "theory",
+        "question": "When a fast-moving bus suddenly stops, the passengers are thrown forward. Which physics property causes this resistance to the change in motion?",
+        "options": [
+            "A. Gravity",
+            "B. Friction",
+            "C. Inertia",
+            "D. Action-Reaction",
+            "E. Velocity"
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Ini namanya Inersia (sifat 'malas' benda). Badan kita yang sedang jalan ke depan, maunya terus jalan ke depan. Makanya kita terdorong maju kalau bus mendadak ngerem."
+    },
+    {
+        "id": 12,
+        "topic": "Dynamics",
+        "type": "calc",
+        "question": "A constant force F is applied to a box of mass m, producing an acceleration of 4 m/s&sup2;. If the same force is applied to a box with double the mass (2m), what will be the new acceleration?",
+        "options": [
+            "A. 8 m/s&sup2;",
+            "B. 4 m/s&sup2;",
+            "C. 2 m/s&sup2;",
+            "D. 1 m/s&sup2;",
+            "E. 0 m/s&sup2;"
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Makin berat bendanya, makin lambat geraknya. Kalau massanya jadi 2x lipat lebih berat, kecepatannya (percepatannya) jadi setengahnya (1/2). 4 dibagi 2 = 2 m/s&sup2;."
+    },
+    {
+        "id": 13,
+        "topic": "Dynamics",
+        "type": "theory",
+        "question": "A large truck collides head-on with a small mosquito. Which statement is true regarding the impact forces according to Newton's Third Law?",
+        "options": [
+            "A. The truck exerts a much larger force on the mosquito.",
+            "B. The mosquito exerts a much larger force on the truck.",
+            "C. The mosquito exerts zero force on the truck.",
+            "D. The truck and the mosquito exert equal forces on each other.",
+            "E. The force depends on which one was moving faster."
+        ],
+        "answer": 3,
+        "tutor": "♟️ Bisikan Tutor: Hati-hati jebakan! Dalam hukum aksi-reaksi, Gaya tabrakannya PASTI SAMA BESAR. Nyamuk hancur cuma karena badannya kecil banget, sedangkan truk kuat karena badannya besar."
+    },
+    {
+        "id": 14,
+        "topic": "Dynamics",
+        "type": "calc",
+        "question": "You are trying to push a heavy cupboard across the floor with a force of 50 N, but the cupboard <b>does not move</b>. What is the magnitude of the static friction force acting on the cupboard?",
+        "options": [
+            "A. 0 N",
+            "B. Less than 50 N",
+            "C. Exactly 50 N",
+            "D. More than 50 N",
+            "E. Depends on the weight of the cupboard."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Kalau benda DIAM, gaya dorongmu dan gaya gesek lantai itu seimbang. Kalau kamu dorong 50 N ke depan tapi lemarinya diam, berarti lantainya melawan dengan gesekan 50 N ke arah belakang."
+    },
+    {
+        "id": 15,
+        "topic": "Dynamics",
+        "type": "theory",
+        "question": "A man is standing on a weighing scale inside an elevator. Suddenly, the cable snaps and the elevator falls freely (free fall). What will the weighing scale read during the fall?",
+        "options": [
+            "A. It reads his normal weight (mg).",
+            "B. It reads zero (0 N).",
+            "C. It reads double his weight.",
+            "D. It reads slightly less than normal.",
+            "E. It oscillates up and down."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Saat jatuh bebas, orang dan timbangannya sama-sama jatuh ke bawah dengan cepat. Karena kakinya sama sekali tidak menekan timbangan, angkanya jadi 0 (tanpa bobot)."
+    },
+    {
+        "id": 16,
+        "topic": "Dynamics",
+        "type": "logic",
+        "question": "Two people are pulling a boat. Person A pulls with 100 N to the North. Person B pulls with 100 N to the East. In which direction will the boat accelerate?",
+        "options": [
+            "A. North",
+            "B. East",
+            "C. North-East",
+            "D. South-West",
+            "E. It will not move."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Bayangkan perahunya ditarik ke Atas (Utara) dan ke Kanan (Timur) secara bersamaan. Pasti perahunya akan terseret miring ke arah kanan atas, yaitu Timur Laut (North-East)."
+    },
+    {
+        "id": 17,
+        "topic": "Impuls & Momentum",
+        "type": "theory",
+        "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Dulu, produsen mobil membuat bodi kendaraan sekeras mungkin. Namun, data menunjukkan angka cedera organ dalam penumpang tetap tinggi meskipun bodi utuh, karena benturan terjadi seketika (&Delta;t sangat kecil).</p><p class='mb-2'>Insinyur akhirnya beralih ke prinsip Impuls (I = F &middot; &Delta;t). Solusi briliannya adalah <i>Crumple Zone</i> (Zona Remuk) yang dirancang agar mudah melipat seperti akordeon. Penambahan waktu kontak (&Delta;t) ini menurunkan Gaya mematikan (F) secara drastis.</p><p class='mb-2'>Berdasarkan wacana tersebut, mengapa mobil tua yang bodinya sangat keras dan kaku justru lebih berbahaya bagi penumpang saat terjadi tabrakan fatal dibandingkan mobil modern?</p>",
+        "options": [
+            "A. Karena mobil tua lebih berat sehingga sulit berhenti.",
+            "B. Karena waktu tabrakan sangat singkat, sehingga gaya hentakan (F) yang diterima penumpang menjadi sangat besar.",
+            "C. Karena mobil tua tidak memiliki rem ABS.",
+            "D. Karena energi tabrakan mobil tua langsung hilang.",
+            "E. Karena mobil tua memantul lebih jauh."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Mobil kaku itu bahaya karena dia berhenti tiba-tiba (waktu tabrakan sangat singkat). Karena waktunya sebentar, gaya tabrakan (F) yang masuk tembus ke badan kita jadi super besar!"
+    },
+    {
+        "id": 18,
+        "topic": "Gravity & Work-Energy",
+        "type": "theory",
+        "question": "An astronaut travels from Earth to the Moon. The Moon has much weaker gravity than Earth. How do his <b>Mass</b> and <b>Weight</b> change?",
+        "options": [
+            "A. Both Mass and Weight decrease.",
+            "B. Mass decreases, Weight stays the same.",
+            "C. Mass stays the same, Weight decreases.",
+            "D. Both Mass and Weight stay the same.",
+            "E. Mass increases, Weight decreases."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Massa (isi tubuh) kita itu selalu TETAP, mau jalan-jalan ke planet mana saja. Tapi Berat (Weight) itu tergantung tarikan planet. Karena tarikan gravitasi Bulan lemah, Berat kita di sana jadi lebih ringan."
+    },
+    {
+        "id": 19,
+        "topic": "Gravity & Work-Energy",
+        "type": "theory",
+        "question": "A waiter holds a heavy tray of food (Force is upward) and walks 10 meters horizontally at a constant speed to a table. From a physics perspective, how much Work does the waiter do on the tray against gravity?",
+        "options": [
+            "A. 10 Joules",
+            "B. 100 Joules",
+            "C. Maximum Work",
+            "D. Zero Work (0 Joules)",
+            "E. It depends on the weight of the tray."
+        ],
+        "answer": 3,
+        "tutor": "♟️ Bisikan Tutor: Dalam fisika, biar ada 'Usaha', arah gaya dan arah jalan kita harus sejajar. Pelayan menahan nampan ke ATAS, tapi jalannya lurus ke DEPAN. Karena arahnya beda (tegak lurus), Usaha fisikanya = 0."
+    },
+    {
+        "id": 20,
+        "topic": "Energi Mekanik",
+        "type": "theory",
+        "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Roller coaster adalah wahana yang tidak memiliki mesin penggerak setelah mencapai puncak bukit pertama. Ia murni berselancar meliuk-liuk mengandalkan hukum fisika dan gravitasi bumi.</p><p class='mb-2'>Rahasia pergerakan ini terletak pada pertukaran Energi Potensial (karena ketinggian) dan Energi Kinetik (karena kecepatan). Sesuai Hukum Kekekalan Energi Mekanik, energi yang 'hilang' dari ketinggian langsung berubah wujud menjadi kecepatan.</p><p class='mb-2'>Jika gesekan udara diabaikan, pernyataan mana yang benar tentang energi roller coaster saat meluncur merosot dari puncak bukit menuju lembah?</p>",
+        "options": [
+            "A. Energi totalnya semakin berkurang karena dipakai bergerak.",
+            "B. Energi Potensialnya bertambah, Energi Kinetiknya berkurang.",
+            "C. Energi Potensialnya berkurang, Energi Kinetiknya bertambah, Energi Totalnya tetap.",
+            "D. Energi Kinetik dan Potensial keduanya bertambah.",
+            "E. Energi Totalnya bertambah seiring kecepatan."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Pas kereta merosot turun, ketinggiannya makin rendah (Energi Potensial turun), tapi keretanya jadi makin ngebut (Energi Kinetik naik). Keduanya saling tukaran saja, jumlah totalnya selalu tetap."
+    },
+    {
+        "id": 21,
+        "topic": "Work, Energy & Momentum",
+        "type": "logic",
+        "question": "Two students, Ali and Budi, have the exact same mass. They both climb the same flight of stairs to the second floor. Ali runs up in 10 seconds. Budi walks up in 20 seconds. Who does more Work (W) and who generates more Power (P)?",
+        "options": [
+            "A. Ali does more Work and has more Power.",
+            "B. Budi does more Work, but Ali has more Power.",
+            "C. Both do the same Work, but Ali has more Power.",
+            "D. Both do the same Work, but Budi has more Power.",
+            "E. Both do the same Work and have the same Power."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Badan sama, tangganya juga sama = Usaha mereka berdua SAMA. Tapi karena Ali larinya lebih cepat (waktunya cuma 10 detik), berarti Daya (Power) yang dikeluarkan Ali lebih besar dari Budi."
+    },
+    {
+        "id": 22,
+        "topic": "Work, Energy & Momentum",
+        "type": "theory",
+        "question": "A soldier fires a rifle. The bullet shoots forward at a very high speed, while the rifle 'kicks' backward (recoil) at a much slower speed. Why is the rifle's backward speed much slower than the bullet?",
+        "options": [
+            "A. The rifle is heavier (more mass) than the bullet.",
+            "B. The force on the rifle is smaller than the force on the bullet.",
+            "C. The rifle has more friction against the shoulder.",
+            "D. Momentum is not conserved in explosions.",
+            "E. The bullet is more aerodynamic."
+        ],
+        "answer": 0,
+        "tutor": "♟️ Bisikan Tutor: Ini biar tekanannya seimbang. Peluru itu kan super ringan (Massa kecil), makanya dia bisa lari kencang. Senapan itu berat banget (Massa besar), makanya dia cuma terdorong pelan biar seimbang sama pelurunya."
+    },
+    {
+        "id": 23,
+        "topic": "Work, Energy & Momentum",
+        "type": "theory",
+        "question": "Two identical cars collide head-on on a slippery road. Case A: They bounce off each other perfectly (Elastic). Case B: They crumple and stick together (Inelastic). In which case is the Energy Loss (damage to the cars) greater?",
+        "options": [
+            "A. Case A (Elastic).",
+            "B. Case B (Inelastic).",
+            "C. Both cases have the same energy loss.",
+            "D. Depends on the speed of the cars.",
+            "E. No energy is lost in either case."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Kalau Lenting (Elastic), mobil saling mantul kayak bola karet. Kalau Tidak Lenting, mobilnya sampai lengket dan hancur. Berarti energi geraknya 'hilang' buat merusak bodi mobil yang penyok."
+    },
+    {
+        "id": 24,
+        "topic": "Impuls & Keselamatan",
+        "type": "theory",
+        "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Sabuk pengaman menjaga tubuh tidak terlempar, namun kepala masih bisa mengayun keras. Untuk itu, diciptakanlah <i>Airbag</i> (Kantung Udara) yang akan meledak mengembang dalam hitungan milidetik saat tabrakan.</p><p class='mb-2'>Cara kerja airbag bersandar pada konsep Impuls (I = F &middot; &Delta;t). Airbag dirancang untuk segera mengempis perlahan saat kepala menyentuhnya. Proses 'tenggelam' ini memperpanjang waktu kontak (&Delta;t) pengereman kepala.</p><p class='mb-2'>Secara fisika, bagaimana cara kerja airbag tersebut dalam melindungi pengemudi dari cedera fatal akibat Gaya (F) benturan yang besar?</p>",
+        "options": [
+            "A. Airbag memberikan gaya berlawanan agar pengemudi terpental kembali ke kursi.",
+            "B. Airbag memperpanjang waktu kontak (&Delta;t) saat benturan, sehingga Gaya (F) yang diterima tubuh menjadi lebih kecil.",
+            "C. Airbag menyerap semua momentum mobil hingga nol seketika.",
+            "D. Airbag memperpendek waktu benturan agar rasa sakit cepat hilang.",
+            "E. Airbag menghilangkan inersia tubuh pengemudi."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Airbag itu dibikin empuk biar kepala kita tidak langsung membentur setir keras. Jadi, waktu tabrakannya jadi lebih lama. Kalau waktunya lama, gaya pukulannya ke muka kita jadi lebih kecil/ringan."
+    },
+    {
+        "id": 25,
+        "topic": "Fluids",
+        "type": "theory",
+        "question": "A solid block floats in Water with 50% of its volume submerged. The same block is placed in Oil (which is less dense/lighter than water). What happens to the block in the oil?",
+        "options": [
+            "A. It floats with less than 50% submerged (floats higher).",
+            "B. It floats with more than 50% submerged (sinks deeper).",
+            "C. It floats at exactly 50% submerged.",
+            "D. It sinks to the very bottom immediately.",
+            "E. It dissolves in the oil."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Minyak itu benda cair yang lebih ringan dari air, jadi gaya dorongnya ke atas kecil. Biar balok kayu tidak tenggelam semua, dia harus memasukkan lebih banyak badannya ke dalam minyak biar seimbang."
+    },
+    {
+        "id": 26,
+        "topic": "Fluids",
+        "type": "theory",
+        "question": "An airplane wing is curved on the top and flat on the bottom. According to Bernoulli's principle, how does this shape create Lift?",
+        "options": [
+            "A. Air moves faster over the top, creating lower pressure on top.",
+            "B. Air moves slower over the top, creating higher pressure on top.",
+            "C. Air moves at the same speed, but the wing pushes air down.",
+            "D. The engine pushes the wing upward directly.",
+            "E. Air density increases on top of the wing."
+        ],
+        "answer": 0,
+        "tutor": "♟️ Bisikan Tutor: Aturan sayap pesawat: Udara yang lari cepat bikin tekanannya jadi kecil (rendah). Sayap atas pesawat dibikin melengkung biar udara lari cepat, tekanannya jadi kecil. Tekanan udara kuat dari bawah bakal mengangkat pesawatnya naik."
+    },
+    {
+        "id": 27,
+        "topic": "Tekanan Hidrostatis",
+        "type": "theory",
+        "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Bendungan adalah struktur raksasa penjinak sungai. Musuh utama yang harus ditahan oleh dinding bendungan bukanlah luas permukaannya, melainkan tekanan yang tersembunyi jauh di bawah permukaan air.</p><p class='mb-2'>Dalam ilmu Fluida Statis, Tekanan Hidrostatis (P = &rho;gh) bergantung murni pada kedalaman (h). Semakin dalam menyelam, semakin berat lapisan air di atas yang menekan ke bawah dan menonjok dinding secara horizontal.</p><p class='mb-2'>Berdasarkan wacana di atas, insinyur sipil merancang dinding bendungan dengan ketebalan yang berbeda (atas tipis, bawah tebal). Apa alasan fisika di balik rancangan tersebut?</p>",
+        "options": [
+            "A. Agar terlihat estetik dan hemat biaya.",
+            "B. Karena tekanan air semakin ke dalam semakin besar (P = &rho;gh).",
+            "C. Karena bagian bawah bendungan menahan beban jembatan di atasnya.",
+            "D. Agar air bisa merembes perlahan melalui bagian bawah.",
+            "E. Karena massa jenis air di dasar lebih besar daripada di permukaan."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Kalau kita menyelam makin dalam, telinga sakit karena air menekan makin kuat kan? Sama seperti bendungan, makin ke bawah dorongan airnya makin raksasa. Makanya tembok bawahnya harus super tebal biar tidak jebol."
+    },
+    {
+        "id": 28,
+        "topic": "Heat & Temperature",
+        "type": "theory",
+        "question": "Why do railway tracks have small gaps between the steel rails?",
+        "options": [
+            "A. To save metal and reduce costs.",
+            "B. To allow the train wheels to grip better.",
+            "C. To allow space for expansion on hot days so the rails don't buckle.",
+            "D. To let rainwater drain through easily.",
+            "E. To make the clickety-clack sound for passengers."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Besi itu bisa memanjang (memuai) kalau kena panas terik matahari. Celah di rel kereta itu dikasih biar relnya ada ruang merenggang, tidak saling tabrak dan bengkok saat hari panas."
+    },
+    {
+        "id": 29,
+        "topic": "Heat & Temperature",
+        "type": "theory",
+        "question": "You touch a wooden table and a metal spoon in the same air-conditioned room (20&deg;C). The metal spoon feels colder than the wood. Why?",
+        "options": [
+            "A. The metal spoon is actually at a lower temperature than the wood.",
+            "B. Metal is a better conductor of heat; it draws heat away from your hand faster.",
+            "C. Wood generates its own heat.",
+            "D. Metal has a higher specific heat capacity.",
+            "E. Your hand is sensitive to metal but not wood."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Ingat, suhu sendok logam dan meja kayu di kamar itu SAMA. Tapi logam itu jago banget nyedot panas tubuh kita. Karena panas di tangan kita disedot cepat sama logam, otak kita mikir kalau itu 'dingin'."
+    },
+    {
+        "id": 30,
+        "topic": "Kalor Jenis",
+        "type": "theory",
+        "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Berlibur ke pantai di siang terik memberikan pengalaman sensorik unik: pasir terasa sangat panas membakar kaki, namun air lautnya justru terasa sangat sejuk, padahal keduanya mendapat sinar matahari yang sama.</p><p class='mb-2'>Jawaban anomali ini terletak pada Kalor Jenis (c). Pasir memiliki kalor jenis kecil sehingga cepat panas. Sebaliknya, air memiliki salah satu nilai kalor jenis tertinggi di alam semesta, membuatnya sangat lambat berubah suhu.</p><p class='mb-2'>Apa arti fisis dari pernyataan bahwa 'Air laut memiliki Kalor Jenis yang jauh lebih besar' dibandingkan pasir pantai?</p>",
+        "options": [
+            "A. Air lebih cepat panas dibandingkan pasir.",
+            "B. Air membutuhkan energi yang sangat banyak untuk menaikkan suhunya sedikit saja (susah panas).",
+            "C. Air menyimpan panas hanya di permukaannya saja.",
+            "D. Pasir menolak panas matahari, sedangkan air menyerapnya.",
+            "E. Air selalu lebih dingin dari benda padat apa pun."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Kalor jenis besar itu ibarat orang yang 'malas' berubah. Air laut itu sangat malas berubah suhunya. Butuh disengat terik matahari yang banyaaaak banget baru dia mau panas dikit. Makanya siang-siang air tetap sejuk."
+    },
+    {
+        "id": 31,
+        "topic": "Waves & Sound",
+        "type": "theory",
+        "question": "Which of the following correctly describes the difference between Sound waves and Light waves?",
+        "options": [
+            "A. Sound is a Transverse wave; Light is a Longitudinal wave.",
+            "B. Sound needs a medium (air/water) to travel; Light can travel through a vacuum.",
+            "C. Sound travels faster than Light.",
+            "D. Both are Electromagnetic waves.",
+            "E. Light carries matter, Sound carries energy."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Suara itu butuh perantara (kayak udara atau air) buat jalan. Kalau di luar angkasa yang kosong, kita tidak bisa dengar suara. Tapi Cahaya itu mandiri, dia tetap bisa jalan dan bersinar terang walau tidak ada udara."
+    },
+    {
+        "id": 32,
+        "topic": "Waves & Sound",
+        "type": "logic",
+        "question": "A guitar string is tightened to increase the wave speed (v). If the length of the string stays the same (wavelength is constant), what happens to the sound produced?",
+        "options": [
+            "A. The frequency increases (Higher Pitch).",
+            "B. The frequency decreases (Lower Pitch).",
+            "C. The frequency stays the same.",
+            "D. The sound becomes louder (Amplitude increases).",
+            "E. The sound becomes quieter."
+        ],
+        "answer": 0,
+        "tutor": "♟️ Bisikan Tutor: Rumusnya v = f &times; panjang. Kalau kecepatan (v) gelombang naik tapi panjang senarnya tetap segitu-gitu aja, nilai Frekuensi PASTI ikut NAIK. Frekuensi naik itu artinya suaranya jadi melengking, cempreng, atau nadanya tinggi."
+    },
+    {
+        "id": 33,
+        "topic": "Waves & Sound",
+        "type": "theory",
+        "question": "An ambulance with its siren on is moving <b>towards</b> you very fast. Compared to when the ambulance is stopped, the sound you hear will be:",
+        "options": [
+            "A. Lower pitch (Lower frequency) and quieter.",
+            "B. Lower pitch (Lower frequency) and louder.",
+            "C. Higher pitch (Higher frequency) and louder.",
+            "D. Higher pitch (Higher frequency) and constant volume.",
+            "E. Same pitch but louder."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Makin dekat ambulans, gelombang suaranya makin desak-desakan/rapat. Ini bikin suaranya makin melengking tinggi (Frekuensi naik). Dan karena jaraknya makin dekat telinga kita, pastinya suaranya terdengar lebih Keras."
+    },
+    {
+        "id": 34,
+        "topic": "Resonansi",
+        "type": "theory",
+        "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Pada tahun 1940, Jembatan Tacoma Narrows di Amerika Serikat runtuh. Menariknya, jembatan ini hancur bukan karena ditabrak beban berat atau ditimpa badai besar, melainkan karena tiupan angin yang berhembus konstan.</p><p class='mb-2'>Angin tersebut menciptakan pusaran udara yang memukul jembatan dengan ritme yang secara kebetulan bertepatan persis dengan <b>frekuensi alami</b> jembatan. Fenomena ini disebut <b>Resonansi</b>, di mana amplitudo getaran membesar tak terkendali.</p><p class='mb-2'>Apa pelajaran fisika paling penting yang bisa diambil oleh insinyur sipil dari kejadian runtuhnya jembatan tersebut?</p>",
+        "options": [
+            "A. Jembatan harus dibuat seberat mungkin agar tidak goyang.",
+            "B. Jembatan harus dirancang agar frekuensi alaminya tidak sama dengan frekuensi gaya luar.",
+            "C. Jembatan tidak boleh dibangun di daerah berangin.",
+            "D. Bahan baja tidak cocok untuk jembatan gantung.",
+            "E. Resonansi hanya terjadi pada alat musik, bukan bangunan."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Pernah main ayunan? Kalau kamu dorong pas di ritme yang tepat (frekuensinya sama), ayunannya bakal makin tinggi. Nah, kalau ritme angin dan ritme jembatan ini pas SAMA, jembatan bakal goyang hebat sampai putus!"
+    },
+    {
+        "id": 35,
+        "topic": "Electricity",
+        "type": "theory",
+        "question": "When you rub a plastic ruler with a wool cloth, the ruler becomes negatively charged. What actually happened at the atomic level?",
+        "options": [
+            "A. Protons moved from the cloth to the ruler.",
+            "B. Electrons moved from the cloth to the ruler.",
+            "C. Electrons were created on the ruler surface.",
+            "D. Atoms on the ruler became larger.",
+            "E. The friction created heat which turned into electricity."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Ingat aturan ini: Proton itu berat dan terkurung di dalam inti atom, jadi TIDAK BISA PINDAH! Yang bisa loncat-loncat pindah itu cuma Elektron. Penggaris plastik jadi negatif karena dia ketambahan Elektron yang nyelonong masuk dari kain wol."
+    },
+    {
+        "id": 36,
+        "topic": "Electricity",
+        "type": "calc",
+        "question": "Two charged particles repel each other with a force of 100 N. If you move them so they are <b>twice as far apart</b> (distance becomes 2x), what is the new repulsive force?",
+        "options": [
+            "A. 200 N",
+            "B. 100 N",
+            "C. 50 N",
+            "D. 25 N",
+            "E. 0 N"
+        ],
+        "answer": 3,
+        "tutor": "♟️ Bisikan Tutor: Gaya listrik itu makin lemah kalau saling dijauhkan. Rumusnya pakai pangkat dua. Kalau dijauhkan 2x lipat, gayanya melemah 2&sup2; = 4 kalinya. Tinggal bagi saja: 100 N dibagi 4 = 25 N."
+    },
+    {
+        "id": 37,
+        "topic": "Electricity",
+        "type": "logic",
+        "question": "You have two identical light bulbs. Circuit A: Bulbs connected in Series. Circuit B: Bulbs connected in Parallel. Which circuit produces brighter light, and why?",
+        "options": [
+            "A. Circuit A, because current is focused in one line.",
+            "B. Circuit B, because each bulb gets the full voltage from the battery.",
+            "C. Both are the same brightness.",
+            "D. Circuit A, because resistance is lower.",
+            "E. Circuit B, because it uses less energy."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Kalau lampu disusun Seri, itu kayak makanan dibagi dua, tegangannya terbagi jadi lampunya redup. Kalau susun Paralel, masing-masing lampu punya jalur sendiri dapat makanan utuh, jadi lampunya terang maksimal."
+    },
+    {
+        "id": 38,
+        "topic": "Electricity",
+        "type": "logic",
+        "question": "Look at a circuit where a wire connects the positive directly to the negative terminal, bypassing the lamp. Why does the lamp <b>not</b> light up?",
+        "options": [
+            "A. The battery is broken.",
+            "B. The wire is too long.",
+            "C. The current chooses the 'path of least resistance' (empty wire) and ignores the lamp.",
+            "D. The lamp has too much resistance so current stops flowing.",
+            "E. The electrons are confused."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Arus listrik itu sifatnya pemalas, selalu nyari jalan paling gampang. Kalau ada kabel kosong (yang gampang dilewati), semua arus bakal kabur lewat situ dan cuek sama jalan yang susah (lampu). Ini yang kita sebut Korsleting Listrik."
+    },
+    {
+        "id": 39,
+        "topic": "Electricity",
+        "type": "theory",
+        "question": "A fuse is a safety device containing a thin wire. How does a fuse protect your house from fire?",
+        "options": [
+            "A. It generates cold air to cool down the wires.",
+            "B. It acts as a resistor to slow down the current permanently.",
+            "C. It melts and breaks the circuit if the current gets too high.",
+            "D. It adds extra voltage to stabilize the flow.",
+            "E. It grounds the electricity to the earth."
+        ],
+        "answer": 2,
+        "tutor": "♟️ Bisikan Tutor: Sekering (fuse) itu penyelamat rumah. Kalau ada korsleting dan kabel jadi kepanasan, kawat tipis di dalam sekering sengaja dibikin supaya putus duluan. Kalau kawatnya putus, aliran listrik satu rumah mati, jadinya aman dari kebakaran."
+    },
+    {
+        "id": 40,
+        "topic": "Listrik Statis (Penangkal Petir)",
+        "type": "theory",
+        "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Untuk melindungi gedung pencakar langit dari sambaran petir yang membawa ratusan juta volt, manusia menggunakan penangkal petir. Alat ini murni menyediakan 'jalan tol' kabel tembaga agar arus petir dibuang ke tanah (grounding).</p><p class='mb-2'>Desain fisik batang ini menyimpan rahasia fisika. Dalam teori Listrik Statis, muatan listrik memiliki kecenderungan alami untuk berdesak-desakan dan berkumpul di permukaan yang sempit atau melengkung tajam.</p><p class='mb-2'>Berdasarkan wacana distribusi muatan listrik statis tersebut, mengapa ujung atas penangkal petir selalu dibuat runcing dan tajam, bukan tumpul seperti kubah?</p>",
+        "options": [
+            "A. Agar terlihat lebih tajam dan menakutkan bagi burung.",
+            "B. Karena muatan listrik mudah berkumpul dan lepas dari ujung yang runcing.",
+            "C. Ujung runcing lebih hemat bahan logam.",
+            "D. Agar petir memantul kembali ke awan.",
+            "E. Agar air hujan tidak menggenang di ujungnya."
+        ],
+        "answer": 1,
+        "tutor": "♟️ Bisikan Tutor: Listrik statis punya kebiasaan unik: dia suka ngumpul empet-empetan di ujung besi yang tajam atau runcing. Kumpulan listrik ini mempermudah alat untuk menangkap petir dari langit lalu membuangnya ke tanah dengan aman."
+    }
+]
+</script>
