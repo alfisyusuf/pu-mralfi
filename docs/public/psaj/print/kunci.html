@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kunci Jawaban Ujian Fisika - ABBS (A4)</title>
+    <title>Kunci Jawaban Ujian Fisika - ABBS (A4 - 1 Halaman)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        /* Menggunakan font serif formal untuk administrasi */
-        @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
-        
+        /* Menggunakan font Times New Roman bawaan komputer (tanpa import dari luar) */
         body {
-            font-family: 'Times', 'Times New Roman', serif;
+            font-family: 'Times New Roman', Times, serif;
             background-color: #f3f4f6;
             font-size: 11pt;
-            line-height: 1.2;
+            line-height: 1.15;
+        }
+
+        /* Memaksa browser memprioritaskan cetak tebal */
+        .font-bold, b, strong {
+            font-weight: bold !important;
         }
 
         /* Simulasi Kertas A4 di Layar */
@@ -53,30 +56,32 @@
         /* Garis pemisah tebal khas kop surat */
         .kop-line {
             border-bottom: 3px solid black;
-            margin-top: 8px;
-            margin-bottom: 4px;
+            margin-top: 6px;
+            margin-bottom: 3px;
         }
 
         /* Styling Tabel Kunci */
         .answer-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px 30px;
-            margin-top: 20px;
+            gap: 8px 30px; 
+            margin-top: 12px;
         }
         .answer-item {
             display: flex;
             justify-content: space-between;
             border-bottom: 1px dashed #ccc;
-            padding-bottom: 4px;
+            padding-bottom: 2px;
         }
         .answer-number {
             width: 30px;
             text-align: right;
             padding-right: 10px;
+            font-weight: bold !important;
         }
         .answer-letter {
-            font-weight: bold;
+            font-weight: bold !important;
+            font-size: 11.5pt;
             flex-grow: 1;
         }
     </style>
@@ -86,10 +91,10 @@
     <div class="a4-paper">
         <div class="flex items-center justify-between mb-2">
             <div class="w-[15%]">
-                <img src="logo_abbs.png" alt="Logo ABBS" class="w-full h-auto object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'border p-4 text-center text-xs\'>LOGO ABBS</div>';">
+                <img src="./logo_sma_abbs_surakarta.png" alt="Logo ABBS" class="w-full h-auto object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'border p-3 text-center text-xs\'>LOGO ABBS</div>';">
             </div>
             
-            <div class="w-[85%] text-center leading-snug">
+            <div class="w-[85%] text-center leading-tight">
                 <div class="font-bold text-[12pt]">SEKOLAH MENENGAH ATAS</div>
                 <div class="font-bold text-[13pt]">AL ABIDIN BILINGUAL BOARDING SCHOOL (ABBS) SURAKARTA</div>
                 <div class="font-bold text-[12pt]">TERAKREDITASI : A (Amat Baik)</div>
@@ -99,36 +104,36 @@
         </div>
         
         <div class="kop-line"></div>
-        <div class="border-b border-black mb-6"></div>
+        <div class="border-b border-black mb-4"></div>
 
-        <div class="text-center font-bold text-[12pt] mb-6 underline">
+        <div class="text-center font-bold text-[12pt] mb-4 underline">
             KUNCI JAWABAN COMPREHENSIVE FINAL EXAMINATION
         </div>
 
-        <div class="mb-4 text-[11pt]">
+        <div class="mb-3 text-[11pt]">
             <table class="w-full sm:w-2/3">
-                <tr><td class="w-24 pb-1">Subject</td><td class="w-4 pb-1">:</td><td class="pb-1 font-bold">Physics</td></tr>
-                <tr><td class="pb-1">Day, date</td><td class="pb-1">:</td><td class="pb-1">Monday, 6<sup>th</sup> April 2026</td></tr>
-                <tr><td class="pb-1">Grade</td><td class="pb-1">:</td><td class="pb-1">XII.MIPA</td></tr>
-                <tr><td class="pb-1">Academic Year</td><td class="pb-1">:</td><td class="pb-1">2025/2026</td></tr>
+                <tr><td class="w-28 pb-1 font-bold">Subject</td><td class="w-4 pb-1 font-bold">:</td><td class="pb-1 font-bold">Physics</td></tr>
+                <tr><td class="pb-1 font-bold">Day, date</td><td class="pb-1 font-bold">:</td><td class="pb-1">Monday, 6<sup>th</sup> April 2026</td></tr>
+                <tr><td class="pb-1 font-bold">Grade</td><td class="pb-1 font-bold">:</td><td class="pb-1">XII.MIPA</td></tr>
+                <tr><td class="pb-1 font-bold">Academic Year</td><td class="pb-1 font-bold">:</td><td class="pb-1">2025/2026</td></tr>
             </table>
         </div>
 
-        <div class="border-2 border-black p-6 mt-6 rounded-lg">
-            <h3 class="font-bold text-center mb-4 text-[12pt]">KUNCI JAWABAN PILIHAN GANDA</h3>
+        <div class="border-2 border-black p-4 mt-4 rounded-lg">
+            <h3 class="font-bold text-center mb-2 text-[12pt]">KUNCI JAWABAN PILIHAN GANDA</h3>
             <div id="kunci-container" class="answer-grid">
                 </div>
         </div>
 
-        <div class="mt-10 p-4 border border-gray-400 bg-gray-50 print:bg-transparent rounded">
-            <h4 class="font-bold mb-2 underline">Pedoman Penskoran:</h4>
+        <div class="mt-4 p-3 border border-gray-400 bg-gray-50 print:bg-transparent rounded">
+            <h4 class="font-bold mb-1 underline">Pedoman Penskoran:</h4>
             <ul class="list-disc pl-5 mb-2">
-                <li>Setiap jawaban benar diberi skor <strong>1</strong> (satu).</li>
-                <li>Setiap jawaban salah diberi skor <strong>0</strong> (nol).</li>
-                <li>Skor maksimal adalah <strong>40</strong>.</li>
+                <li>Setiap jawaban <span class="font-bold">benar</span> diberi skor <span class="font-bold">2,5</span> (dua koma lima).</li>
+                <li>Setiap jawaban <span class="font-bold">salah</span> diberi skor <span class="font-bold">0</span> (nol).</li>
+                <li>Skor maksimal adalah <span class="font-bold">100</span>.</li>
             </ul>
-            <div class="font-bold mt-4 p-2 bg-gray-200 print:bg-transparent print:border print:border-black text-center w-64 mx-auto rounded">
-                Nilai Akhir = (Skor Perolehan / 40) × 100
+            <div class="font-bold mt-2 p-1.5 bg-gray-200 print:bg-transparent print:border print:border-black text-center w-72 mx-auto rounded">
+                Nilai Akhir = Jumlah Benar × 2,5
             </div>
         </div>
 
@@ -136,46 +141,14 @@
 
     <script id="database-kunci" type="application/json">
     [
-        {"id": 1, "topic": "Measurement & Vectors", "type": "theory", "answer": 1},
-        {"id": 2, "topic": "Measurement & Vectors", "type": "theory", "answer": 1},
-        {"id": 3, "topic": "Pengukuran (Metode Ilmiah)", "type": "theory", "answer": 2},
-        {"id": 4, "topic": "Kinematics (Gerak)", "type": "theory", "answer": 2},
-        {"id": 5, "topic": "Kinematics (Grafik v-t)", "type": "theory", "answer": 0},
-        {"id": 6, "topic": "Kinematics (Jatuh Bebas vs Parabola)", "type": "theory", "answer": 3},
-        {"id": 7, "topic": "Kinematics (Grafik s-t)", "type": "theory", "answer": 1},
-        {"id": 8, "topic": "Kinematics (Vektor)", "type": "logic", "answer": 3},
-        {"id": 9, "topic": "GLBB - Jarak Pengereman", "type": "calc", "answer": 2},
-        {"id": 10, "topic": "Dynamics (Gesekan Udara)", "type": "theory", "answer": 2},
-        {"id": 11, "topic": "Hukum I Newton (Inersia)", "type": "theory", "answer": 3},
-        {"id": 12, "topic": "Hukum II Newton", "type": "calc", "answer": 3},
-        {"id": 13, "topic": "Hukum III Newton", "type": "theory", "answer": 3},
-        {"id": 14, "topic": "Gaya Gesek Statis", "type": "calc", "answer": 2},
-        {"id": 15, "topic": "Berat Semu (Lift)", "type": "theory", "answer": 1},
-        {"id": 16, "topic": "Resultan Gaya", "type": "logic", "answer": 2},
-        {"id": 17, "topic": "Impuls & Momentum", "type": "theory", "answer": 1},
-        {"id": 18, "topic": "Gravitasi & Massa", "type": "theory", "answer": 2},
-        {"id": 19, "topic": "Usaha Fisika", "type": "theory", "answer": 2},
-        {"id": 20, "topic": "Energi Mekanik", "type": "theory", "answer": 2},
-        {"id": 21, "topic": "Daya (P = W/t)", "type": "logic", "answer": 3},
-        {"id": 22, "topic": "Kekekalan Momentum", "type": "theory", "answer": 0},
-        {"id": 23, "topic": "Jenis Tumbukan", "type": "theory", "answer": 1},
-        {"id": 24, "topic": "Impuls & Keselamatan", "type": "theory", "answer": 1},
-        {"id": 25, "topic": "Gaya Apung (Archimedes)", "type": "theory", "answer": 1},
-        {"id": 26, "topic": "Hukum Bernoulli", "type": "theory", "answer": 0},
-        {"id": 27, "topic": "Tekanan Hidrostatis", "type": "theory", "answer": 1},
-        {"id": 28, "topic": "Pemuaian Zat Padat", "type": "theory", "answer": 0},
-        {"id": 29, "topic": "Perpindahan Kalor (Konduksi)", "type": "theory", "answer": 1},
-        {"id": 30, "topic": "Kalor Jenis", "type": "theory", "answer": 1},
-        {"id": 31, "topic": "Sifat Gelombang", "type": "theory", "answer": 2},
-        {"id": 32, "topic": "Persamaan Gelombang", "type": "logic", "answer": 0},
-        {"id": 33, "topic": "Efek Doppler", "type": "theory", "answer": 2},
-        {"id": 34, "topic": "Resonansi", "type": "theory", "answer": 1},
-        {"id": 35, "topic": "Listrik Statis (Triboelektrik)", "type": "theory", "answer": 1},
-        {"id": 36, "topic": "Hukum Coulomb", "type": "calc", "answer": 3},
-        {"id": 37, "topic": "Rangkaian Listrik Dasar", "type": "logic", "answer": 1},
-        {"id": 38, "topic": "Hubung Singkat (Korsleting)", "type": "logic", "answer": 2},
-        {"id": 39, "topic": "Daya & Keamanan Listrik", "type": "theory", "answer": 2},
-        {"id": 40, "topic": "Listrik Statis (Distribusi Muatan)", "type": "theory", "answer": 2}
+        {"id": 1, "answer": 1}, {"id": 2, "answer": 1}, {"id": 3, "answer": 2}, {"id": 4, "answer": 2}, {"id": 5, "answer": 0},
+        {"id": 6, "answer": 3}, {"id": 7, "answer": 1}, {"id": 8, "answer": 3}, {"id": 9, "answer": 2}, {"id": 10, "answer": 2},
+        {"id": 11, "answer": 3}, {"id": 12, "answer": 3}, {"id": 13, "answer": 3}, {"id": 14, "answer": 2}, {"id": 15, "answer": 1},
+        {"id": 16, "answer": 2}, {"id": 17, "answer": 1}, {"id": 18, "answer": 2}, {"id": 19, "answer": 2}, {"id": 20, "answer": 2},
+        {"id": 21, "answer": 3}, {"id": 22, "answer": 0}, {"id": 23, "answer": 1}, {"id": 24, "answer": 1}, {"id": 25, "answer": 1},
+        {"id": 26, "answer": 0}, {"id": 27, "answer": 1}, {"id": 28, "answer": 0}, {"id": 29, "answer": 1}, {"id": 30, "answer": 1},
+        {"id": 31, "answer": 2}, {"id": 32, "answer": 0}, {"id": 33, "answer": 2}, {"id": 34, "answer": 1}, {"id": 35, "answer": 1},
+        {"id": 36, "answer": 3}, {"id": 37, "answer": 1}, {"id": 38, "answer": 2}, {"id": 39, "answer": 2}, {"id": 40, "answer": 2}
     ]
     </script>
 
@@ -185,12 +158,11 @@
             const answers = JSON.parse(rawData);
             const container = document.getElementById('kunci-container');
 
-            // Array untuk konversi indeks angka ke huruf opsi pilihan ganda
             const letters = ["A", "B", "C", "D", "E"];
 
             answers.forEach((item) => {
                 const div = document.createElement('div');
-                div.className = 'answer-item text-[12pt]';
+                div.className = 'answer-item';
 
                 const numberSpan = document.createElement('span');
                 numberSpan.className = 'answer-number';
@@ -198,7 +170,6 @@
 
                 const letterSpan = document.createElement('span');
                 letterSpan.className = 'answer-letter';
-                // Konversi angka (0-4) menjadi huruf (A-E)
                 letterSpan.innerText = letters[item.answer];
 
                 div.appendChild(numberSpan);
