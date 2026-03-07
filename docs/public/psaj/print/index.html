@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soal Ujian Fisika - ABBS (F4)</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Menggunakan font Cambria standar sistem */
+        body {
+            font-family: 'Cambria', serif;
+            font-size: 11pt;
+            line-height: 1.0; /* Spasi 1.0 sesuai permintaan */
+            background-color: #f3f4f6; 
+        }
+
+        /* Simulasi Kertas F4 (Folio: 215mm x 330mm) di Layar */
+        .f4-paper {
+            width: 215mm;
+            min-height: 330mm;
+            /* Margin layar: Atas 30mm, Kanan 20mm, Bawah 20mm, Kiri 30mm */
+            padding: 30mm 20mm 20mm 30mm; 
+            margin: 10mm auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        /* Pengaturan Cetak (Print) */
+        @media print {
+            @page {
+                size: 215mm 330mm; /* Memaksa ukuran kertas F4 di setelan print */
+                margin: 30mm 20mm 20mm 30mm; /* Margin Print: Atas 3, Kanan 2, Bawah 2, Kiri 3 */
+            }
+            body {
+                background-color: white;
+            }
+            .f4-paper {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+                min-height: auto;
+                padding: 0; /* Padding dinonaktifkan karena sudah diatur oleh @page margin */
+            }
+            
+            /* Mencegah soal terpotong di antara dua halaman */
+            .question-block {
+                page-break-inside: avoid;
+            }
+            
+            /* Memaksa browser mencetak warna background */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
+        /* Garis pemisah kop surat */
+        .kop-line {
+            border-bottom: 3px solid black;
+            margin-top: 8px;
+            margin-bottom: 3px;
+        }
+        
+        /* Utilitas tambahan untuk merapikan spasi yang rapat */
+        .space-y-custom > * + * {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="text-black">
+
+    <div class="f4-paper">
+        <div class="flex items-center justify-between mb-2">
+            <div class="w-[15%]">
+                <img src="./logo_sma_abbs_surakarta.png" alt="Logo ABBS" class="w-full h-auto object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'border p-4 text-center text-xs\'>LOGO ABBS</div>';">
+            </div>
+            
+            <div class="w-[85%] text-center leading-tight">
+                <div class="font-bold text-[12pt]">SEKOLAH MENENGAH ATAS</div>
+                <div class="font-bold text-[13pt]">AL ABIDIN BILINGUAL BOARDING SCHOOL (ABBS) SURAKARTA</div>
+                <div class="font-bold text-[12pt]">TERAKREDITASI : A (Amat Baik)</div>
+                <div class="text-[10pt] mt-1">Jalan Tarumanegara III, Banyuanyar, Banjarsari, Surakarta, 57137</div>
+                <div class="text-[10pt]">Telepon: 0271 – 7882145 Laman: www.abbs.alabidin.sch.id Surat elektronik: abbs@alabidin.sch.id</div>
+            </div>
+        </div>
+        
+        <div class="kop-line"></div>
+        <div class="border-b border-black mb-5"></div>
+
+        <div class="text-center font-bold text-[12pt] mb-5 leading-tight">
+            <div>COMPREHENSIVE FINAL EXAMINATION</div>
+            <div>ACADEMIC YEAR OF 2025/2026</div>
+        </div>
+
+        <div class="mb-5 leading-tight">
+            <table class="w-full sm:w-2/3">
+                <tr><td class="w-24 pb-1">Subject</td><td class="w-4 pb-1">:</td><td class="pb-1">Physics</td></tr>
+                <tr><td class="pb-1">Day, date</td><td class="pb-1">:</td><td class="pb-1">Monday, 6<sup>th</sup> April 2026</td></tr>
+                <tr><td class="pb-1">Grade</td><td class="pb-1">:</td><td class="pb-1">XII.MIPA</td></tr>
+                <tr><td class="pb-1">Duration</td><td class="pb-1">:</td><td class="pb-1">120 minutes</td></tr>
+            </table>
+        </div>
+
+        <div class="border-b-2 border-black mb-4"></div>
+        <div class="font-bold mb-5">Mark (X) on A, B, C, D, or E for the correct answer.</div>
+
+        <div id="soal-container" class="space-y-custom">
+            </div>
+    </div>
+
+    <script id="database-soal" type="application/json">
+    [
+        {
+            "id": 1,
+            "topic": "Measurement & Vectors",
+            "type": "theory",
+            "question": "An engineer measures the thickness of a smartphone glass using a digital vernier caliper and records the result as <b>1.50 mm</b>. According to the rules of significant figures, why must the zero at the end (1.50) be written?",
+            "options": [
+                "A. To make the calculation process easier.",
+                "B. To represent the precise accuracy limit of the caliper instrument.",
+                "C. To prove that the measurement was done in a vacuum.",
+                "D. Zeros behind the decimal are never counted as significant.",
+                "E. To show that there is absolutely no uncertainty in the reading."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Angka nol di belakang koma itu penting! Menulis 1,5 mm beda artinya dengan 1,50 mm. Nol ini adalah bukti batas ketelitian dan keakuratan alat ukur yang dipakai."
+        },
+        {
+            "id": 2,
+            "topic": "Measurement & Vectors",
+            "type": "theory",
+            "question": "A physics student is trying to remember the formula for the period (T) of a <b>simple pendulum</b>, which relates string length (L) and gravity (g). Given that T has dimension [T], L has dimension [L], and g has dimension [L][T]<sup>-2</sup>. Which of the following formulas is dimensionally consistent?",
+            "options": [
+                "A. T = 2&pi; &radic;(g/L)",
+                "B. T = 2&pi; &radic;(L/g)",
+                "C. T = 2&pi; (L / g)",
+                "D. T = 2&pi; (g &middot; L&sup2;)",
+                "E. T = 2&pi; (L + g)"
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Mari cocokkan dimensinya. L dibagi g itu jadinya [L] / [L][T]&supmin;&sup2; = [T]&sup2;. Nah, karena ada tanda akar (&radic;), [T]&sup2; berubah jadi [T]. Cocok kan dengan dimensi Waktu/Periode (T) di sebelah kiri!"
+        },
+        {
+            "id": 3,
+            "topic": "Pengukuran (Metode Ilmiah)",
+            "type": "theory",
+            "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Dalam sebuah eksperimen pembuatan obat di laboratorium kimia, seorang apoteker harus menimbang serbuk zat aktif dengan presisi tingkat tinggi. Ia menggunakan timbangan analitik digital yang sangat sensitif terhadap tekanan sekecil apa pun.</p><p class='mb-2'>Sayangnya, apoteker tersebut melakukan sebuah kelalaian dasar sebelum memulai eksperimen. Ia meletakkan kertas alas timbang di atas piringan, namun ia lupa menekan tombol <i>'Tare'</i> (pengenolan otomatis). Akibatnya, layar timbangan sudah menunjukkan angka awal sebesar <b>1,2 gram</b> sebelum serbuk obat dituangkan.</p><p class='mb-2'>Tanpa menyadari hal tersebut, ia langsung menuangkan serbuk obat pelan-pelan ke atas kertas alas tersebut. Setelah selesai menuang, layar digital di timbangan tersebut menunjukkan angka total sebesar <b>15,2 gram</b>.</p><p class='mb-2'>Dalam metode ilmiah fisika, penyimpangan hasil ukur akibat tidak dikalibrasinya titik nol sejak awal sangat memengaruhi kevalidan data. Berdasarkan kasus kelalaian apoteker tersebut, termasuk jenis kesalahan apakah kejadian ini, dan berapakah massa serbuk obat yang sebenarnya?</p>",
+            "options": [
+                "A. Kesalahan Acak; massa sebenarnya 15,2 gram.",
+                "B. Kesalahan Paralaks; massa sebenarnya 14,0 gram.",
+                "C. Kesalahan Sistematis; massa sebenarnya 14,0 gram.",
+                "D. Kesalahan Sistematis; massa sebenarnya 16,4 gram.",
+                "E. Kesalahan Mutlak; massa sebenarnya 15,2 gram."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Kalau timbangan kosong (atau cuma ada alas) tapi angkanya sudah muncul, itu namanya 'Kesalahan Sistematis' (Zero Error). Cara perbaikinya gampang: Angka total (15,2) tinggal dikurangi angka eror tadi (1,2). Aslinya 14,0 gram."
+        },
+        {
+            "id": 4,
+            "topic": "Kinematics (Gerak)",
+            "type": "theory",
+            "question": "A Formula 1 race car completes exactly one full lap around a 5-kilometer circular racing track, stopping perfectly at its starting grid. Which of the following statements correctly compares the car's distance and displacement?",
+            "options": [
+                "A. Its distance is 5 km, and displacement is 5 km.",
+                "B. Its distance is 0 km, and displacement is 5 km.",
+                "C. Its distance is 5 km, and displacement is 0 km.",
+                "D. Both its distance and displacement are 0 km.",
+                "E. Its displacement is greater than its distance."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Jarak (Distance) itu total lintasan bannya memutar, yaitu 5 km. Tapi Perpindahan (Displacement) itu murni cuma ngecek posisi akhir dibanding posisi awal. Kalau mobilnya parkir di titik start yang sama, berarti posisinya tidak pindah (0 km)."
+        },
+        {
+            "id": 5,
+            "topic": "Kinematics (Grafik v-t)",
+            "type": "theory",
+            "question": "Looking at the velocity-time (v-t) graph of a bullet train's journey, how do you visually identify the exact moment the train is moving with <b>zero acceleration</b> (constant velocity)?",
+            "options": [
+                "A. Find the section where the graph line is perfectly horizontal (flat).",
+                "B. Find the section where the graph line goes steeply upwards.",
+                "C. Find the section where the graph line slopes down towards zero.",
+                "D. Calculate the entire area under the curve.",
+                "E. Look for where the line intersects the vertical y-axis."
+            ],
+            "answer": 0,
+            "tutor": "♟️ Bisikan Tutor: Di grafik v-t, cari garis yang jalannya mendatar (horizontal). Garis mendatar artinya nilai kecepatan tidak naik dan tidak turun (konstan). Kalau kecepatan konstan, berarti tidak ada percepatan (nol)."
+        },
+        {
+            "id": 6,
+            "topic": "Kinematics (Jatuh Bebas vs Parabola)",
+            "type": "theory",
+            "question": "Two identical metal coins are released from a high balcony at the exact same instant. Coin A is simply dropped straight down (Free Fall). Coin B is flicked horizontally outward (Projectile). Ignoring air resistance, which coin will strike the ground first?",
+            "options": [
+                "A. Coin A, because its trajectory is shorter.",
+                "B. Coin B, because the horizontal force pushes it to the ground faster.",
+                "C. Coin A, because gravity acts more directly on stationary objects.",
+                "D. Both coins will hit the ground at exactly the same time.",
+                "E. It depends on how hard Coin B was flicked."
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Gerak ke bawah dan gerak menyamping itu tidak saling ganggu. Ke arah bawah, kedua koin sama-sama ditarik gravitasi bumi dari balkon yang sama. Jadi, mau disentil sekuat apa pun, waktu jatuhnya pasti barengan!"
+        },
+        {
+            "id": 7,
+            "topic": "Kinematics (Grafik s-t)",
+            "type": "theory",
+            "question": "You are analyzing the position-time (s-t) graph of a moving robot. The graph shows a straight diagonal line sloping upwards. In physics, what does the <b>slope</b> (steepness) of this specific line mathematically represent?",
+            "options": [
+                "A. The total distance covered.",
+                "B. The robot's constant velocity.",
+                "C. The robot's acceleration.",
+                "D. The frictional force of the ground.",
+                "E. The time it takes to stop."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Hati-hati membedakan grafik. Kalau grafiknya posisi/jarak (s) terhadap waktu (t), kemiringan garisnya (Delta S dibagi Delta T) itu melambangkan Kecepatan benda tersebut."
+        },
+        {
+            "id": 8,
+            "topic": "Kinematics (Vektor)",
+            "type": "logic",
+            "question": "A swimmer wants to cross a river straight to a dock directly <b>East</b> of his starting point. However, the river current flows strongly to the <b>South</b>. In which direction must he physically aim his body so his actual path goes straight East?",
+            "options": [
+                "A. Straight East.",
+                "B. South-East (following the current).",
+                "C. Straight North.",
+                "D. North-East (against the current).",
+                "E. Straight South."
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Kalau arus air sungai menyeret perenang ke arah Bawah (Selatan), dia harus melawan dengan berenang miring agak ke Atas (Utara). Tujuannya biar terbawa arus menjadi lurus ke Timur. Berarti arahnya Timur Laut (North-East)."
+        },
+        {
+            "id": 9,
+            "topic": "GLBB - Jarak Pengereman",
+            "type": "calc",
+            "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Departemen keselamatan jalan raya sering mengeluarkan peringatan batas kecepatan untuk kendaraan berat. Hal ini dikarenakan menekan pedal rem hingga kandas tidak akan membuat kendaraan tersebut berhenti seketika di aspal. Selalu ada <i>braking distance</i> (jarak pengereman) yang dibutuhkan rem untuk mengubah energi gerak menjadi panas.</p><p class='mb-2'>Dalam mekanika klasik, persamaan Gerak Lurus Berubah Beraturan (GLBB) membuktikan fakta yang krusial: jarak henti sebuah kendaraan sama sekali tidak berbanding lurus secara linier dengan kecepatannya, melainkan berbanding lurus dengan <b>kuadrat kecepatan awalnya (v&sup2;)</b>.</p><p class='mb-2'>Konsekuensi dari persamaan kuadratik ini sangat mematikan di jalan tol. Sedikit saja pengemudi menambah kecepatan, ruang aman yang dibutuhkan untuk berhenti mendadak akan melonjak secara eksponensial di luar perkiraan insting manusia biasa.</p><p class='mb-2'>Sebagai ilustrasi kasus, sebuah truk kargo yang melaju dengan kecepatan <b>40 km/jam</b> membutuhkan jarak <b>20 meter</b> untuk bisa berhenti mendadak. Jika truk tersebut nekat melaju dengan kecepatan <b>80 km/jam</b> (2 kali lebih cepat), berapakah jarak minimal yang kini dibutuhkan truk tersebut untuk berhenti tanpa menabrak?</p>",
+            "options": [
+                "A. 40 meter",
+                "B. 60 meter",
+                "C. 80 meter",
+                "D. 100 meter",
+                "E. 160 meter"
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Kecepatan truknya naik 2x lipat. Ingat, rumus jarak rem itu dikuadratkan. Jadi jarak hentinya melonjak 2&sup2; = 4x lipatnya! Jarak awalnya 20 meter, dikali 4 = 80 meter."
+        },
+        {
+            "id": 10,
+            "topic": "Dynamics (Gesekan Udara)",
+            "type": "theory",
+            "question": "A heavy hailstone falls from a high cloud. Initially, gravity pulls it down faster and faster. However, as it speeds up, upward air friction also grows. When the air friction force fully <b>equals</b> the hailstone's weight, what happens to its falling motion?",
+            "options": [
+                "A. It stops falling instantly and hovers in the sky.",
+                "B. It is pushed back up to the cloud.",
+                "C. It continues falling but maintains a constant velocity (Terminal Velocity).",
+                "D. Its acceleration continues to increase exponentially.",
+                "E. It explodes due to the pressure."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Tarikan ke bawah (berat) = Dorongan ke atas (gesekan udara). Kalau kekuatan sudah seimbang (Total Gaya = 0), benda tidak akan tambah cepat lagi, dia akan terus jatuh dengan kecepatan yang stabil (Terminal Velocity)."
+        },
+        {
+            "id": 11,
+            "topic": "Hukum I Newton (Inersia)",
+            "type": "theory",
+            "question": "Passengers are standing casually inside a subway train. Suddenly, the train applies emergency brakes to stop at a station, causing all the passengers to lurch forward. What physical property of matter explains this everyday phenomenon?",
+            "options": [
+                "A. The Law of Universal Gravitation.",
+                "B. Action and Reaction forces.",
+                "C. The Friction of the train floor.",
+                "D. Inertia, which resists any change in their state of motion.",
+                "E. Kinetic Energy transfer."
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Inersia itu sifat 'malas' beradaptasi. Tubuh kita yang sedang maju bersama kereta maunya terus maju ke depan. Makanya kita terdorong (oleng) ke depan saat keretanya tiba-tiba mengerem."
+        },
+        {
+            "id": 12,
+            "topic": "Hukum II Newton",
+            "type": "calc",
+            "question": "A constant thruster force (F) is applied to a satellite of mass m, producing an acceleration of <b>12 m/s&sup2;</b>. If the identical thruster force is applied to a larger space station with a mass of <b>4m</b> (four times heavier), what will be the new acceleration?",
+            "options": [
+                "A. 48 m/s&sup2;",
+                "B. 24 m/s&sup2;",
+                "C. 6 m/s&sup2;",
+                "D. 3 m/s&sup2;",
+                "E. 1 m/s&sup2;"
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Makin berat bobot bendanya, makin lambat geraknya. Kalau massanya berubah jadi 4x lipat lebih berat, maka kecepatannya (percepatan) cuma sisa seperempatnya (1/4). 12 dibagi 4 = 3 m/s&sup2;."
+        },
+        {
+            "id": 13,
+            "topic": "Hukum III Newton",
+            "type": "theory",
+            "question": "A heavy 10-pound bowling ball crashes into a very light, fragile glass pin. According to Newton's Third Law, how does the impact force exerted by the bowling ball compare to the impact force exerted by the glass pin?",
+            "options": [
+                "A. The bowling ball exerts a much stronger force on the pin.",
+                "B. The pin exerts a weaker force because it breaks instantly.",
+                "C. The pin exerts exactly zero force on the ball.",
+                "D. Both objects exert the exact same amount of force on each other.",
+                "E. The force heavily favors the object with greater momentum."
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Hati-hati tertipu kerusakan! Dalam Fisika Aksi-Reaksi, besar gayanya PASTI SAMA PERSIS (Equal). Gelasnya hancur semata-mata karena daya tahan molekulnya lemah, bukan karena gayanya beda."
+        },
+        {
+            "id": 14,
+            "topic": "Gaya Gesek Statis",
+            "type": "calc",
+            "question": "You try to push a massive industrial refrigerator across a tile floor by applying a horizontal force of <b>250 N</b>. However, the refrigerator <b>does not move at all</b>. What must be the exact magnitude of the static friction force generated by the floor?",
+            "options": [
+                "A. 0 N",
+                "B. Less than 250 N",
+                "C. Exactly 250 N",
+                "D. More than 250 N",
+                "E. Dependent entirely on the refrigerator's total mass."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Kunci pertanyaannya: bendanya DIAM. Kalau diam, Gaya Dorong kita seimbang dengan Gaya Gesek lantainya. Kalau kamu dorong 250 N tapi dia tetap diam, berarti lantai menahan dengan gesekan persis 250 N juga."
+        },
+        {
+            "id": 15,
+            "topic": "Berat Semu (Lift)",
+            "type": "theory",
+            "question": "An astronaut is training inside an elevator car that suddenly enters a true free-fall drop. If the astronaut is standing on a mechanical weighing scale during this terrifying drop, what will the scale read?",
+            "options": [
+                "A. His normal Earth weight (mg).",
+                "B. Exactly zero (0 N).",
+                "C. Twice his normal weight.",
+                "D. Half of his normal weight.",
+                "E. The reading will wildly fluctuate."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Saat jatuh bebas, badan astronot dan papan timbangannya sama-sama melayang jatuh bersamaan. Karena telapak kakinya tidak ada gaya menekan papan timbangan, jarumnya akan menunjuk angka 0 (kondisi tanpa bobot)."
+        },
+        {
+            "id": 16,
+            "topic": "Resultan Gaya",
+            "type": "logic",
+            "question": "Two powerful tugboats are dragging an oil rig. Tugboat A pulls directly <b>North with 500 N</b> of force. Tugboat B pulls directly <b>East with 500 N</b> of force. In which compass direction will the oil rig actually accelerate?",
+            "options": [
+                "A. Straight North.",
+                "B. Straight East.",
+                "C. North-East.",
+                "D. North-West.",
+                "E. South-East."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Visualisasikan di kepala! Kalau benda ditarik ke arah Atas (Utara) dan juga ke arah Kanan (Timur) pakai tenaga yang sama kuat, benda itu pasti akan meluncur miring ke kanan atas (Timur Laut / North-East)."
+        },
+        {
+            "id": 17,
+            "topic": "Impuls & Momentum",
+            "type": "theory",
+            "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Pada era 1950-an, industri otomotif berfokus membuat bodi mobil sekeras beton. Asumsinya sangat logis: mobil yang kokoh dan tidak penyok saat tabrakan pasti akan melindungi penumpang di dalamnya. Namun, data medis kecelakaan berkata lain; meskipun bodi luar mobil mulus, organ dalam penumpang hancur akibat gaya inersia.</p><p class='mb-2'>Para insinyur kemudian sadar bahwa mereka telah mengabaikan prinsip dasar Fisika Impuls (I = F &middot; &Delta;t). Saat mobil menabrak beton, momentumnya yang raksasa harus diturunkan paksa menjadi nol. Masalahnya, pada mobil yang kaku, benturan berhenti seketika tanpa peredam (&Delta;t sangat kecil).</p><p class='mb-2'>Menurut persamaan matematika di atas, waktu benturan (&Delta;t) yang sangat sempit akan menghasilkan lonjakan Gaya hentak (F) yang luar biasa besar yang langsung menjalar ke tulang dan organ tubuh penumpang di kabin.</p><p class='mb-2'>Kini, setiap mobil wajib memiliki <i>Crumple Zone</i>, yakni kap depan yang sengaja dibuat ringkih agar mudah melipat seperti kertas akordeon saat menabrak. Berdasarkan prinsip impuls, mengapa desain mobil modern yang mudah meremuk ini justru menyelamatkan nyawa penumpang?</p>",
+            "options": [
+                "A. Bodi yang meremuk memantulkan mobil sejauh mungkin dari titik tabrakan.",
+                "B. Proses meremuknya bodi memperpanjang waktu tabrakan (&Delta;t), sehingga Gaya hentakan fatal (F) yang menembus kabin mengecil drastis.",
+                "C. Crumple zone membuat mobil menjadi lebih berat sehingga pengereman ABS bekerja lebih optimal.",
+                "D. Energi kinetik tabrakan langsung lenyap dihembus oleh udara dari bodi yang robek.",
+                "E. Bodi depan yang hancur akan mematikan mesin mobil sebelum terjadi ledakan tangki bensin."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Area penyok itu tugasnya menunda waktu berhenti mobil saat menabrak. Makin lama waktu tabrakannya (waktu pengereman), gaya dorong yang menyiksa tubuh kita di dalam kabin jadi makin ringan."
+        },
+        {
+            "id": 18,
+            "topic": "Gravitasi & Massa",
+            "type": "theory",
+            "question": "NASA lands a 500 kg exploratory rover on the surface of Mars. It is a known fact that Mars has significantly weaker gravity than Earth. Comparing its status on Earth vs Mars, what happens to the rover's Mass and Weight?",
+            "options": [
+                "A. Both Mass and Weight decrease.",
+                "B. Its Mass decreases, but its Weight remains identical.",
+                "C. Its Mass remains exactly 500 kg, but its Weight decreases.",
+                "D. Both Mass and Weight remain perfectly identical.",
+                "E. Its Mass increases, but its Weight becomes zero."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Massa (jumlah material mesin) itu dibawa dari pabrik, harganya TETAP di planet mana saja. Tapi Berat (Weight) itu wujud gaya tarik planet. Karena tarikan gravitasi Mars lemah, Berat robot itu jadi lebih enteng di sana."
+        },
+        {
+            "id": 19,
+            "topic": "Usaha Fisika",
+            "type": "theory",
+            "question": "A librarian holds a heavy box of books applying an upward support force of <b>40 N</b>. Keeping the box completely level at chest height, she walks exactly <b>20 meters</b> down a flat horizontal hallway. According to strict physical definitions, how much Work does she do on the box against gravity?",
+            "options": [
+                "A. 800 Joules",
+                "B. 40 Joules",
+                "C. 0 Joules",
+                "D. 20 Joules",
+                "E. It depends entirely on her walking speed."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Fisika itu kaku. Usaha (Work) cuma sah dihitung kalau Arah Gaya sejalan/sejajar dengan Arah Perpindahan. Mengangkat kotak arahnya ke ATAS, tapi dia jalan mendarat ke DEPAN (tegak lurus). Berarti Usaha terhadap gravitasinya = 0."
+        },
+        {
+            "id": 20,
+            "topic": "Energi Mekanik",
+            "type": "theory",
+            "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Taman hiburan modern sangat bergantung pada mesin raksasa untuk menghibur pengunjungnya. Namun, raja dari segala wahana, yakni kereta Roller Coaster, menyimpan sebuah rahasia desain yang sangat efisien. Setelah rantai penarik membawa kereta ke puncak tanjakan pertama yang paling tinggi, keterlibatan mesin penggerak berakhir sampai di situ.</p><p class='mb-2'>Sejak kereta dijatuhkan dari puncak tertinggi tersebut hingga sampai kembali ke stasiun akhir, kereta tersebut tidak memiliki mesin motor apa pun. Ia berselancar murni menggunakan hukum alam. Rahasia pergerakannya terletak pada pertukaran dua jenis energi utama: Energi Potensial dan Energi Kinetik.</p><p class='mb-2'>Saat berada di puncak bukit pertama, karena posisinya yang sangat ekstrem dari tanah, kereta memiliki Energi Potensial maksimum. Begitu kereta menukik ke lembah curam, ketinggian itu musnah seketika, berubah wujud sepenuhnya menjadi Energi Kinetik yang menghasilkan kecepatan mengerikan.</p><p class='mb-2'>Hukum Kekekalan Energi Mekanik menyatakan bahwa jumlah energi ini konstan. Jika kita mengabaikan pengaruh gaya gesek roda dan gesekan udara, manakah pernyataan di bawah ini yang paling tepat menggambarkan kondisi energi kereta roller coaster saat meluncur merosot dari puncak ke dasar lintasan?</p>",
+            "options": [
+                "A. Energi total mekaniknya akan terus berkurang karena terpakai habis untuk mendorong massa kereta.",
+                "B. Energi Potensialnya bertambah naik, sementara Energi Kinetiknya memudar karena gravitasi.",
+                "C. Energi Potensialnya menyusut tajam, sementara Energi Kinetiknya meroket naik, namun Energi Totalnya (Mekanik) tetap abadi.",
+                "D. Baik Energi Kinetik maupun Energi Potensialnya akan melonjak naik bersamaan menjelang pendaratan.",
+                "E. Ketinggian kereta memicu terciptanya Energi Total baru yang dihisap dari putaran bumi."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Pas merosot turun, posisi kereta makin rendah (Energi Potensial turun), tapi karena ditarik bumi kecepatannya jadi makin gila (Energi Kinetik naik). Keduanya saling tukar posisi, jumlah totalnya (Mekanik) selalu tetap sama."
+        },
+        {
+            "id": 21,
+            "topic": "Daya (P = W/t)",
+            "type": "logic",
+            "question": "Two identical electric construction motors are lifting supplies. Motor X lifts a steel beam to the roof in <b>10 seconds</b>. Motor Y lifts an identical steel beam to the exact same roof in <b>5 seconds</b>. Comparing their physical output, which statement is true?",
+            "options": [
+                "A. Motor X performs more Work and outputs more Power.",
+                "B. Motor Y performs more Work but outputs less Power.",
+                "C. Both perform equal Work, but Motor X outputs more Power.",
+                "D. Both perform equal Work, but Motor Y outputs more Power.",
+                "E. Both perform equal Work and output equal Power."
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Beban bajanya sama & tinggi atapnya sama = Usaha angkatnya (Work) PASTI SAMA. Tapi Daya (Power) adalah soal 'kecepatan bekerja'. Mesin Y kerjanya kelar lebih cepat (cuma 5 detik), jadi Power mesin Y jelas lebih besar."
+        },
+        {
+            "id": 22,
+            "topic": "Kekekalan Momentum",
+            "type": "theory",
+            "question": "A military tank fires a heavy artillery shell. The shell blasts forward at supersonic velocity, while the massive tank itself jolts backward (recoil) at a very slow, manageable speed. What physics principle dictates why the tank's backward speed is so much slower than the shell's?",
+            "options": [
+                "A. The tank's mass is astronomically larger than the shell's, balancing the momentum equation.",
+                "B. The explosion uniquely provides more pushing force to the shell than to the tank barrel.",
+                "C. The tank's heavy tracks grip the mud, defying momentum conservation.",
+                "D. High-speed projectiles automatically lose mass when leaving the barrel.",
+                "E. Momentum is intentionally canceled by the tank's internal gyroscope."
+            ],
+            "answer": 0,
+            "tutor": "♟️ Bisikan Tutor: Kekekalan Momentum itu adil. Angka hasil kali (Massa x Kecepatan) harus sama! Peluru: Massanya imut x Kecepatannya gila-gilaan. Biar seimbang, Tank: Massanya raksasa x Kecepatannya harus lambat."
+        },
+        {
+            "id": 23,
+            "topic": "Jenis Tumbukan",
+            "type": "theory",
+            "question": "Engineers are analyzing two car crash scenarios involving identical vehicles. Scenario A: The cars bounce off a rubber barrier perfectly (Elastic). Scenario B: The cars crash head-on, crumple their hoods, and tangle together into one ruined piece (Inelastic). In which scenario is the physical damage (Energy Loss) drastically higher?",
+            "options": [
+                "A. Scenario A (Elastic Collision).",
+                "B. Scenario B (Inelastic Collision).",
+                "C. Both scenarios cause the exact same amount of energy loss.",
+                "D. Energy loss depends purely on the weather conditions.",
+                "E. According to thermodynamics, energy cannot be lost in crashes."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Lenting (Elastic) itu memantul mulus tanpa cacat, energi geraknya utuh. Kalau Tidak Lenting (Inelastic), bodinya sampai penyok lengket jadi satu. Artinya energi geraknya banyak yang 'hilang' karena dirubah paksa untuk menghancurkan besi mobil."
+        },
+        {
+            "id": 24,
+            "topic": "Impuls & Keselamatan",
+            "type": "theory",
+            "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Penemuan sabuk pengaman merupakan revolusi besar, namun sabuk tersebut tidak bisa menahan ayunan leher penumpang. Untuk mencegah cedera otak traumatis saat dahi membentur roda kemudi, teknologi <i>Airbag</i> (Kantung Udara) diciptakan sebagai pertahanan lapis kedua.</p><p class='mb-2'>Banyak pengendara awam mengira bahwa airbag berfungsi murni karena sifatnya yang selembut bantal kasur. Kenyataannya, desain airbag dikalibrasi dengan sangat akurat bersandar pada konsep persamaan Fisika Impuls, yaitu momentum sama dengan Gaya dikali Waktu (I = F &middot; &Delta;t).</p><p class='mb-2'>Saat tabrakan terjadi, kepala pengemudi yang melaju kencang harus direm seketika menjadi nol. Jika kepala membentur setir keras, waktu kontak pengeremannya (&Delta;t) sangatlah singkat, nyaris nol koma sekian milidetik. Waktu yang sesingkat ini akan memicu pukulan Gaya (F) yang sangat besar hingga mematahkan leher.</p><p class='mb-2'>Airbag menyiasati hal ini. Ia akan meledak mengembang, lalu segera mengempis perlahan memberikan ruang saat kepala menyentuhnya. Berdasarkan persamaan impuls di atas, bagaimana cara kerja sejati airbag dalam memanipulasi fisika demi menyelamatkan pengemudi?</p>",
+            "options": [
+                "A. Mengirimkan dorongan energi kinetik berlawanan yang memantulkan pengemudi ke sandaran kursi.",
+                "B. Memperpanjang waktu durasi pengereman kepala (&Delta;t), sehingga pukulan Gaya (F) yang diterima tengkorak menjadi jauh lebih kecil.",
+                "C. Menyerap habis seluruh momentum mobil hingga menjadi nol seketika layaknya spons.",
+                "D. Memperpendek waktu benturan secepat mungkin agar rasa sakit pada saraf wajah tidak terasa.",
+                "E. Menghentikan sementara gaya inersia tubuh sehingga penumpang tidak terdorong ke depan."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Airbag itu dirancang empuk biar kepala kita melambat perlahan (waktu tabrakannya jadi lama). Karena durasi berhentinya lebih lama, gaya pukulan yang diterima wajah kita jadi jauh lebih ringan."
+        },
+        {
+            "id": 25,
+            "topic": "Gaya Apung (Archimedes)",
+            "type": "theory",
+            "question": "A dense block of plastic is observed floating gracefully in heavily salted seawater. If you carefully take that same plastic block and place it into a beaker of pure alcohol (which has a significantly lighter density than saltwater), what will inevitably happen to the block's floating position?",
+            "options": [
+                "A. It will float higher, with less volume submerged in the alcohol.",
+                "B. It will float lower, sinking deeper into the alcohol to stay afloat.",
+                "C. It will float at the exact same depth as it did in the seawater.",
+                "D. It will hover like a submarine perfectly in the middle of the fluid.",
+                "E. The plastic will immediately shatter."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Alkohol itu cairan yang 'lemah' dibanding air garam laut. Karena daya angkat cairan ini kecil, balok plastik butuh menenggelamkan bagian badannya lebih dalam agar mendapat gaya angkat yang cukup untuk mengapung."
+        },
+        {
+            "id": 26,
+            "topic": "Hukum Bernoulli",
+            "type": "theory",
+            "question": "Aerospace engineers shape drone propeller blades with a distinct curve on the upper surface and a flatter profile on the bottom. According to Bernoulli's strict hydrodynamic principles, how does this specific geometric shape generate the upward 'Lift' required for flight?",
+            "options": [
+                "A. The shape causes air to flow FASTER over the top, which magically creates a LOW PRESSURE zone above the blade.",
+                "B. The shape causes air to flow SLOWER over the top, generating a crushing HIGH PRESSURE zone above.",
+                "C. Air flows at the exact same velocity everywhere, but the propeller physically pushes the air down like an oar.",
+                "D. The spinning motion creates anti-gravity particles in the air stream.",
+                "E. The upper curve traps dense oxygen molecules to push the drone upwards."
+            ],
+            "answer": 0,
+            "tutor": "♟️ Bisikan Tutor: Rumus wajib Bernoulli: Makin ngebut udara berlari, makin rendah tekanannya. Sayap atas dibuat melengkung biar udara dipaksa lari lebih cepat, tekanannya jadi drop (rendah). Tekanan dari udara bawah akan mendorong sayap naik."
+        },
+        {
+            "id": 27,
+            "topic": "Tekanan Hidrostatis",
+            "type": "theory",
+            "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Bendungan Hoover di Amerika Serikat adalah sebuah mahakarya rekayasa sipil yang membendung aliran Sungai Colorado. Jika Anda berdiri di puncaknya, Anda mungkin takjub melihat betapa luasnya danau buatan raksasa yang terhampar menutupi lembah di balik dinding beton tersebut.</p><p class='mb-2'>Namun, di balik layar, insinyur struktur bendungan sebenarnya sama sekali tidak pusing memikirkan seberapa luas permukaan danau yang terbentuk. Musuh utama yang harus ditahan oleh dinding beton bendungan tersebut adalah sesuatu yang tersembunyi jauh di bawah permukaan, sebuah amukan alam yang hening.</p><p class='mb-2'>Dalam ilmu Fluida Statis, fenomena ini didefinisikan secara mutlak lewat persamaan Tekanan Hidrostatis (P = &rho; &middot; g &middot; h). Rumus tersebut menegaskan bahwa besaran tekanan air yang menonjok dinding bendungan secara horizontal hanya dipengaruhi oleh satu variabel krusial: Kedalaman air (h).</p><p class='mb-2'>Semakin dalam Anda menyelam, semakin berat pula pilar lapisan air di atas Anda yang menekan ke bawah. Berdasarkan rumusan tekanan hidrostatis tersebut, alasan struktural fisika apa yang memaksa insinyur merancang fondasi dinding bendungan bagian bawah menjadi luar biasa tebal, sementara bagian atasnya dibuat lebih tipis?</p>",
+            "options": [
+                "A. Desain tersebut murni dibuat demi nilai estetika arsitektur dan menghemat jutaan ton semen.",
+                "B. Karena tekanan hidrostatis air selalu tumbuh membesar secara signifikan seiring bertambahnya kedalaman, menuntut dinding bawah yang super kokoh.",
+                "C. Dinding bagian dasar difungsikan semata-mata menahan bobot aspal jembatan lalu lintas di atasnya.",
+                "D. Struktur dasar tebal sengaja dibuat keropos agar sisa lumpur kotor bisa merembes perlahan dari bawah.",
+                "E. Air tawar di dasar bendungan secara alamiah selalu berubah massa jenisnya menjadi seberat besi murni."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Pernah menyelam ke dasar kolam renang? Telinga kita sakit ditekan air kan? Sama seperti dinding bendungan. Makin ke bawah, kekuatan dorongan airnya makin raksasa. Tembok bawahnya wajib dibuat super tebal agar tidak jebol."
+        },
+        {
+            "id": 28,
+            "topic": "Pemuaian Zat Padat",
+            "type": "theory",
+            "question": "When inspecting long-distance steel railway tracks, you will always notice deliberate, small intentional gaps left at the connection joints between the heavy iron rails. What is the fundamental thermal physics reason behind leaving these empty spaces?",
+            "options": [
+                "A. To provide essential room for the steel to expand in length during scorching summer days without buckling or warping.",
+                "B. To significantly save on national steel manufacturing costs.",
+                "C. To intentionally create the classic 'click-clack' train rhythm that prevents the driver from falling asleep.",
+                "D. To give the locomotive wheels additional friction and braking grip during rain.",
+                "E. To allow floodwaters to safely seep under the tracks without causing rust."
+            ],
+            "answer": 0,
+            "tutor": "♟️ Bisikan Tutor: Rel kereta itu terbuat dari baja. Sifat baja kalau kesengat terik matahari siang, dia memanjang (memuai). Celah itu disediakan sebagai 'ruang bernapas' supaya saat rel memanjang, bajanya tidak saling dorong sampai bengkok."
+        },
+        {
+            "id": 29,
+            "topic": "Perpindahan Kalor (Konduksi)",
+            "type": "theory",
+            "question": "On a freezing winter morning inside a 5&deg;C cabin, you place your bare hands simultaneously on a brass metal doorknob and a wooden door panel. Although both objects have been in the room all night, the brass knob instantly feels painfully <b>colder</b>. Why does your brain register this difference?",
+            "options": [
+                "A. Metal fundamentally maintains a colder baseline temperature than organic materials in winter.",
+                "B. Brass is a superior thermal conductor; it aggressively steals the heat out of your warm hand at a much faster rate.",
+                "C. The wood generates microscopic friction heat naturally from within.",
+                "D. Metal possesses a heavily concentrated specific heat capacity.",
+                "E. Human nerve endings are evolutionarily programmed to overreact to cold metals."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Fakta unik: suhu kayu dan gagang besi di ruangan itu SAMA persis. Tapi karena besi itu jagoan ngantarin panas (Konduktor), panas dari telapak tanganmu langsung disedot kabur oleh besinya dengan cepat. Itulah kenapa rasanya 'dingin'."
+        },
+        {
+            "id": 30,
+            "topic": "Kalor Jenis",
+            "type": "theory",
+            "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Bagi para nelayan tradisional Nusantara, siklus angin di pesisir adalah kompas kehidupan mereka. Setiap pagi menjelang siang, para pengunjung pantai menyadari sebuah anomali sensorik: pasir di daratan akan terasa sangat panas membakar kaki, namun air laut yang hanya berjarak beberapa meter justru terasa tetap sejuk dan menyegarkan tubuh.</p><p class='mb-2'>Padahal, baik pasir daratan maupun hamparan air lautan luas tersebut disinari oleh intensitas terik matahari yang sama persis sejak fajar menyingsing. Fenomena perbedaan suhu yang drastis ini rupanya merupakan mesin penggerak alami di balik terciptanya Angin Laut dan Angin Darat.</p><p class='mb-2'>Dalam ilmu Termodinamika, perbedaan ini bersumber murni dari satu identitas fisika yang disebut Kalor Jenis (c). Benda padat layaknya pasir dan bebatuan memiliki nilai Kalor Jenis yang sangat kerdil. Artinya, pasir memiliki sifat yang sangat reaktif dan mudah diprovokasi; sedikit saja terkena radiasi panas, suhunya langsung meroket tajam.</p><p class='mb-2'>Sebaliknya, air memiliki salah satu nilai Kalor Jenis tertinggi yang pernah diketahui di alam semesta. Berdasarkan peran krusial kalor jenis ini dalam membentuk sirkulasi angin pesisir, apa makna fisis yang sebenarnya dari pernyataan 'Air lautan memiliki Kalor Jenis yang besar'?</p>",
+            "options": [
+                "A. Air lautan lebih mulus dan cepat dalam menghantarkan panas bumi ke permukaan dibandingkan kepadatan pasir pantai.",
+                "B. Air bersifat sangat 'keras kepala' dan membutuhkan pasokan energi kalor matahari yang sangat masif hanya untuk menaikkan suhunya 1 derajat celcius saja.",
+                "C. Air mampu mengunci radiasi panas hanya terisolasi di lapisan gelombang atas permukaannya.",
+                "D. Daratan pasir secara ajaib memantulkan kembali panas matahari ke angkasa, sementara lautan menelannya utuh.",
+                "E. Air selalu dikondisikan oleh alam agar bersuhu lebih dingin dari benda padat di dekatnya untuk menjaga ekosistem ikan."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Kalor jenis tinggi = benda super 'malas' berubah suhu. Air laut butuh disuapi energi panas matahari luar biasa banyak biar suhunya mau naik. Makanya, siang bolong pun air laut tetap menyejukkan."
+        },
+        {
+            "id": 31,
+            "topic": "Sifat Gelombang",
+            "type": "theory",
+            "question": "A massive solar flare erupts violently on the surface of the Sun. Telescopes on Earth can clearly photograph the brilliant flash of the explosion, but zero sound of the blast ever reaches our planet. What fundamental distinction between wave properties does this phenomenon highlight?",
+            "options": [
+                "A. Sound waves are transverse, while Light waves travel longitudinally.",
+                "B. Light requires a dense gaseous medium to glow, while sound dissipates.",
+                "C. Light is an electromagnetic wave that conquers the vacuum of space, while Sound is a mechanical wave that desperately needs an air medium to travel.",
+                "D. Extreme heat destroys acoustic wavelengths before they enter the stratosphere.",
+                "E. Both waves travel at identical speeds, but light reaches the eye sooner."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Di luar angkasa jarak Bumi dan Matahari itu isinya ruang hampa (vakum/kosong melompong). Cahaya itu tangguh, bisa lewat jalan hampa. Tapi Suara itu gelombang Mekanik, dia butuh perantara udara buat numpang jalan. Tanpa udara, suara mati seketika."
+        },
+        {
+            "id": 32,
+            "topic": "Persamaan Gelombang",
+            "type": "logic",
+            "question": "A violinist turns the tuning peg to drastically tighten a violin string, directly increasing the wave propagation speed (v) inside the metallic string. Assuming the physical length of the string does not change (wavelength &lambda; is constant), what mathematical effect does this have on the resulting musical note?",
+            "options": [
+                "A. The frequency (f) is forced to increase, resulting in a distinctly Higher Pitch (sharp note).",
+                "B. The frequency (f) decreases, causing the note to sound like a low Bass.",
+                "C. The wave's frequency remains completely unaffected by velocity.",
+                "D. The amplitude multiplies, making the music uncomfortably loud.",
+                "E. The note completely silences."
+            ],
+            "answer": 0,
+            "tutor": "♟️ Bisikan Tutor: Pakai logika rumus v = frekuensi &times; panjang senar. Kalau kecepatannya (v) dikencangkan sampai naik daun, padahal senarnya ukurannya tetap, maka si Frekuensi HARUS ikut NAIK. Frekuensi tinggi artinya suaranya melengking/tajam."
+        },
+        {
+            "id": 33,
+            "topic": "Efek Doppler",
+            "type": "theory",
+            "question": "A loud police cruiser with blaring sirens is rapidly accelerating <b>towards</b> you as you stand on the sidewalk. According to the Doppler Effect physics, how will your brain perceive the sound of the approaching siren compared to a stationary police car?",
+            "options": [
+                "A. The siren will sound lower in pitch (depressed frequency) and significantly quieter.",
+                "B. The siren will sound lower in pitch (depressed frequency) but louder.",
+                "C. The siren will sound much higher in pitch (compressed, elevated frequency) and louder.",
+                "D. The pitch stays exactly identical, only the volume amplifies.",
+                "E. The siren will sound higher in pitch but eerily quieter."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Mobilnya mendekat ngebut ke arahmu! Berarti gelombang suaranya di depan mobil makin tertekan empet-empetan. Karena padat, frekuensinya NAIK (Suara makin melengking/nyaring). Sekaligus suaranya jadi makin KERAS."
+        },
+        {
+            "id": 34,
+            "topic": "Resonansi",
+            "type": "theory",
+            "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Dalam catatan sejarah insinyur sipil Amerika Serikat, tragedi ambruknya Jembatan Gantung Tacoma Narrows pada tanggal 7 November 1940 selalu menjadi bahan studi kasus wajib. Mahakarya baja sepanjang ribuan kaki tersebut diresmikan hanya beberapa bulan sebelumnya dengan euforia kebanggaan nasional.</p><p class='mb-2'>Menariknya, keruntuhan mengerikan jembatan ini sama sekali bukan disebabkan oleh beban tonase ratusan mobil yang melintas, dan bukan pula karena dihantam oleh badai topan berkecepatan dahsyat. Pada hari nahas tersebut, angin bertiup cukup konstan dengan kecepatan yang tergolong biasa saja untuk kawasan selat.</p><p class='mb-2'>Akar petakanya murni bersembunyi di balik fenomena Fisika Bunyi/Mekanik yang disebut Resonansi. Hembusan angin konstan memecah badan jembatan dan menciptakan pusaran udara berirama (<i>aeroelastic flutter</i>). Tragisnya, ritme pusaran angin tersebut secara kebetulan bertepatan persis dengan <b>frekuensi alami</b> (ritme getar bawaan) struktur baja sang jembatan.</p><p class='mb-2'>Ibarat mendorong anak pada ayunan tepat saat ayunan bergerak ke depan, hembusan angin memompa energi terus-menerus. Akibatnya, jembatan berayun dan melintir dengan ayunan yang terus membesar hingga melampaui batas lelah material baja. Apa pelajaran paling fatal yang dipelajari arsitek dunia terkait fenomena resonansi mekanik ini?</p>",
+            "options": [
+                "A. Memastikan jembatan dicor seberat mungkin dengan beton padat agar kehilangan kelenturannya.",
+                "B. Mereka wajib merancang aerodinamika profil jembatan agar frekuensi dorongan angin luar tidak pernah sama dengan frekuensi alami jembatan.",
+                "C. Pemerintah melarang keras pembangunan jembatan suspensi di kawasan yang memiliki sirkulasi angin laut konstan.",
+                "D. Kelenturan mekanik material baja adalah musuh utama yang harus dibuang dari buku panduan konstruksi jalan layang.",
+                "E. Resonansi adalah fenomena gaib yang hanya terjadi pada ruang hampa resonansi alat musik akustik belaka."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Resonansi itu berbahaya kalau ritme getar dorongan luar (angin) SAMA KOPLAK dengan ritme getar bawaan benda (jembatan). Goyangannya bakal dipompa makin besar dan dahsyat sampai bendanya hancur berantakan."
+        },
+        {
+            "id": 35,
+            "topic": "Listrik Statis (Triboelektrik)",
+            "type": "theory",
+            "question": "A student aggressively combs her dry hair with a plastic comb in the morning, and suddenly pieces of paper stick to the comb. Physics states the plastic comb has acquired a negative static charge. Deep at the atomic level, what microscopic particle jumped to cause this phenomenon?",
+            "options": [
+                "A. Massive Protons migrated from her hair to the plastic teeth of the comb.",
+                "B. Agile Electrons transferred straight from her hair onto the plastic comb.",
+                "C. Electrons transferred away from the plastic comb into her hair.",
+                "D. The friction literally split the atomic nuclei, bleeding pure electricity onto the comb.",
+                "E. Thermal heat from rubbing manifested instantly into static negative ions."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Aturan baku atom: Proton terkurung kuat di inti, TIDAK BISA kabur! Yang lincah dan suka kelayapan pindah rumah itu cuma Elektron (di kulit luar). Sisir plastik jadi Negatif berarti dia ketambahan Elektron liar dari rambut."
+        },
+        {
+            "id": 36,
+            "topic": "Hukum Coulomb",
+            "type": "calc",
+            "question": "In a vacuum chamber, two charged micro-particles violently repel each other with an electrostatic force of <b>120 N</b>. A technician uses a mechanical arm to pull them apart, making the physical distance between them exactly <b>two times (2x) farther</b> than before. What is the new, calculated repulsive force?",
+            "options": [
+                "A. 240 N",
+                "B. 120 N",
+                "C. 60 N",
+                "D. 30 N",
+                "E. 0 N"
+            ],
+            "answer": 3,
+            "tutor": "♟️ Bisikan Tutor: Gaya listrik sangat sensitif kalau jarak dijauhkan. Rumus penyusutannya itu Kuadrat/pangkat dua. Dijauhkan 2x lipat = gayanya melemah 2&sup2; (alias 4 kalinya). Tinggal dipotong: 120 N dibagi 4 = 30 N."
+        },
+        {
+            "id": 37,
+            "topic": "Rangkaian Listrik Dasar",
+            "type": "logic",
+            "question": "A city planner is comparing two identical light bulbs for street lamps. Circuit A is wired purely in <b>Series</b>. Circuit B is wired in <b>Parallel</b>. Both are hooked to identical massive power batteries. Which circuit configuration will emit a noticeably brighter illumination overall, and why?",
+            "options": [
+                "A. The Series circuit, because the electrical current is tightly focused into one single undivided pipe.",
+                "B. The Parallel circuit, because each independent bulb bypasses sharing and extracts the full voltage limit from the battery.",
+                "C. Both configurations generate the exact same lumens of brightness.",
+                "D. The Series circuit, because its cumulative electrical resistance is significantly lower.",
+                "E. The Parallel circuit, solely because it consumes half the battery's energy."
+            ],
+            "answer": 1,
+            "tutor": "♟️ Bisikan Tutor: Kalau Seri, tegangannya harus rukun dibagi rata ke semua lampu (makanya lampunya redup-redup). Kalau Paralel, tiap lampu punya kabel sendiri, masing-masing nyedot tegangan full 100% dari baterai. Otomatis lampunya terang benderang maksimal!"
+        },
+        {
+            "id": 38,
+            "topic": "Hubung Singkat (Korsleting)",
+            "type": "logic",
+            "question": "In a physics project, a student wires a battery to a resistor (a lamp). However, he mistakenly solders a thick, empty copper wire connecting the positive terminal straight back to the negative terminal, ignoring the lamp completely. The lamp stays dark, and the battery overheats. Why does the current bypass the lamp?",
+            "options": [
+                "A. The battery's microchip intentionally cuts power to prevent a chemical leak.",
+                "B. The flowing electrons neatly divide into two equal streams, starving the lamp.",
+                "C. Electric current inherently behaves like water, lazily choosing the pure 'path of least resistance' (the empty wire) and completely ignoring the difficult resistor.",
+                "D. The copper wire creates an impenetrable voltage wall.",
+                "E. The lamp suddenly generates its own reverse magnetic field."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Arus listrik itu hobinya lewat jalan paling gampang. Lampu itu jalan terjal penuh hambatan. Tiba-tiba dikasih kabel polos tanpa hambatan, wah, semua arus listrik kabur lewat jalan tol itu dan ninggalin lampunya. Itulah bahaya Hubung Singkat (Korsleting)."
+        },
+        {
+            "id": 39,
+            "topic": "Daya & Keamanan Listrik",
+            "type": "theory",
+            "question": "Deep inside the electrical panel of a family home, a small glass cylindrical <b>fuse</b> contains a microscopically thin metal wire. When a short circuit happens, how does this tiny, seemingly fragile component save the entire house from a catastrophic electrical fire?",
+            "options": [
+                "A. It chemically releases freezing argon gas to instantly cool down the raging hot cables in the walls.",
+                "B. It functions as a heavy-duty resistor to permanently slam the brakes on wild voltage spikes.",
+                "C. The thin wire is precisely engineered to melt and snap from excessive heat, instantly breaking the circuit and stopping all electricity.",
+                "D. It injects additional grounding voltage to stabilize the chaotic electron flow.",
+                "E. It physically disconnects the house from the city's main grid via a magnetic lock."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Sekering (fuse) itu satpam bunuh diri. Kawat tipis di dalamnya dirancang sangat rentan panas. Kalau arus tiba-tiba membludak (bikin kabel panas mau kebakaran), kawat sekering ini akan leleh dan putus duluan. Plak! Listrik rumah mati total, tapi rumahnya selamat."
+        },
+        {
+            "id": 40,
+            "topic": "Listrik Statis (Distribusi Muatan)",
+            "type": "theory",
+            "question": "<span class='text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block'>[WACANA LITERASI]</span><br><p class='mb-2'>Saat awan kumulonimbus raksasa saling bergesekan dalam badai gelap, triliunan elektron liar menumpuk di dasar awan, mencari jalan tercepat untuk menumpahkan amarahnya ke daratan bumi. Itulah kilatan mematikan yang kita sebut petir.</p><p class='mb-2'>Menyadari ancaman kehancuran struktur beton dari tegangan ratusan juta volt, arsitek wajib mempersenjatai puncak pencakar langit dengan penangkal petir berbahan logam murni. Secara konsep, penangkal petir tidak pernah berfungsi sebagai tameng pelindung gaib yang bisa mengusir datangnya petir.</p><p class='mb-2'>Fungsinya justru sebaliknya; ia dengan gagah berani 'mengundang' dan menangkap kilatan petir tersebut untuk ditarik masuk ke jalan tol kabel tembaga besar, membuangnya dengan aman jauh ke pelukan tanah (<i>grounding</i>).</p><p class='mb-2'>Satu rahasia terbesar efektivitas alat ini tersembunyi pada desain fisik pucuknya. Dalam teori elektrostatika klasik tentang distribusi muatan listrik statis pada konduktor asimetris, apa alasan logis fisika mengapa ujung atas penangkal petir secara mutlak harus dirancang sangat runcing menyerupai tombak, dan bukan berujung tumpul layaknya kubah?</p>",
+            "options": [
+                "A. Ujung tombak berdesain aerodinamis mampu membelah tekanan pusaran awan badai agar tidak menyambar secara vertikal.",
+                "B. Sifat kimiawi tembaga hanya efektif melawan korosi hujan asam jika ditempa secara tajam pada puncaknya.",
+                "C. Muatan elektron selalu berkumpul teramat padat pada ujung berdimensi sempit (runcing), sehingga ionisasinya mudah memicu tarikan dengan kilat di langit.",
+                "D. Dimensi yang tajam otomatis memantulkan jutaan ion petir yang datang kembali terlempar ke angkasa luar.",
+                "E. Material baja berujung runcing terbukti sangat ampuh menghemat biaya pembuatan alat tanpa menurunkan daya redam panasnya."
+            ],
+            "answer": 2,
+            "tutor": "♟️ Bisikan Tutor: Sifat ajaib listrik statis di logam: Elektron suka berdesak-desakan kumpul di pucuk logam yang ujungnya melengkung sangat sempit (tajam/runcing). Kepadatan elektron ekstra ini mempermudah pucuk tersebut memancarkan ionisasi untuk 'menarik' petir."
+        }
+    ]
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const rawData = document.getElementById('database-soal').textContent;
+            // Ingat untuk menempelkan FULL JSON ke dalam tag script di atas
+            const questions = JSON.parse(rawData);
+            const container = document.getElementById('soal-container');
+
+            questions.forEach((q, index) => {
+                const qBlock = document.createElement('div');
+                qBlock.className = 'question-block flex gap-2 text-justify';
+
+                // Nomor Soal
+                const numberDiv = document.createElement('div');
+                numberDiv.className = 'w-6 shrink-0 font-bold';
+                numberDiv.innerText = `${index + 1}.`;
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'flex-1';
+
+                // Teks Soal
+                const textDiv = document.createElement('div');
+                textDiv.className = 'mb-1.5';
+                textDiv.innerHTML = q.question;
+
+                // Pilihan Jawaban dengan Hanging Indent
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'flex flex-col gap-0.5';
+                
+                q.options.forEach(opt => {
+                    const optRow = document.createElement('div');
+                    optRow.className = 'flex gap-1.5';
+
+                    // Memisahkan huruf opsi (A., B., dll) dari teksnya menggunakan Regex
+                    const match = opt.match(/^([A-E]\.)\s*(.*)$/i);
+                    
+                    if (match) {
+                        const letterDiv = document.createElement('div');
+                        letterDiv.className = 'w-4 shrink-0';
+                        letterDiv.innerHTML = match[1]; // Memasukkan huruf (A., B., dst)
+
+                        const optTextDiv = document.createElement('div');
+                        optTextDiv.className = 'flex-1 text-justify';
+                        optTextDiv.innerHTML = match[2]; // Memasukkan isi teks pilihan
+
+                        optRow.appendChild(letterDiv);
+                        optRow.appendChild(optTextDiv);
+                    } else {
+                        // Fallback jika format JSON ada yang tidak diawali "A. ", dsb.
+                        optRow.innerHTML = opt;
+                    }
+                    
+                    optionsDiv.appendChild(optRow);
+                });
+
+                contentDiv.appendChild(textDiv);
+                contentDiv.appendChild(optionsDiv);
+                
+                qBlock.appendChild(numberDiv);
+                qBlock.appendChild(contentDiv);
+                
+                container.appendChild(qBlock);
+            });
+        });
+    </script>
+</body>
+</html>

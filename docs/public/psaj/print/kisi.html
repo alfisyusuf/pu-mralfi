@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisi-Kisi Ujian Fisika - ABBS (F4 Landscape)</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Menggunakan font Cambria standar sistem */
+        body {
+            font-family: 'Cambria', serif;
+            font-size: 11pt;
+            line-height: 1.0; /* Spasi 1.0 */
+            background-color: #f3f4f6; 
+        }
+
+        /* Simulasi Kertas F4 Landscape (330mm x 215mm) di Layar */
+        .f4-landscape {
+            width: 330mm;
+            /* Margin layar disamakan dengan print: Atas 30mm, Kanan 20mm, Bawah 20mm, Kiri 30mm */
+            padding: 30mm 20mm 20mm 30mm; 
+            margin: 10mm auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        /* Tabel Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 6px 8px; /* Padding sel agar tidak terlalu sesak */
+            vertical-align: top;
+        }
+        th {
+            background-color: #f3f4f6;
+            text-align: center;
+            font-weight: bold;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        /* Pengaturan Cetak (Print) */
+        @media print {
+            @page {
+                size: 330mm 215mm; /* F4 Landscape */
+                margin: 30mm 20mm 20mm 30mm; /* Atas 3cm, Kanan 2cm, Bawah 2cm, Kiri 3cm */
+            }
+            body {
+                background-color: white;
+            }
+            .f4-landscape {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+                padding: 0; /* Padding dinonaktifkan karena sudah di-handle oleh @page margin */
+            }
+            
+            /* Mengulang header tabel di setiap halaman baru */
+            thead {
+                display: table-header-group;
+            }
+            /* Mencegah baris tabel terpotong di tengah halaman */
+            tr {
+                page-break-inside: avoid;
+            }
+        }
+
+        .kop-line {
+            border-bottom: 3px solid black;
+            margin-top: 8px;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body class="text-black">
+
+    <div class="f4-landscape">
+        <div class="flex items-center justify-between mb-2">
+            <div class="w-[12%]">
+                <img src="./logo_sma_abbs_surakarta.png" alt="Logo ABBS" class="w-full h-auto object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'border p-4 text-center text-xs\'>LOGO ABBS</div>';">
+            </div>
+            
+            <div class="w-[88%] text-center leading-tight">
+                <div class="font-bold text-[12pt]">SEKOLAH MENENGAH ATAS</div>
+                <div class="font-bold text-[13pt]">AL ABIDIN BILINGUAL BOARDING SCHOOL (ABBS) SURAKARTA</div>
+                <div class="font-bold text-[12pt]">TERAKREDITASI : A (Amat Baik)</div>
+                <div class="text-[10pt] mt-1">Jalan Tarumanegara III, Banyuanyar, Banjarsari, Surakarta, 57137</div>
+                <div class="text-[10pt]">Telepon: 0271 – 7882145 Laman: www.abbs.alabidin.sch.id Surat elektronik: abbs@alabidin.sch.id</div>
+            </div>
+        </div>
+        
+        <div class="kop-line"></div>
+        <div class="border-b border-black mb-5"></div>
+
+        <div class="text-center font-bold text-[12pt] mb-5 leading-tight uppercase">
+            <div>KISI-KISI PENILAIAN SUMATIF AKHIR JENJANG (PSAJ)</div>
+            <div>TAHUN PELAJARAN 2025/2026</div>
+        </div>
+
+        <div class="mb-5 leading-tight font-bold">
+            <table class="w-auto border-none !mt-0" style="border: none;">
+                <tr style="border: none;"><td style="border: none; padding: 0 10px 4px 0;">Mata Pelajaran</td><td style="border: none; padding: 0 10px 4px 0;">: Fisika</td></tr>
+                <tr style="border: none;"><td style="border: none; padding: 0 10px 4px 0;">Penyusun</td><td style="border: none; padding: 0 10px 4px 0;">: Mr. Alfi & Mr. Azhar</td></tr>
+            </table>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="w-[5%]">No</th>
+                    <th class="w-[20%]">Topik Utama</th>
+                    <th class="w-[20%]">Materi Pokok</th>
+                    <th class="w-[45%]">Indikator Soal</th>
+                    <th class="w-[10%]">Level Kognitif</th>
+                </tr>
+            </thead>
+            <tbody id="kisi-body">
+                </tbody>
+        </table>
+    </div>
+
+    <script id="database-kisi" type="application/json">
+    [
+        {"no": 1, "topik": "PENGUKURAN & VEKTOR", "materi": "Pengukuran (Angka Penting)", "indikator": "Menentukan makna angka nol di belakang koma sebagai representasi ketelitian alat ukur.", "level": "L1"},
+        {"no": 2, "topik": "PENGUKURAN & VEKTOR", "materi": "Pengukuran (Analisis Dimensi)", "indikator": "Menganalisis persamaan fisika yang konsisten secara dimensional untuk periode bandul sederhana.", "level": "L2"},
+        {"no": 3, "topik": "PENGUKURAN & VEKTOR", "materi": "Pengukuran (Metode Ilmiah)", "indikator": "<b>[Literasi]</b> Mengidentifikasi jenis kesalahan sistematis (Zero Error) dan menentukan nilai pengukuran yang sebenarnya.", "level": "L2"},
+        {"no": 4, "topik": "KINEMATIKA (GERAK)", "materi": "Besaran Gerak", "indikator": "Membedakan konsep jarak (skalar) dan perpindahan (vektor) pada benda yang bergerak satu lintasan penuh.", "level": "L1"},
+        {"no": 5, "topik": "KINEMATIKA (GERAK)", "materi": "GLB & GLBB (Grafik v-t)", "indikator": "Menentukan bagian grafik kecepatan terhadap waktu (v-t) yang merepresentasikan benda bergerak tanpa percepatan.", "level": "L2"},
+        {"no": 6, "topik": "KINEMATIKA (GERAK)", "materi": "Gerak Jatuh Bebas & Parabola", "indikator": "Membandingkan waktu tempuh benda yang jatuh bebas dengan benda yang dilempar horizontal dari ketinggian yang sama.", "level": "L2"},
+        {"no": 7, "topik": "KINEMATIKA (GERAK)", "materi": "Grafik Posisi-Waktu (s-t)", "indikator": "Menginterpretasikan makna kemiringan (slope) pada grafik posisi terhadap waktu sebagai kecepatan konstan.", "level": "L2"},
+        {"no": 8, "topik": "KINEMATIKA (GERAK)", "materi": "Kecepatan Relatif (Vektor)", "indikator": "Menentukan arah resultan vektor yang tepat untuk menyeberangi sungai dengan arus tertentu secara lurus.", "level": "L2"},
+        {"no": 9, "topik": "KINEMATIKA (GERAK)", "materi": "GLBB (Jarak Henti)", "indikator": "<b>[Literasi]</b> Menganalisis perbandingan kuadratik antara kecepatan kendaraan dengan jarak pengereman minimumnya.", "level": "L2"},
+        {"no": 10, "topik": "KINEMATIKA (GERAK)", "materi": "Kecepatan Terminal", "indikator": "Menganalisis keadaan gerak benda jatuh ketika gaya gesek udara membesar dan menyamai gaya berat benda.", "level": "L3"},
+        {"no": 11, "topik": "DINAMIKA (HUKUM NEWTON)", "materi": "Hukum I Newton (Inersia)", "indikator": "Menjelaskan sifat kelembaman (inersia) pada peristiwa penumpang yang terdorong saat bus direm mendadak.", "level": "L1"},
+        {"no": 12, "topik": "DINAMIKA (HUKUM NEWTON)", "materi": "Hukum II Newton (F=ma)", "indikator": "Menentukan percepatan sistem jika massa benda diubah menjadi dua kali lipat dengan gaya yang konstan.", "level": "L2"},
+        {"no": 13, "topik": "DINAMIKA (HUKUM NEWTON)", "materi": "Hukum III Newton", "indikator": "Menganalisis kesamaan gaya aksi-reaksi pada peristiwa tumbukan dua benda dengan massa yang sangat berbeda.", "level": "L2"},
+        {"no": 14, "topik": "DINAMIKA (HUKUM NEWTON)", "materi": "Gaya Gesek Statis", "indikator": "Menentukan besar gaya gesek statis pada benda yang diberi gaya dorong namun tetap dalam keadaan diam.", "level": "L2"},
+        {"no": 15, "topik": "DINAMIKA (HUKUM NEWTON)", "materi": "Berat Semu (Lift)", "indikator": "Menganalisis nilai yang terbaca pada timbangan analog ketika lift mengalami gerak jatuh bebas.", "level": "L3"},
+        {"no": 16, "topik": "DINAMIKA (HUKUM NEWTON)", "materi": "Resultan Gaya", "indikator": "Menentukan arah gerak benda yang ditarik oleh dua gaya yang saling tegak lurus (Utara dan Timur).", "level": "L2"},
+        {"no": 17, "topik": "DINAMIKA (HUKUM NEWTON)", "materi": "Impuls & Momentum", "indikator": "<b>[Literasi]</b> Menganalisis hubungan antara waktu tabrakan dengan gaya fatal pada prinsip desain Crumple Zone mobil.", "level": "L2"},
+        {"no": 18, "topik": "GRAVITASI & PENGANTAR USAHA", "materi": "Gaya Gravitasi & Massa", "indikator": "Membedakan sifat massa (tetap) dan berat (berubah) saat benda dipindahkan ke planet dengan gravitasi berbeda.", "level": "L1"},
+        {"no": 19, "topik": "GRAVITASI & PENGANTAR USAHA", "materi": "Usaha (W = F . d)", "indikator": "Menentukan besarnya usaha pada benda yang gaya angkatnya tegak lurus terhadap arah perpindahannya.", "level": "L2"},
+        {"no": 20, "topik": "GRAVITASI & PENGANTAR USAHA", "materi": "Energi Mekanik", "indikator": "<b>[Literasi]</b> Menerapkan Hukum Kekekalan Energi Mekanik pada perubahan posisi kereta di lintasan Roller Coaster.", "level": "L2"},
+        {"no": 21, "topik": "USAHA, ENERGI & MOMENTUM", "materi": "Daya (P = W/t)", "indikator": "Membandingkan besarnya Usaha dan Daya yang dihasilkan dua orang bermassa sama dengan waktu tempuh berbeda.", "level": "L2"},
+        {"no": 22, "topik": "USAHA, ENERGI & MOMENTUM", "materi": "Kekekalan Momentum", "indikator": "Menjelaskan perbedaan kecepatan peluru dan kecepatan mundur senapan berdasarkan perbandingan massa keduanya.", "level": "L2"},
+        {"no": 23, "topik": "USAHA, ENERGI & MOMENTUM", "materi": "Jenis Tumbukan", "indikator": "Menganalisis jenis tumbukan (lenting vs tidak lenting) yang menghasilkan kehilangan energi (kerusakan) paling besar.", "level": "L3"},
+        {"no": 24, "topik": "USAHA, ENERGI & MOMENTUM", "materi": "Impuls & Keselamatan", "indikator": "<b>[Literasi]</b> Mengaitkan fungsi Airbag dalam memperpanjang waktu kontak untuk menurunkan gaya impulsif.", "level": "L2"},
+        {"no": 25, "topik": "FLUIDA", "materi": "Gaya Apung (Archimedes)", "indikator": "Memprediksi perubahan persentase volume tercelup sebuah benda saat dipindahkan ke cairan dengan massa jenis lebih kecil.", "level": "L2"},
+        {"no": 26, "topik": "FLUIDA", "materi": "Hukum Bernoulli", "indikator": "Menerapkan prinsip Bernoulli tentang hubungan kecepatan udara dan tekanan pada bentuk sayap pesawat terbang.", "level": "L2"},
+        {"no": 27, "topik": "FLUIDA", "materi": "Tekanan Hidrostatis", "indikator": "<b>[Literasi]</b> Menganalisis alasan struktural penebalan dinding bendungan di bagian dasar berdasarkan tekanan hidrostatis.", "level": "L2"},
+        {"no": 28, "topik": "KALOR & SUHU", "materi": "Pemuaian Zat Padat", "indikator": "Menjelaskan tujuan fisis dari pemberian celah pemuaian pada sambungan rel kereta api baja.", "level": "L1"},
+        {"no": 29, "topik": "KALOR & SUHU", "materi": "Perpindahan Kalor (Konduksi)", "indikator": "Menganalisis perbedaan sensasi suhu saat tangan menyentuh logam dan kayu di ruangan yang sama.", "level": "L2"},
+        {"no": 30, "topik": "KALOR & SUHU", "materi": "Kalor Jenis", "indikator": "<b>[Literasi]</b> Menginterpretasikan makna fisis kalor jenis air yang besar pada peristiwa terbentuknya angin darat dan laut.", "level": "L2"},
+        {"no": 31, "topik": "GELOMBANG & BUNYI", "materi": "Sifat Gelombang", "indikator": "Membedakan sifat rambat gelombang mekanik (bunyi) dan gelombang elektromagnetik (cahaya) terkait medium.", "level": "L1"},
+        {"no": 32, "topik": "GELOMBANG & BUNYI", "materi": "Persamaan Gelombang", "indikator": "Menganalisis perubahan frekuensi (nada) dawai ketika cepat rambatnya ditingkatkan tanpa mengubah panjang dawai.", "level": "L2"},
+        {"no": 33, "topik": "GELOMBANG & BUNYI", "materi": "Efek Doppler", "indikator": "Memprediksi perubahan frekuensi (pitch) dan amplitudo (kenyaringan) suara sirene ambulans yang bergerak mendekat.", "level": "L2"},
+        {"no": 34, "topik": "GELOMBANG & BUNYI", "materi": "Resonansi Bunyi/Mekanik", "indikator": "<b>[Literasi]</b> Menganalisis peristiwa runtuhnya jembatan gantung akibat kesamaan frekuensi alami dengan gaya luar.", "level": "L2"},
+        {"no": 35, "topik": "LISTRIK STATIS & DINAMIS", "materi": "Listrik Statis (Triboelektrik)", "indikator": "Menjelaskan perpindahan elektron sebagai penyebab benda netral menjadi bermuatan negatif saat digosok.", "level": "L1"},
+        {"no": 36, "topik": "LISTRIK STATIS & DINAMIS", "materi": "Hukum Coulomb", "indikator": "Menghitung gaya tolak-menolak baru jika jarak antara dua muatan dijauhkan menjadi dua kali lipat (kuadrat terbalik).", "level": "L2"},
+        {"no": 37, "topik": "LISTRIK STATIS & DINAMIS", "materi": "Rangkaian Listrik Dasar", "indikator": "Membandingkan tingkat terang nyala lampu identik yang disusun dalam rangkaian seri dan rangkaian paralel.", "level": "L2"},
+        {"no": 38, "topik": "LISTRIK STATIS & DINAMIS", "materi": "Hubung Singkat (Korsleting)", "indikator": "Menganalisis sifat aliran arus yang mencari jalur hambatan terendah pada rangkaian yang mengalami hubung singkat.", "level": "L3"},
+        {"no": 39, "topik": "LISTRIK STATIS & DINAMIS", "materi": "Daya & Keamanan Listrik", "indikator": "Menjelaskan prinsip pemutusan rangkaian pada sekering (fuse) berdasarkan efek panas dari arus berlebih.", "level": "L2"},
+        {"no": 40, "topik": "LISTRIK STATIS & DINAMIS", "materi": "Listrik Statis (Distribusi)", "indikator": "<b>[Literasi]</b> Menganalisis prinsip distribusi muatan di ujung runcing penangkal petir untuk mempermudah ionisasi udara.", "level": "L2"}
+    ]
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const rawData = document.getElementById('database-kisi').textContent;
+            const kisikisi = JSON.parse(rawData);
+            const tbody = document.getElementById('kisi-body');
+
+            kisikisi.forEach((item) => {
+                const tr = document.createElement('tr');
+                
+                // Styling agar rapi: teks indikator rata kiri (justify), sisanya bisa diletakkan di tengah atau kiri sesuai proporsi.
+                tr.innerHTML = `
+                    <td class="text-center">${item.no}</td>
+                    <td>${item.topik}</td>
+                    <td>${item.materi}</td>
+                    <td class="text-justify leading-tight">${item.indikator}</td>
+                    <td class="text-center font-bold">${item.level}</td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        });
+    </script>
+</body>
+</html>
