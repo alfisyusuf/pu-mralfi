@@ -717,61 +717,127 @@
     </script>
 
     <script>
+        // Fungsi pembantu untuk mengkopi teks ke clipboard
+        function copyToClipboard(text, btnElement, isOption = false) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btnElement.innerText;
+                const originalBg = btnElement.className;
+                
+                // Efek visual saat berhasil dikopi
+                btnElement.innerText = 'Terkopi!';
+                if(isOption) {
+                    btnElement.classList.add('bg-green-500', 'text-white');
+                    btnElement.classList.remove('bg-gray-200', 'text-gray-700');
+                } else {
+                    btnElement.classList.add('bg-green-600');
+                    btnElement.classList.remove('bg-blue-500');
+                }
+
+                // Kembalikan tombol ke rupa semula setelah 1.5 detik
+                setTimeout(() => {
+                    btnElement.innerText = originalText;
+                    btnElement.className = originalBg;
+                }, 1500);
+            }).catch(err => {
+                alert('Gagal mengkopi teks: ' + err);
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             const rawData = document.getElementById('database-soal').textContent;
-            // Ingat untuk menempelkan FULL JSON ke dalam tag script di atas
             const questions = JSON.parse(rawData);
             const container = document.getElementById('soal-container');
 
             questions.forEach((q, index) => {
                 const qBlock = document.createElement('div');
-                qBlock.className = 'question-block flex gap-2 text-justify';
+                qBlock.className = 'question-block flex gap-2 text-justify relative group';
 
                 // Nomor Soal
                 const numberDiv = document.createElement('div');
-                //numberDiv.className = 'w-6 shrink-0 font-bold'; aslinya bold tapi saya ilangin bold nya
                 numberDiv.className = 'w-6 shrink-0';
                 numberDiv.innerText = `${index + 1}.`;
 
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'flex-1';
 
+                // --- BAGIAN ADMIN: Badge Kunci & Tombol Kopi Soal ---
+                const adminToolsDiv = document.createElement('div');
+                adminToolsDiv.className = 'flex items-center gap-3 mb-2 print:hidden bg-slate-100 p-2 rounded-md border border-slate-200';
+                
+                const keyBadge = document.createElement('span');
+                const letterKey = String.fromCharCode(65 + q.answer); // Konversi index 0->A, 1->B, dst.
+                keyBadge.className = 'text-xs font-bold text-white bg-green-600 px-2 py-1 rounded';
+                keyBadge.innerText = `Kunci: ${letterKey}`;
+
+                const copyQBtn = document.createElement('button');
+                copyQBtn.className = 'text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition-colors shadow-sm';
+                copyQBtn.innerText = 'Kopi HTML Soal';
+                // Mengkopi HTML agar formatting (bold/italic/span warna) utuh saat masuk Sanity
+                copyQBtn.onclick = () => copyToClipboard(q.question, copyQBtn, false);
+
+                adminToolsDiv.appendChild(keyBadge);
+                adminToolsDiv.appendChild(copyQBtn);
+                // ---------------------------------------------------
+
                 // Teks Soal
                 const textDiv = document.createElement('div');
-                textDiv.className = 'mb-1.5';
+                textDiv.className = 'mb-2';
                 textDiv.innerHTML = q.question;
 
-                // Pilihan Jawaban dengan Hanging Indent
-                const optionsDiv = document.createElement('div');
-                optionsDiv.className = 'flex flex-col gap-0.5';
-                
-                q.options.forEach(opt => {
-                    const optRow = document.createElement('div');
-                    optRow.className = 'flex gap-1.5';
+                // Gabungkan tool admin dan teks soal
+                const questionHeader = document.createElement('div');
+                questionHeader.appendChild(adminToolsDiv);
+                questionHeader.appendChild(textDiv);
 
-                    // Memisahkan huruf opsi (A., B., dll) dari teksnya menggunakan Regex
+                // Pilihan Jawaban
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'flex flex-col gap-1.5'; 
+                
+                q.options.forEach((opt, optIndex) => {
+                    const optRow = document.createElement('div');
+                    const isCorrect = optIndex === q.answer;
+                    
+                    // Highlight baris jawaban yang benar (Hanya tampil di layar, hilang saat print)
+                    optRow.className = `flex gap-2 items-start p-1.5 rounded-md transition-colors ${
+                        isCorrect ? 'bg-green-50 border border-green-200 print:bg-transparent print:border-none print:p-0' : 'hover:bg-slate-50 print:p-0'
+                    }`;
+
                     const match = opt.match(/^([A-E]\.)\s*(.*)$/i);
+                    let optionTextToCopy = opt;
                     
                     if (match) {
                         const letterDiv = document.createElement('div');
-                        letterDiv.className = 'w-4 shrink-0';
-                        letterDiv.innerHTML = match[1]; // Memasukkan huruf (A., B., dst)
+                        letterDiv.className = 'w-4 shrink-0 mt-0.5'; 
+                        letterDiv.innerHTML = match[1];
 
                         const optTextDiv = document.createElement('div');
-                        optTextDiv.className = 'flex-1 text-justify';
-                        optTextDiv.innerHTML = match[2]; // Memasukkan isi teks pilihan
+                        optTextDiv.className = 'flex-1 text-justify mt-0.5';
+                        optTextDiv.innerHTML = match[2];
+                        
+                        optionTextToCopy = match[2]; // Target kopi hanya teks jawaban, buang "A." nya
 
                         optRow.appendChild(letterDiv);
                         optRow.appendChild(optTextDiv);
                     } else {
-                        // Fallback jika format JSON ada yang tidak diawali "A. ", dsb.
-                        optRow.innerHTML = opt;
+                        const optTextDiv = document.createElement('div');
+                        optTextDiv.className = 'flex-1 text-justify mt-0.5';
+                        optTextDiv.innerHTML = opt;
+                        optRow.appendChild(optTextDiv);
                     }
+
+                    // --- Tombol Kopi Opsi ---
+                    const copyOptBtn = document.createElement('button');
+                    copyOptBtn.className = 'text-[11px] font-medium bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 rounded print:hidden shrink-0 transition-colors shadow-sm';
+                    copyOptBtn.innerText = 'Kopi Teks';
+                    copyOptBtn.onclick = () => copyToClipboard(optionTextToCopy, copyOptBtn, true);
+
+                    optRow.appendChild(copyOptBtn);
+                    // ------------------------
                     
                     optionsDiv.appendChild(optRow);
                 });
 
-                contentDiv.appendChild(textDiv);
+                contentDiv.appendChild(questionHeader);
                 contentDiv.appendChild(optionsDiv);
                 
                 qBlock.appendChild(numberDiv);
