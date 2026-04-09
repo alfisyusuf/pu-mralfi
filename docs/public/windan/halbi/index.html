@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Halal Bi Halal RT 02 - Scan TTD</title>
+    <style>
+        /* Konfigurasi untuk print */
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #e5e7eb; /* Warna background saat dilihat di layar */
+            font-family: 'Times New Roman', Times, serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 1 Lembar A4 Landscape */
+        .kertas-a4 {
+            width: 297mm;
+            height: 210mm;
+            background: white;
+            display: flex;
+            flex-direction: row;
+            page-break-after: always;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 10mm auto; /* Margin layar, tidak efek saat di-print */
+        }
+
+        @media print {
+            body { background-color: white; }
+            .kertas-a4 { margin: 0; box-shadow: none; }
+            /* Memastikan gambar tercetak dengan baik */
+            img { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+
+        /* Setengah A4 (A5 Portrait) */
+        .undangan-a5 {
+            width: 50%;
+            height: 100%;
+            padding: 15mm;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Garis potong di tengah kertas */
+        .undangan-a5:first-child {
+            border-right: 1px dashed #ccc;
+        }
+
+        /* Border elegan double linen */
+        .border-elegan {
+            border: 4px double #1f2937;
+            outline: 1px solid #1f2937;
+            outline-offset: -8px;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Kop Surat */
+        .kop-surat {
+            text-align: center;
+            border-bottom: 2px solid #1f2937;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .kop-surat h2, .kop-surat h3 { margin: 0; line-height: 1.2; }
+        .kop-surat h2 { font-size: 16pt; font-weight: bold; }
+        .kop-surat h3 { font-size: 12pt; font-weight: normal; }
+
+        /* Isi Surat */
+        .isi-surat {
+            font-size: 11pt;
+            line-height: 1.4;
+            flex-grow: 1;
+            color: #111;
+        }
+        .tujuan { margin-bottom: 12px; }
+        .nama-tujuan { font-weight: bold; font-size: 12pt;}
+        
+        .detail-acara table {
+            margin: 10px 0 10px 15px;
+            border-collapse: collapse;
+        }
+        .detail-acara td {
+            padding: 1px 10px 1px 0;
+            vertical-align: top;
+        }
+
+        /* ========================================= */
+        /* AREA TANDA TANGAN DAN CAP (BAGIAN PENTING) */
+        /* ========================================= */
+        
+        .ttd-container {
+            display: flex;
+            justify-content: flex-end; /* Pojok kanan bawah */
+            margin-top: 10px;
+            position: relative; /* Supaya cap bisa diposisikan absolut terhadap ini */
+            height: 120px; /* Memberi ruang untuk ttd dan cap */
+        }
+        
+        .ttd-box {
+            text-align: center;
+            width: 200px;
+            position: relative;
+            z-index: 2; /* Tanda tangan dan nama di atas cap agar tidak tertutup total */
+        }
+        
+        /* Gambar Tanda Tangan Scan */
+        .ttd-asli {
+            height: 60px; /* Atur tinggi tanda tangan */
+            width: auto;
+            margin-top: 5px;
+            margin-bottom: -5px; /* Menarik nama sedikit ke atas */
+        }
+        
+        .ttd-nama {
+            font-weight: bold;
+            text-decoration: underline;
+            margin-top: 0;
+        }
+        
+        /* Gambar Cap/Stempel Scan */
+        .cap-asli {
+            position: absolute;
+            height: 90px; /* Ukuran cap sedikit lebih besar dari ttd */
+            width: auto;
+            
+            /* POSISI CAP: Mengatur seberapa jauh menimpa TTD */
+            right: 130px; /* Jarak dari kanan container */
+            top: 10px;    /* Jarak dari atas container */
+            
+            z-index: 1;   /* Di bawah tanda tangan, tapi di atas kertas */
+            opacity: 0.9; /* Sedikit transparan agar terlihat realistis menimpa teks */
+            
+            /* Rotasi sedikit agar terlihat seperti dicap manual (tidak kaku) */
+            transform: rotate(-10deg); 
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="print-area"></div>
+
+    <template id="template-undangan">
+        <div class="undangan-a5">
+            <div class="border-elegan">
+                
+                <div class="kop-surat">
+                    <h2>PENGURUS RT 02 RW 06</h2>
+                    <h3>KAMPUNG WINDAN, DESA GUMPANG</h3>
+                    <h3>KEC. KARTASURA, KAB. SUKOHARJO</h3>
+                </div>
+
+                <div class="isi-surat">
+                    <div class="tujuan">
+                        Kepada Yth.<br>
+                        Bapak/Ibu/Sdr/i:<br>
+                        <span class="nama-tujuan">[Nama Warga]</span><br>
+                        di Tempat
+                    </div>
+
+                    <p style="margin: 5px 0;"><i>Assalamu'alaikum Warahmatullahi Wabarakatuh,</i></p>
+                    
+                    <p style="margin: 5px 0;">Puji syukur kehadirat Allah SWT. Dalam rangka mempererat tali silaturahmi di bulan yang fitri ini, kami mengharap kehadiran Bapak/Ibu/Sdr/i pada acara **Halal Bi Halal** yang akan dilaksanakan pada:</p>
+
+                    <div class="detail-acara">
+                        <table>
+                            <tr>
+                                <td>Hari, Tanggal</td>
+                                <td>:</td>
+                                <td>**Sabtu, 18 April 2026**</td> </tr>
+                            <tr>
+                                <td>Waktu</td>
+                                <td>:</td>
+                                <td>**19.30 WIB (Ba'da Isya)** - Selesai</td>
+                            </tr>
+                            <tr>
+                                <td>Tempat</td>
+                                <td>:</td>
+                                <td>**Balai Pertemuan RT 02**</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <p style="margin: 5px 0;">Demikian undangan ini kami sampaikan, atas kehadirannya kami ucapkan terima kasih.</p>
+
+                    <p style="margin: 5px 0;"><i>Wassalamu'alaikum Warahmatullahi Wabarakatuh.</i></p>
+                </div>
+
+                <div class="ttd-container">
+                    <img src="cap.png" alt="Cap RT" class="cap-asli">
+                    
+                    <div class="ttd-box">
+                        Windan, 10 April 2026<br>
+                        Pengurus RT 02 RW 06
+                        
+                        <br>
+                        <img src="ttd.png" alt="Tanda Tangan" class="ttd-asli">
+                        
+                        <div class="ttd-nama">Alfi Suryani Yusuf</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // DATA JSON KEPADA YTH
+        const dataWarga = [
+            { "nama": "Keluarga Bpk. Budi Utomo" },
+            { "nama": "Keluarga Ibu Siti Zulaikha" },
+            { "nama": "Bpk. Heri Prasetyo" },
+            { "nama": "Sdr. Agus Setiawan" }
+        ];
+
+        const printArea = document.getElementById('print-area');
+        const template = document.getElementById('template-undangan').content;
+
+        let halamanA4;
+
+        dataWarga.forEach((warga, index) => {
+            if (index % 2 === 0) {
+                halamanA4 = document.createElement('div');
+                halamanA4.className = 'kertas-a4';
+                printArea.appendChild(halamanA4);
+            }
+
+            const clone = document.importNode(template, true);
+            clone.querySelector('.nama-tujuan').textContent = warga.nama;
+            halamanA4.appendChild(clone);
+        });
+    </script>
+
+</body>
+</html>
