@@ -14,7 +14,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #e5e7eb; /* Warna background saat dilihat di layar */
+            background-color: #e5e7eb;
             font-family: 'Times New Roman', Times, serif;
             display: flex;
             flex-direction: column;
@@ -30,13 +30,12 @@
             flex-direction: row;
             page-break-after: always;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin: 10mm auto; /* Margin layar, tidak efek saat di-print */
+            margin: 10mm auto;
         }
 
         @media print {
             body { background-color: white; }
             .kertas-a4 { margin: 0; box-shadow: none; }
-            /* Memastikan gambar tercetak dengan baik */
             img { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
 
@@ -44,7 +43,8 @@
         .undangan-a5 {
             width: 50%;
             height: 100%;
-            padding: 15mm;
+            /* PADDING DIPERKECIL AGAR BORDER LEBIH DEKAT KE TEPI KERTAS */
+            padding: 8mm; 
             box-sizing: border-box;
             position: relative;
         }
@@ -97,31 +97,27 @@
             vertical-align: top;
         }
 
-        /* ========================================= */
-        /* AREA TANDA TANGAN DAN CAP (BAGIAN PENTING) */
-        /* ========================================= */
-        
+        /* AREA TANDA TANGAN DAN CAP */
         .ttd-container {
             display: flex;
-            justify-content: flex-end; /* Pojok kanan bawah */
+            justify-content: flex-end;
             margin-top: 10px;
-            position: relative; /* Supaya cap bisa diposisikan absolut terhadap ini */
-            height: 120px; /* Memberi ruang untuk ttd dan cap */
+            position: relative;
+            height: 120px;
         }
         
         .ttd-box {
             text-align: center;
             width: 200px;
             position: relative;
-            z-index: 2; /* Tanda tangan dan nama di atas cap agar tidak tertutup total */
+            z-index: 2;
         }
         
-        /* Gambar Tanda Tangan Scan */
         .ttd-asli {
-            height: 60px; /* Atur tinggi tanda tangan */
+            height: 60px;
             width: auto;
             margin-top: 5px;
-            margin-bottom: -5px; /* Menarik nama sedikit ke atas */
+            margin-bottom: -5px;
         }
         
         .ttd-nama {
@@ -130,23 +126,16 @@
             margin-top: 0;
         }
         
-        /* Gambar Cap/Stempel Scan */
         .cap-asli {
             position: absolute;
-            height: 90px; /* Ukuran cap sedikit lebih besar dari ttd */
+            height: 90px;
             width: auto;
-            
-            /* POSISI CAP: Mengatur seberapa jauh menimpa TTD */
-            right: 130px; /* Jarak dari kanan container */
-            top: 10px;    /* Jarak dari atas container */
-            
-            z-index: 1;   /* Di bawah tanda tangan, tapi di atas kertas */
-            opacity: 0.9; /* Sedikit transparan agar terlihat realistis menimpa teks */
-            
-            /* Rotasi sedikit agar terlihat seperti dicap manual (tidak kaku) */
+            right: 130px;
+            top: 10px;
+            z-index: 1;
+            opacity: 0.9;
             transform: rotate(-10deg); 
         }
-
     </style>
 </head>
 <body>
@@ -180,7 +169,8 @@
                             <tr>
                                 <td>Hari, Tanggal</td>
                                 <td>:</td>
-                                <td><strong>Sabtu, 11 April 2026</strong></td> </tr>
+                                <td><strong>Sabtu, 11 April 2026</strong></td> 
+                            </tr>
                             <tr>
                                 <td>Waktu</td>
                                 <td>:</td>
@@ -190,6 +180,12 @@
                                 <td>Tempat</td>
                                 <td>:</td>
                                 <td><strong>Jalan Tengah (antara RT 2 & 3)</strong></td>
+                            </tr>
+                            <!-- INFO TAUSIYAH DITAMBAHKAN DI SINI -->
+                            <tr>
+                                <td>Tausiyah</td>
+                                <td>:</td>
+                                <td><strong>Ust. M. Zaenuddin, M.E.I.</strong><br><i>(Pengasuh Hidayatus Sibyan, Kertonatan)</i></td>
                             </tr>
                         </table>
                     </div>
