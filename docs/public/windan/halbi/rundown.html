@@ -13,7 +13,7 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background-color: #f3f4f6; /* Warna latar saat di layar */
+            background-color: #f3f4f6;
             margin: 0;
             padding: 0;
             display: flex;
@@ -34,14 +34,14 @@
             body { background-color: white; }
             .kertas-a4 {
                 margin: 0;
-                padding: 0; /* Padding diatur oleh @page margin */
+                padding: 0;
                 box-shadow: none;
                 width: 100%;
                 height: 100%;
             }
         }
 
-        /* Tipografi khusus untuk MC (Mata Plus / Lanjut Usia) */
+        /* Tipografi khusus untuk MC */
         .judul-acara {
             text-align: center;
             font-size: 24pt;
@@ -61,14 +61,14 @@
 
         /* List Acara */
         ol.rundown-list {
-            font-size: 18pt; /* Ukuran font besar agar sangat mudah dibaca */
+            font-size: 18pt; 
             line-height: 1.4;
             margin: 0;
             padding-left: 30px;
         }
 
         ol.rundown-list li {
-            margin-bottom: 45px; /* Jarak yang sangat lega antar poin */
+            margin-bottom: 50px; /* Jarak lega antar poin */
             padding-left: 10px;
         }
 
@@ -90,23 +90,8 @@
         .ruang-catatan {
             margin-top: 15px;
             border-bottom: 2px dotted #999;
-            height: 25px; /* Baris 1 */
+            height: 30px; 
         }
-        .ruang-catatan.dua-baris {
-            border-bottom: 2px dotted #999;
-            height: 50px; /* Baris 2 */
-            background-image: linear-gradient(to bottom, transparent 24px, #999 24px, #999 26px, transparent 26px);
-            background-size: 100% 25px;
-        }
-        
-        /* Hilangkan background gradient di print jika bermasalah, ganti dengan border sederhana */
-        @media print {
-            .ruang-catatan.dua-baris {
-                background-image: none;
-                border-bottom: 2px dotted #999;
-            }
-        }
-        
     </style>
 </head>
 <body>
@@ -124,18 +109,17 @@
         <ol class="rundown-list">
             <li>
                 <span class="judul-kegiatan">Pembukaan</span>
-                <div class="ruang-catatan"></div>
             </li>
 
             <li>
                 <span class="judul-kegiatan">Pembacaan Ayat Suci Al-Qur'an (Tilawah)</span>
                 <span class="keterangan-kegiatan">Oleh: Bp. Abdurrahman Fidaulhaq Alhazmiy</span>
-                <div class="ruang-catatan"></div>
             </li>
 
             <li>
                 <span class="judul-kegiatan">Sambutan - Sambutan</span>
-                <span class="keterangan-kegiatan">(Ketua Panitia / Ketua RT)</span>
+                <span class="keterangan-kegiatan"></span>
+                <div class="ruang-catatan"></div>
                 <div class="ruang-catatan"></div>
                 <div class="ruang-catatan"></div>
             </li>
@@ -143,26 +127,21 @@
             <li>
                 <span class="judul-kegiatan">Ikrar Syawalan / Halal Bi Halal</span>
                 <span class="keterangan-kegiatan">Penyampaian oleh perwakilan Muda-Mudi, ditanggapi oleh perwakilan Sesepuh.</span>
-                <div class="ruang-catatan"></div>
-                <div class="ruang-catatan"></div>
             </li>
 
             <li>
                 <span class="judul-kegiatan">Tausiyah / Pengajian</span>
                 <span class="keterangan-kegiatan">Oleh: Ust. M. Zaenuddin, M.E.I.<br>(Pengasuh Hidayatus Sibyan, Kertonatan)</span>
-                <div class="ruang-catatan"></div>
             </li>
 
             <li>
                 <span class="judul-kegiatan">Pembacaan Do'a</span>
                 <span class="keterangan-kegiatan">Oleh: Ust. Margono Amat Mukri</span>
-                <div class="ruang-catatan"></div>
             </li>
 
             <li>
                 <span class="judul-kegiatan">Penutup & Ramah Tamah</span>
                 <span class="keterangan-kegiatan">(Mempersilakan hadirin menikmati hidangan)</span>
-                <div class="ruang-catatan"></div>
             </li>
         </ol>
 
