@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rundown MC Halal Bi Halal</title>
+    <style>
+        /* Konfigurasi Kertas A4 Portrait */
+        @page {
+            size: A4 portrait;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f3f4f6; /* Warna latar saat di layar */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .kertas-a4 {
+            width: 210mm;
+            min-height: 297mm;
+            background-color: white;
+            padding: 20mm;
+            box-sizing: border-box;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 20px;
+        }
+
+        @media print {
+            body { background-color: white; }
+            .kertas-a4 {
+                margin: 0;
+                padding: 0; /* Padding diatur oleh @page margin */
+                box-shadow: none;
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        /* Tipografi khusus untuk MC (Mata Plus / Lanjut Usia) */
+        .judul-acara {
+            text-align: center;
+            font-size: 24pt;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            border-bottom: 3px solid black;
+            padding-bottom: 15px;
+        }
+
+        .sub-judul {
+            text-align: center;
+            font-size: 16pt;
+            margin-bottom: 40px;
+            margin-top: 10px;
+        }
+
+        /* List Acara */
+        ol.rundown-list {
+            font-size: 18pt; /* Ukuran font besar agar sangat mudah dibaca */
+            line-height: 1.4;
+            margin: 0;
+            padding-left: 30px;
+        }
+
+        ol.rundown-list li {
+            margin-bottom: 45px; /* Jarak yang sangat lega antar poin */
+            padding-left: 10px;
+        }
+
+        .judul-kegiatan {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .keterangan-kegiatan {
+            font-size: 15pt;
+            font-style: italic;
+            font-weight: normal;
+            color: #333;
+            display: block;
+        }
+
+        /* Area Corat-coret MC */
+        .ruang-catatan {
+            margin-top: 15px;
+            border-bottom: 2px dotted #999;
+            height: 25px; /* Baris 1 */
+        }
+        .ruang-catatan.dua-baris {
+            border-bottom: 2px dotted #999;
+            height: 50px; /* Baris 2 */
+            background-image: linear-gradient(to bottom, transparent 24px, #999 24px, #999 26px, transparent 26px);
+            background-size: 100% 25px;
+        }
+        
+        /* Hilangkan background gradient di print jika bermasalah, ganti dengan border sederhana */
+        @media print {
+            .ruang-catatan.dua-baris {
+                background-image: none;
+                border-bottom: 2px dotted #999;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="kertas-a4">
+        
+        <div class="judul-acara">
+            RUNDOWN ACARA MC
+        </div>
+        <div class="sub-judul">
+            Halal Bi Halal RT 02 RW 06 Windan<br>
+            Sabtu, 11 April 2026
+        </div>
+
+        <ol class="rundown-list">
+            <li>
+                <span class="judul-kegiatan">Pembukaan</span>
+                <div class="ruang-catatan"></div>
+            </li>
+
+            <li>
+                <span class="judul-kegiatan">Pembacaan Ayat Suci Al-Qur'an (Tilawah)</span>
+                <span class="keterangan-kegiatan">Oleh: Bp. Abdurrahman Fidaulhaq Alhazmiy</span>
+                <div class="ruang-catatan"></div>
+            </li>
+
+            <li>
+                <span class="judul-kegiatan">Sambutan - Sambutan</span>
+                <span class="keterangan-kegiatan">(Ketua Panitia / Ketua RT)</span>
+                <div class="ruang-catatan"></div>
+                <div class="ruang-catatan"></div>
+            </li>
+
+            <li>
+                <span class="judul-kegiatan">Ikrar Syawalan / Halal Bi Halal</span>
+                <span class="keterangan-kegiatan">Penyampaian oleh perwakilan Muda-Mudi, ditanggapi oleh perwakilan Sesepuh.</span>
+                <div class="ruang-catatan"></div>
+                <div class="ruang-catatan"></div>
+            </li>
+
+            <li>
+                <span class="judul-kegiatan">Tausiyah / Pengajian</span>
+                <span class="keterangan-kegiatan">Oleh: Ust. M. Zaenuddin, M.E.I.<br>(Pengasuh Hidayatus Sibyan, Kertonatan)</span>
+                <div class="ruang-catatan"></div>
+            </li>
+
+            <li>
+                <span class="judul-kegiatan">Pembacaan Do'a</span>
+                <span class="keterangan-kegiatan">Oleh: Ust. Margono Amat Mukri</span>
+                <div class="ruang-catatan"></div>
+            </li>
+
+            <li>
+                <span class="judul-kegiatan">Penutup & Ramah Tamah</span>
+                <span class="keterangan-kegiatan">(Mempersilakan hadirin menikmati hidangan)</span>
+                <div class="ruang-catatan"></div>
+            </li>
+        </ol>
+
+    </div>
+
+</body>
+</html>
