@@ -8,14 +8,22 @@
         :root {
             --primary: #3b82f6;
             --primary-hover: #2563eb;
-            --bg-body: #f3f4f6;
+            --secondary: #64748b;
+            --bg-body: #e2e8f0;
             --bg-card: #ffffff;
-            --border: #e5e7eb;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
             --success-bg: #ecfdf5;
             --success-border: #10b981;
             --success-text: #047857;
+            --accent: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
@@ -23,65 +31,142 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             line-height: 1.6;
-            padding: 20px;
-            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevent body scroll, handle scroll inside card */
         }
 
+        /* Navbar / Header */
         .header {
-            max-width: 800px;
-            margin: 0 auto 20px auto;
-            text-align: center;
+            background: var(--bg-card);
+            padding: 15px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
         }
 
-        .header h1 {
+        .header-title h1 {
+            font-size: 1.2rem;
             color: var(--primary);
-            margin-bottom: 5px;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+        .header-title p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .mode-badge {
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--secondary);
+            border: 1px solid var(--border);
+        }
+
+        .mode-badge.active {
+            background: #fef3c7;
+            color: #b45309;
+            border-color: #fde68a;
+        }
+
+        .btn-toggle-mode {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-toggle-mode:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .exam-board {
+            width: 100%;
+            max-width: 900px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Area Soal (Scrollable) */
+        .soal-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        .soal-container::-webkit-scrollbar { width: 8px; }
+        .soal-container::-webkit-scrollbar-track { background: #f1f1f1; }
+        .soal-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .soal-container::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
         .soal-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default, handled by JS */
+            animation: fadeIn 0.4s ease;
+        }
+
+        .soal-card.active {
+            display: block;
         }
 
         .soal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 12px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--bg-body);
+            padding-bottom: 15px;
         }
 
-        .soal-number {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
+        .soal-number { font-weight: bold; font-size: 1.3rem; }
 
         .badge {
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 600;
         }
-
         .badge.mudah { background: #dcfce7; color: #166534; }
         .badge.sedang { background: #dbeafe; color: #1e40af; }
         .badge.hots { background: #fee2e2; color: #991b1b; }
 
         .teks-bacaan {
             background: #f8fafc;
-            padding: 16px;
+            padding: 20px;
             border-radius: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             font-size: 0.95rem;
             border-left: 4px solid #cbd5e1;
         }
@@ -90,61 +175,77 @@
             max-width: 100%;
             height: auto;
             display: block;
-            margin: 16px auto;
+            margin: 20px auto;
             border-radius: 8px;
             border: 1px dashed var(--border);
             padding: 4px;
         }
 
-        .opsi-list {
-            list-style: none;
-            padding: 0;
-        }
+        .opsi-list { list-style: none; margin-top: 20px; }
 
         .opsi-item {
             display: flex;
-            margin-bottom: 10px;
-            padding: 10px 14px;
-            border: 1px solid var(--border);
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            background: #fff;
         }
 
-        .opsi-item:hover {
-            background: #f9fafb;
+        .opsi-item:hover { border-color: #cbd5e1; background: #f8fafc; }
+        
+        .opsi-item.selected {
+            border-color: var(--primary);
+            background: #eff6ff;
         }
 
         .opsi-label {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e2e8f0;
             font-weight: bold;
-            margin-right: 12px;
-            color: var(--primary);
+            margin-right: 15px;
+            color: var(--text-main);
+            transition: 0.2s;
         }
 
-        .btn-pembahasan {
-            display: inline-block;
+        .opsi-item.selected .opsi-label {
             background: var(--primary);
             color: white;
+        }
+
+        /* Mode Pembahasan Elements */
+        .btn-pembahasan {
+            display: none; /* Hidden in Latihan Mode */
+            background: var(--accent);
+            color: white;
             border: none;
-            padding: 10px 18px;
+            padding: 10px 20px;
             border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 16px;
+            margin-top: 20px;
+            width: 100%;
             transition: background 0.2s;
+            font-size: 1rem;
         }
 
-        .btn-pembahasan:hover {
-            background: var(--primary-hover);
-        }
+        .btn-pembahasan:hover { background: #d97706; }
 
         .pembahasan-box {
             display: none;
             margin-top: 20px;
-            padding: 16px;
+            padding: 20px;
             background: var(--success-bg);
             border-left: 4px solid var(--success-border);
-            border-radius: 4px;
+            border-radius: 0 8px 8px 0;
             animation: fadeIn 0.3s ease-in;
         }
 
@@ -152,347 +253,566 @@
             font-size: 1.1rem;
             font-weight: bold;
             color: var(--success-text);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 16px;
+            margin: 20px 0;
             font-size: 0.9rem;
         }
-
-        th, td {
-            border: 1px solid var(--border);
-            padding: 8px;
-            text-align: center;
-        }
-
+        th, td { border: 1px solid var(--border); padding: 10px; text-align: center; }
         th { background: #f1f5f9; }
 
+        /* Navigation Footer */
+        .footer-nav {
+            background: #f8fafc;
+            padding: 15px 30px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-nav {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: 0.2s;
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            background: #e2e8f0;
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-nav.next {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+        .btn-nav.next:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        /* Simple Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        .modal-box h3 { margin-bottom: 15px; color: var(--text-main); }
+        .modal-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        .modal-btns { display: flex; gap: 10px; }
+        .modal-btns button {
+            flex: 1; padding: 10px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer;
+        }
+        .btn-cancel { background: #e2e8f0; color: var(--text-main); }
+        .btn-confirm { background: var(--primary); color: white; }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>Latihan Soal UTBK</h1>
-        <p>Materi: Penalaran Umum (PU) | Total: 10 Soal</p>
-    </div>
-
-    <div class="container">
-
-        <div class="soal-card">
-            <div class="soal-header">
-                <div class="soal-number">Soal 1</div>
-                <div class="badge mudah">Tingkat: Mudah</div>
-            </div>
-            <div class="soal-content">
-                <p><strong>Perhatikan kalimat-kalimat berikut!</strong></p>
-                <p>Semua rumah di kompleks X memiliki garasi dan taman kecil.<br>
-                Zeny berada di rumah yang memiliki garasi dan pekarangan kecil.</p>
-                <p>Simpulan yang PALING TEPAT adalah ...</p>
-                <ul class="opsi-list">
-                    <li class="opsi-item"><span class="opsi-label">A</span> Zeny tidak berada di rumah di luar kompleks X.</li>
-                    <li class="opsi-item"><span class="opsi-label">B</span> Zeny berada di rumah di dalam kompleks X.</li>
-                    <li class="opsi-item"><span class="opsi-label">C</span> Zeny berada di rumah di luar kompleks X.</li>
-                    <li class="opsi-item"><span class="opsi-label">D</span> Zeny berada di pekarangan luar kompleks.</li>
-                    <li class="opsi-item"><span class="opsi-label">E</span> Zeny berada di luar kompleks.</li>
-                </ul>
-            </div>
-            <button class="btn-pembahasan" onclick="togglePembahasan('pem-1')">Lihat Pembahasan</button>
-            <div id="pem-1" class="pembahasan-box">
-                <div class="kunci-jawaban">Kunci: B</div>
-                <p>Berdasarkan logika silogisme, jika semua rumah di kompleks X memiliki garasi dan taman (pekarangan) kecil, dan Zeny berada di rumah dengan ciri-ciri tersebut, maka probabilitas kesimpulan yang paling tepat sesuai opsi yang ada adalah Zeny berada di dalam kompleks X. Meskipun secara logika formal ketat ini adalah <em>fallacy of affirming the consequent</em> (karena rumah di kompleks lain juga bisa memiliki garasi), dalam konteks soal PU UTBK tipe ini, kesimpulan induktif yang diarahkan adalah B.</p>
-            </div>
+    <header class="header">
+        <div class="header-title">
+            <h1>Latihan Soal UTBK</h1>
+            <p>Penalaran Umum (PU)</p>
         </div>
-
-        <div class="soal-card">
-            <div class="soal-header">
-                <div class="soal-number">Soal 2</div>
-                <div class="badge sedang">Tingkat: Sedang</div>
-            </div>
-            <div class="soal-content">
-                <div class="teks-bacaan">
-                    <p>Konsumen saat ini menunjukkan minat yang lebih besar terhadap produk-produk perawatan kecantikan. Tingkat penjualan produk ini meningkat lebih cepat daripada dua kategori utama produk kecantikan lainnya: kosmetik dan minyak wangi. Penyebab gejala ini adalah keinginan untuk tetap tampil muda dan alamiah, dengan kulit yang menarik.</p>
-                </div>
-                <p>Pernyataan berikut yang paling SESUAI dengan isi teks tersebut adalah ....</p>
-                <ul class="opsi-list">
-                    <li class="opsi-item"><span class="opsi-label">A</span> terdapat dua kelompok produk kecantikan</li>
-                    <li class="opsi-item"><span class="opsi-label">B</span> terdapat sedikitnya tiga kelompok produk kecantikan</li>
-                    <li class="opsi-item"><span class="opsi-label">C</span> produk kecantikan terdiri dari kosmetik, minyak wangi, dan produk perawatan kulit</li>
-                    <li class="opsi-item"><span class="opsi-label">D</span> kategori kosmetik meliputi produk-produk yang digunakan untuk merawat kesehatan kulit</li>
-                    <li class="opsi-item"><span class="opsi-label">E</span> produk perawatan kecantikan terbagi menjadi kosmetik dan minyak wangi</li>
-                </ul>
-            </div>
-            <button class="btn-pembahasan" onclick="togglePembahasan('pem-2')">Lihat Pembahasan</button>
-            <div id="pem-2" class="pembahasan-box">
-                <div class="kunci-jawaban">Kunci: B</div>
-                <p>Pada kalimat kedua disebutkan: "...meningkat lebih cepat daripada <strong>dua kategori utama produk kecantikan lainnya</strong>: kosmetik dan minyak wangi." Hal ini mengindikasikan bahwa selain "produk perawatan kecantikan", masih ada minimal dua kategori lain, sehingga total terdapat sedikitnya tiga kelompok produk kecantikan.</p>
-            </div>
+        <div class="controls">
+            <span class="mode-badge" id="mode-indicator">Mode: Latihan</span>
+            <button class="btn-toggle-mode" onclick="requestModeChange()" id="btn-mode">Ubah ke Pembahasan</button>
         </div>
+    </header>
 
-        <div class="soal-card">
-            <div class="soal-header">
-                <div class="soal-number">Soal 3</div>
-                <div class="badge mudah">Tingkat: Mudah</div>
-            </div>
-            <div class="soal-content">
-                <p>Toko X menjual beragam produk perawatan rambut merek A. Grafik menunjukkan penjualan produk sampo (Biru), kondisioner (Oranye), dan masker rambut (Hijau) dari bulan April sampai bulan Agustus tahun 2022.</p>
+    <main class="container">
+        <div class="exam-board">
+            
+            <div class="soal-container" id="scroll-area">
                 
-                <img src="./soal3.png" alt="Grafik Penjualan Perawatan Rambut" class="soal-image">
-
-                <table>
-                    <tr><th>Bulan</th><th>Sampo</th><th>Kondisioner</th><th>Masker Rambut</th></tr>
-                    <tr><td>April</td><td>36</td><td>48</td><td>36</td></tr>
-                    <tr><td>Mei</td><td>42</td><td>60</td><td>42</td></tr>
-                    <tr><td>Juni</td><td>54</td><td>54</td><td>42</td></tr>
-                    <tr><td>Juli</td><td>48</td><td>48</td><td>48</td></tr>
-                    <tr><td>Agustus</td><td>42</td><td>36</td><td>60</td></tr>
-                </table>
-                <p>Berdasarkan data grafik tersebut, penurunan banyaknya penjualan paling besar terjadi pada penjualan ....</p>
-                <ul class="opsi-list">
-                    <li class="opsi-item"><span class="opsi-label">A</span> sampo di bulan Juli</li>
-                    <li class="opsi-item"><span class="opsi-label">B</span> sampo di bulan Agustus</li>
-                    <li class="opsi-item"><span class="opsi-label">C</span> kondisioner di bulan Juni</li>
-                    <li class="opsi-item"><span class="opsi-label">D</span> masker rambut di bulan Juni</li>
-                    <li class="opsi-item"><span class="opsi-label">E</span> kondisioner di bulan Agustus</li>
-                </ul>
-            </div>
-            <button class="btn-pembahasan" onclick="togglePembahasan('pem-3')">Lihat Pembahasan</button>
-            <div id="pem-3" class="pembahasan-box">
-                <div class="kunci-jawaban">Kunci: E</div>
-                <p>Hitung selisih penurunan bulan ke bulan untuk opsi yang tersedia:<br>
-                A. Sampo Juli: 54 ke 48 = turun 6<br>
-                B. Sampo Agustus: 48 ke 42 = turun 6<br>
-                C. Kondisioner Juni: 60 ke 54 = turun 6<br>
-                E. Kondisioner Agustus: 48 (di Juli) ke 36 (di Agustus) = <strong>turun 12</strong> (Penurunan paling besar).</p>
-            </div>
-        </div>
-
-        <div class="soal-card">
-            <div class="soal-header">
-                <div class="soal-number">Soal 4</div>
-                <div class="badge sedang">Tingkat: Sedang</div>
-            </div>
-            <div class="soal-content">
-                <p>Jumlah siswa perempuan yang mengunjungi ruang BK untuk konsultasi SNBP selama lima hari berurutan adalah 16, 19, 24, 27, dan 32. Sementara itu, jumlah siswa laki-laki yang berkunjung pada lima hari yang sama adalah 8, 8, 9, 11, dan 14. Jika tren kunjungan tersebut bersifat konstan, jumlah siswa yang berkunjung ke ruang BK pada hari ke-6 sebanyak ... orang.</p>
-                <ul class="opsi-list">
-                    <li class="opsi-item"><span class="opsi-label">A</span> 35 dan 17</li>
-                    <li class="opsi-item"><span class="opsi-label">B</span> 35 dan 18</li>
-                    <li class="opsi-item"><span class="opsi-label">C</span> 37 dan 17</li>
-                    <li class="opsi-item"><span class="opsi-label">D</span> 37 dan 18</li>
-                    <li class="opsi-item"><span class="opsi-label">E</span> 39 dan 19</li>
-                </ul>
-            </div>
-            <button class="btn-pembahasan" onclick="togglePembahasan('pem-4')">Lihat Pembahasan</button>
-            <div id="pem-4" class="pembahasan-box">
-                <div class="kunci-jawaban">Kunci: B</div>
-                <p>Mari analisis pola bilangannya (barisan aritmatika bertingkat):<br>
-                <strong>Perempuan:</strong> 16, 19, 24, 27, 32.<br>
-                Pola penambahan: +3, +5, +3, +5. Berarti hari ke-6 adalah +3 dari hari ke-5. (32 + 3 = <strong>35</strong>).<br><br>
-                <strong>Laki-laki:</strong> 8, 8, 9, 11, 14.<br>
-                Pola penambahan: +0, +1, +2, +3. Berarti hari ke-6 penambahannya adalah +4. (14 + 4 = <strong>18</strong>).</p>
-            </div>
-        </div>
-
-        <div class="soal-card">
-            <div class="soal-header">
-                <div class="soal-number">Soal 5</div>
-                <div class="badge sedang">Tingkat: Sedang</div>
-            </div>
-            <div class="soal-content">
-                <div class="teks-bacaan">
-                    <p>Banyak sekali pengendara sepeda motor yang melakukan pelanggaran dengan memasuki jalur khusus bus. Itulah mengapa banyak polisi yang melakukan tilang terhadap pengendara sepeda motor.</p>
+                <div class="soal-card">
+                    <div class="soal-header">
+                        <div class="soal-number">Soal 1</div>
+                        <div class="badge mudah">Tingkat: Mudah</div>
+                    </div>
+                    <div class="soal-content">
+                        <p><strong>Perhatikan kalimat-kalimat berikut!</strong></p>
+                        <p>Semua rumah di kompleks X memiliki garasi dan taman kecil.<br>
+                        Zeny berada di rumah yang memiliki garasi dan pekarangan kecil.</p>
+                        <p>Simpulan yang PALING TEPAT adalah ...</p>
+                        <ul class="opsi-list">
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">A</span> Zeny tidak berada di rumah di luar kompleks X.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">B</span> Zeny berada di rumah di dalam kompleks X.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">C</span> Zeny berada di rumah di luar kompleks X.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">D</span> Zeny berada di pekarangan luar kompleks.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">E</span> Zeny berada di luar kompleks.</li>
+                        </ul>
+                    </div>
+                    <button class="btn-pembahasan" onclick="togglePembahasan('pem-1', this)">Buka Pembahasan</button>
+                    <div id="pem-1" class="pembahasan-box">
+                        <div class="kunci-jawaban">🎯 Kunci Jawaban: B</div>
+                        <p>Berdasarkan logika silogisme, jika semua rumah di kompleks X memiliki garasi dan taman (pekarangan) kecil, dan Zeny berada di rumah dengan ciri-ciri tersebut, maka probabilitas kesimpulan yang paling tepat sesuai opsi yang ada adalah Zeny berada di dalam kompleks X. Meskipun secara logika formal ketat ini adalah <em>fallacy of affirming the consequent</em> (karena rumah di kompleks lain juga bisa memiliki garasi), dalam konteks soal PU UTBK tipe ini, kesimpulan induktif yang diarahkan adalah B.</p>
+                    </div>
                 </div>
-                <p>Manakah pernyataan berikut yang paling MENJELASKAN AKIBAT dari sepeda motor yang menggunakan jalur bus berdasarkan teks tersebut?</p>
-                <ul class="opsi-list">
-                    <li class="opsi-item"><span class="opsi-label">A</span> Jumlah kendaraan pribadi berkurang.</li>
-                    <li class="opsi-item"><span class="opsi-label">B</span> Jalanan menjadi lebih lancar dari biasanya.</li>
-                    <li class="opsi-item"><span class="opsi-label">C</span> Tidak terjadi hal apapun.</li>
-                    <li class="opsi-item"><span class="opsi-label">D</span> Pengendara sepeda motor tiba di lokasi tujuan lebih cepat.</li>
-                    <li class="opsi-item"><span class="opsi-label">E</span> Perjalanan bus terganggu.</li>
-                </ul>
-            </div>
-            <button class="btn-pembahasan" onclick="togglePembahasan('pem-5')">Lihat Pembahasan</button>
-            <div id="pem-5" class="pembahasan-box">
-                <div class="kunci-jawaban">Kunci: E</div>
-                <p>Logika kausalitas: Jalur bus adalah lajur eksklusif untuk bus. Jika banyak sepeda motor yang masuk ke jalur tersebut, secara logika akibat langsung di lapangan adalah terganggunya operasional/laju perjalanan bus di jalurnya sendiri. Penilangan polisi adalah respons (tindakan), sedangkan akibat fisik yang terjadi pada lajur tersebut adalah terganggunya bus.</p>
-            </div>
-        </div>
 
-        <div class="soal-card">
-            <div class="soal-header">
-                <div class="soal-number">Soal 6</div>
-                <div class="badge sedang">Tingkat: Sedang</div>
-            </div>
-            <div class="soal-content">
-                <p><strong>Perhatikan pernyataan berikut!</strong></p>
-                <ol>
-                    <li>Semua orang yang sering menggunakan lensa kontak berisiko menderita iritasi mata.</li>
-                    <li>Sinta sering menggunakan lensa kontak.</li>
-                </ol>
-                <p>Simpulan yang tepat dari kedua pernyataan tersebut adalah ...</p>
-                <ul class="opsi-list">
-                    <li class="opsi-item"><span class="opsi-label">A</span> Sinta sering merasakan gatal di mata.</li>
-                    <li class="opsi-item"><span class="opsi-label">B</span> Sinta berisiko menderita iritasi mata.</li>
-                    <li class="opsi-item"><span class="opsi-label">C</span> Sinta sehat karena menjaga kebersihan mata.</li>
-                    <li class="opsi-item"><span class="opsi-label">D</span> Iritasi mata disebabkan debu dan kotoran.</li>
-                    <li class="opsi-item"><span class="opsi-label">E</span> Tidak ada simpulan yang dapat ditarik berdasarkan kedua pernyataan tersebut.</li>
-                </ul>
-            </div>
-            <button class="btn-pembahasan" onclick="togglePembahasan('pem-6')">Lihat Pembahasan</button>
-            <div id="pem-6" class="pembahasan-box">
-                <div class="kunci-jawaban">Kunci: B</div>
-                <p>Berdasarkan hukum logika silogisme (Modus Ponens):<br>
-                Premis 1: Jika P (sering pakai lensa kontak) maka Q (berisiko iritasi mata).<br>
-                Premis 2: P (Sinta sering pakai lensa kontak).<br>
-                Simpulan: Q (Sinta berisiko menderita iritasi mata).</p>
-            </div>
-        </div>
-
-        <div class="soal-card">
-            <div class="soal-header">
-                <div class="soal-number">Soal 7</div>
-                <div class="badge mudah">Tingkat: Mudah</div>
-            </div>
-            <div class="soal-content">
-                <p>Berikut adalah infografik terkait kedermawanan beberapa negara di Asia Tenggara.</p>
-                
-                <img src="./soal7.png" alt="Infografik Skor Kedermawanan" class="soal-image">
-
-                <table>
-                    <tr><th>Peringkat dari 114 negara</th><th>Negara</th><th>World giving index (%)</th></tr>
-                    <tr><td>1</td><td>Indonesia</td><td>69</td></tr>
-                    <tr><td>4</td><td>Myanmar</td><td>51</td></tr>
-                    <tr><td>10</td><td>Thailand</td><td>46</td></tr>
-                    <tr><td>25</td><td>Vietnam</td><td>40</td></tr>
-                    <tr><td>29</td><td>Malaysia</td><td>40</td></tr>
-                    <tr><td>65</td><td>Filipina</td><td>33</td></tr>
-                    <tr><td>75</td><td>Laos</td><td>32</td></tr>
-                </table>
-                <p>Berdasarkan infografik tersebut, Vietnam menempati urutan ke- ... sebagai negara paling dermawan di dunia.</p>
-                <ul class="opsi-list">
-                    <li class="opsi-item"><span class="opsi-label">A</span> 4</li>
-                    <li class="opsi-item"><span class="opsi-label">B</span> 10</li>
-                    <li class="opsi-item"><span class="opsi-label">C</span> 25</li>
-                    <li class="opsi-item"><span class="opsi-label">D</span> 29</li>
-                    <li class="opsi-item"><span class="opsi-label">E</span> 40</li>
-                </ul>
-            </div>
-            <button class="btn-pembahasan" onclick="togglePembahasan('pem-7')">Lihat Pembahasan</button>
-            <div id="pem-7" class="pembahasan-box">
-                <div class="kunci-jawaban">Kunci: C</div>
-                <p>Cukup lihat kolom pertama "Peringkat dari 114 negara". Untuk negara Vietnam (baris keempat), angkanya adalah 25.</p>
-            </div>
-        </div>
-
-        <div class="soal-card">
-            <div class="soal-header">
-                <div class="soal-number">Soal 8</div>
-                <div class="badge hots">Tingkat: HOTS</div>
-            </div>
-            <div class="soal-content">
-                <div class="teks-bacaan">
-                    <p><em>(Petikan Paragraf 4)</em><br>Pernyataan resmi yang dikeluarkan oleh AAP tersebut merekomendasikan bahwa penggunaan media digital tidak boleh lebih dari satu jam per hari bagi anak usia dua hingga lima tahun. [...] Selain itu, AAP juga menyarankan agar tidak menggunakan media digital sebagai satu-satunya cara untuk menenangkan anak. Hal tersebut berpengaruh terhadap kemampuan anak dalam mengelola emosi.</p>
+                <div class="soal-card">
+                    <div class="soal-header">
+                        <div class="soal-number">Soal 2</div>
+                        <div class="badge sedang">Tingkat: Sedang</div>
+                    </div>
+                    <div class="soal-content">
+                        <div class="teks-bacaan">
+                            <p>Konsumen saat ini menunjukkan minat yang lebih besar terhadap produk-produk perawatan kecantikan. Tingkat penjualan produk ini meningkat lebih cepat daripada dua kategori utama produk kecantikan lainnya: kosmetik dan minyak wangi. Penyebab gejala ini adalah keinginan untuk tetap tampil muda dan alamiah, dengan kulit yang menarik.</p>
+                        </div>
+                        <p>Pernyataan berikut yang paling SESUAI dengan isi teks tersebut adalah ....</p>
+                        <ul class="opsi-list">
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">A</span> terdapat dua kelompok produk kecantikan</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">B</span> terdapat sedikitnya tiga kelompok produk kecantikan</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">C</span> produk kecantikan terdiri dari kosmetik, minyak wangi, dan produk perawatan kulit</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">D</span> kategori kosmetik meliputi produk-produk yang digunakan untuk merawat kesehatan kulit</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">E</span> produk perawatan kecantikan terbagi menjadi kosmetik dan minyak wangi</li>
+                        </ul>
+                    </div>
+                    <button class="btn-pembahasan" onclick="togglePembahasan('pem-2', this)">Buka Pembahasan</button>
+                    <div id="pem-2" class="pembahasan-box">
+                        <div class="kunci-jawaban">🎯 Kunci Jawaban: B</div>
+                        <p>Pada kalimat kedua disebutkan: "...meningkat lebih cepat daripada <strong>dua kategori utama produk kecantikan lainnya</strong>: kosmetik dan minyak wangi." Hal ini mengindikasikan bahwa selain "produk perawatan kecantikan", masih ada minimal dua kategori lain, sehingga total terdapat sedikitnya tiga kelompok produk kecantikan.</p>
+                    </div>
                 </div>
-                
-                <img src="./soal8.JPG" alt="Rekomendasi Lama Waktu Aktivitas Harian Anak Umur 1-4 Tahun Menurut WHO" class="soal-image">
 
-                <p>Berdasarkan paragraf 4, jika penggunaan media digital digunakan lebih dari satu jam per hari bagi anak usia dua hingga lima tahun, manakah di bawah ini simpulan yang PALING MUNGKIN benar?</p>
-                <ul class="opsi-list">
-                    <li class="opsi-item"><span class="opsi-label">A</span> Anak akan lambat menangkap ketika menggunakannya.</li>
-                    <li class="opsi-item"><span class="opsi-label">B</span> Orang tua perlu merasa tertekan oleh lingkungan.</li>
-                    <li class="opsi-item"><span class="opsi-label">C</span> Otak anak akan mengalami kerusakan.</li>
-                    <li class="opsi-item"><span class="opsi-label">D</span> Anak akan kecanduan teknologi layar.</li>
-                    <li class="opsi-item"><span class="opsi-label">E</span> Hal tersebut berpengaruh terhadap kemampuan anak dalam mengelola emosi.</li>
-                </ul>
+                <div class="soal-card">
+                    <div class="soal-header">
+                        <div class="soal-number">Soal 3</div>
+                        <div class="badge mudah">Tingkat: Mudah</div>
+                    </div>
+                    <div class="soal-content">
+                        <p>Toko X menjual beragam produk perawatan rambut merek A. Grafik menunjukkan penjualan produk sampo (Biru), kondisioner (Oranye), dan masker rambut (Hijau) dari bulan April sampai bulan Agustus tahun 2022.</p>
+                        
+                        <img src="./soal3.png" alt="Grafik Penjualan Perawatan Rambut" class="soal-image">
+
+                        <table>
+                            <tr><th>Bulan</th><th>Sampo</th><th>Kondisioner</th><th>Masker Rambut</th></tr>
+                            <tr><td>April</td><td>36</td><td>48</td><td>36</td></tr>
+                            <tr><td>Mei</td><td>42</td><td>60</td><td>42</td></tr>
+                            <tr><td>Juni</td><td>54</td><td>54</td><td>42</td></tr>
+                            <tr><td>Juli</td><td>48</td><td>48</td><td>48</td></tr>
+                            <tr><td>Agustus</td><td>42</td><td>36</td><td>60</td></tr>
+                        </table>
+                        <p>Berdasarkan data grafik tersebut, penurunan banyaknya penjualan paling besar terjadi pada penjualan ....</p>
+                        <ul class="opsi-list">
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">A</span> sampo di bulan Juli</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">B</span> sampo di bulan Agustus</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">C</span> kondisioner di bulan Juni</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">D</span> masker rambut di bulan Juni</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">E</span> kondisioner di bulan Agustus</li>
+                        </ul>
+                    </div>
+                    <button class="btn-pembahasan" onclick="togglePembahasan('pem-3', this)">Buka Pembahasan</button>
+                    <div id="pem-3" class="pembahasan-box">
+                        <div class="kunci-jawaban">🎯 Kunci Jawaban: E</div>
+                        <p>Hitung selisih penurunan bulan ke bulan untuk opsi yang tersedia:<br>
+                        A. Sampo Juli: 54 ke 48 = turun 6<br>
+                        B. Sampo Agustus: 48 ke 42 = turun 6<br>
+                        C. Kondisioner Juni: 60 ke 54 = turun 6<br>
+                        E. Kondisioner Agustus: 48 (di Juli) ke 36 (di Agustus) = <strong>turun 12</strong> (Penurunan paling besar).</p>
+                    </div>
+                </div>
+
+                <div class="soal-card">
+                    <div class="soal-header">
+                        <div class="soal-number">Soal 4</div>
+                        <div class="badge sedang">Tingkat: Sedang</div>
+                    </div>
+                    <div class="soal-content">
+                        <p>Jumlah siswa perempuan yang mengunjungi ruang BK untuk konsultasi SNBP selama lima hari berurutan adalah 16, 19, 24, 27, dan 32. Sementara itu, jumlah siswa laki-laki yang berkunjung pada lima hari yang sama adalah 8, 8, 9, 11, dan 14. Jika tren kunjungan tersebut bersifat konstan, jumlah siswa yang berkunjung ke ruang BK pada hari ke-6 sebanyak ... orang.</p>
+                        <ul class="opsi-list">
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">A</span> 35 dan 17</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">B</span> 35 dan 18</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">C</span> 37 dan 17</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">D</span> 37 dan 18</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">E</span> 39 dan 19</li>
+                        </ul>
+                    </div>
+                    <button class="btn-pembahasan" onclick="togglePembahasan('pem-4', this)">Buka Pembahasan</button>
+                    <div id="pem-4" class="pembahasan-box">
+                        <div class="kunci-jawaban">🎯 Kunci Jawaban: B</div>
+                        <p>Mari analisis pola bilangannya (barisan aritmatika bertingkat):<br>
+                        <strong>Perempuan:</strong> 16, 19, 24, 27, 32.<br>
+                        Pola penambahan: +3, +5, +3, +5. Berarti hari ke-6 adalah +3 dari hari ke-5. (32 + 3 = <strong>35</strong>).<br><br>
+                        <strong>Laki-laki:</strong> 8, 8, 9, 11, 14.<br>
+                        Pola penambahan: +0, +1, +2, +3. Berarti hari ke-6 penambahannya adalah +4. (14 + 4 = <strong>18</strong>).</p>
+                    </div>
+                </div>
+
+                <div class="soal-card">
+                    <div class="soal-header">
+                        <div class="soal-number">Soal 5</div>
+                        <div class="badge sedang">Tingkat: Sedang</div>
+                    </div>
+                    <div class="soal-content">
+                        <div class="teks-bacaan">
+                            <p>Banyak sekali pengendara sepeda motor yang melakukan pelanggaran dengan memasuki jalur khusus bus. Itulah mengapa banyak polisi yang melakukan tilang terhadap pengendara sepeda motor.</p>
+                        </div>
+                        <p>Manakah pernyataan berikut yang paling MENJELASKAN AKIBAT dari sepeda motor yang menggunakan jalur bus berdasarkan teks tersebut?</p>
+                        <ul class="opsi-list">
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">A</span> Jumlah kendaraan pribadi berkurang.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">B</span> Jalanan menjadi lebih lancar dari biasanya.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">C</span> Tidak terjadi hal apapun.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">D</span> Pengendara sepeda motor tiba di lokasi tujuan lebih cepat.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">E</span> Perjalanan bus terganggu.</li>
+                        </ul>
+                    </div>
+                    <button class="btn-pembahasan" onclick="togglePembahasan('pem-5', this)">Buka Pembahasan</button>
+                    <div id="pem-5" class="pembahasan-box">
+                        <div class="kunci-jawaban">🎯 Kunci Jawaban: E</div>
+                        <p>Logika kausalitas: Jalur bus adalah lajur eksklusif untuk bus. Jika banyak sepeda motor yang masuk ke jalur tersebut, secara logika akibat langsung di lapangan adalah terganggunya operasional/laju perjalanan bus di jalurnya sendiri. Penilangan polisi adalah respons (tindakan), sedangkan akibat fisik yang terjadi pada lajur tersebut adalah terganggunya bus.</p>
+                    </div>
+                </div>
+
+                <div class="soal-card">
+                    <div class="soal-header">
+                        <div class="soal-number">Soal 6</div>
+                        <div class="badge sedang">Tingkat: Sedang</div>
+                    </div>
+                    <div class="soal-content">
+                        <p><strong>Perhatikan pernyataan berikut!</strong></p>
+                        <ol>
+                            <li>Semua orang yang sering menggunakan lensa kontak berisiko menderita iritasi mata.</li>
+                            <li>Sinta sering menggunakan lensa kontak.</li>
+                        </ol>
+                        <p>Simpulan yang tepat dari kedua pernyataan tersebut adalah ...</p>
+                        <ul class="opsi-list">
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">A</span> Sinta sering merasakan gatal di mata.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">B</span> Sinta berisiko menderita iritasi mata.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">C</span> Sinta sehat karena menjaga kebersihan mata.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">D</span> Iritasi mata disebabkan debu dan kotoran.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">E</span> Tidak ada simpulan yang dapat ditarik berdasarkan kedua pernyataan tersebut.</li>
+                        </ul>
+                    </div>
+                    <button class="btn-pembahasan" onclick="togglePembahasan('pem-6', this)">Buka Pembahasan</button>
+                    <div id="pem-6" class="pembahasan-box">
+                        <div class="kunci-jawaban">🎯 Kunci Jawaban: B</div>
+                        <p>Berdasarkan hukum logika silogisme (Modus Ponens):<br>
+                        Premis 1: Jika P (sering pakai lensa kontak) maka Q (berisiko iritasi mata).<br>
+                        Premis 2: P (Sinta sering pakai lensa kontak).<br>
+                        Simpulan: Q (Sinta berisiko menderita iritasi mata).</p>
+                    </div>
+                </div>
+
+                <div class="soal-card">
+                    <div class="soal-header">
+                        <div class="soal-number">Soal 7</div>
+                        <div class="badge mudah">Tingkat: Mudah</div>
+                    </div>
+                    <div class="soal-content">
+                        <p>Berikut adalah infografik terkait kedermawanan beberapa negara di Asia Tenggara.</p>
+                        
+                        <img src="./soal7.png" alt="Infografik Skor Kedermawanan" class="soal-image">
+
+                        <table>
+                            <tr><th>Peringkat dari 114 negara</th><th>Negara</th><th>World giving index (%)</th></tr>
+                            <tr><td>1</td><td>Indonesia</td><td>69</td></tr>
+                            <tr><td>4</td><td>Myanmar</td><td>51</td></tr>
+                            <tr><td>10</td><td>Thailand</td><td>46</td></tr>
+                            <tr><td>25</td><td>Vietnam</td><td>40</td></tr>
+                            <tr><td>29</td><td>Malaysia</td><td>40</td></tr>
+                            <tr><td>65</td><td>Filipina</td><td>33</td></tr>
+                            <tr><td>75</td><td>Laos</td><td>32</td></tr>
+                        </table>
+                        <p>Berdasarkan infografik tersebut, Vietnam menempati urutan ke- ... sebagai negara paling dermawan di dunia.</p>
+                        <ul class="opsi-list">
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">A</span> 4</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">B</span> 10</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">C</span> 25</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">D</span> 29</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">E</span> 40</li>
+                        </ul>
+                    </div>
+                    <button class="btn-pembahasan" onclick="togglePembahasan('pem-7', this)">Buka Pembahasan</button>
+                    <div id="pem-7" class="pembahasan-box">
+                        <div class="kunci-jawaban">🎯 Kunci Jawaban: C</div>
+                        <p>Cukup lihat kolom pertama "Peringkat dari 114 negara". Untuk negara Vietnam (baris keempat), angkanya adalah 25.</p>
+                    </div>
+                </div>
+
+                <div class="soal-card">
+                    <div class="soal-header">
+                        <div class="soal-number">Soal 8</div>
+                        <div class="badge hots">Tingkat: HOTS</div>
+                    </div>
+                    <div class="soal-content">
+                        <div class="teks-bacaan">
+                            <p><em>(Petikan Paragraf 4)</em><br>Pernyataan resmi yang dikeluarkan oleh AAP tersebut merekomendasikan bahwa penggunaan media digital tidak boleh lebih dari satu jam per hari bagi anak usia dua hingga lima tahun. [...] Selain itu, AAP juga menyarankan agar tidak menggunakan media digital sebagai satu-satunya cara untuk menenangkan anak. Hal tersebut berpengaruh terhadap kemampuan anak dalam mengelola emosi.</p>
+                        </div>
+                        
+                        <img src="./soal8.JPG" alt="Rekomendasi Lama Waktu Aktivitas Harian Anak Umur 1-4 Tahun Menurut WHO" class="soal-image">
+
+                        <p>Berdasarkan paragraf 4, jika penggunaan media digital digunakan lebih dari satu jam per hari bagi anak usia dua hingga lima tahun, manakah di bawah ini simpulan yang PALING MUNGKIN benar?</p>
+                        <ul class="opsi-list">
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">A</span> Anak akan lambat menangkap ketika menggunakannya.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">B</span> Orang tua perlu merasa tertekan oleh lingkungan.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">C</span> Otak anak akan mengalami kerusakan.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">D</span> Anak akan kecanduan teknologi layar.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">E</span> Hal tersebut berpengaruh terhadap kemampuan anak dalam mengelola emosi.</li>
+                        </ul>
+                    </div>
+                    <button class="btn-pembahasan" onclick="togglePembahasan('pem-8', this)">Buka Pembahasan</button>
+                    <div id="pem-8" class="pembahasan-box">
+                        <div class="kunci-jawaban">🎯 Kunci Jawaban: E</div>
+                        <p>Berdasarkan kalimat penutup pada paragraf 4: "Selain itu, AAP juga menyarankan agar tidak menggunakan media digital sebagai satu-satunya cara untuk menenangkan anak. Hal tersebut berpengaruh terhadap kemampuan anak dalam mengelola emosi." Penggunaan berlebih pada anak memiliki dampak langsung pada kemampuannya mengelola emosi.</p>
+                    </div>
+                </div>
+
+                <div class="soal-card">
+                    <div class="soal-header">
+                        <div class="soal-number">Soal 9</div>
+                        <div class="badge hots">Tingkat: HOTS</div>
+                    </div>
+                    <div class="soal-content">
+                        <p><strong>Perhatikan pernyataan berikut!</strong><br>
+                        Sebagian peserta lomba adalah anak TK.<br>
+                        Semua anak TK menggunakan pakaian khusus.</p>
+                        <p>Berdasarkan dua pernyataan di atas, simpulan yang paling tepat adalah ...</p>
+                        <ul class="opsi-list">
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">A</span> Sebagian anak TK bukan peserta lomba.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">B</span> Sebagian yang menggunakan pakaian khusus adalah peserta lomba.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">C</span> Sebagian yang menggunakan pakaian khusus bukan peserta lomba.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">D</span> Sebagian peserta lomba tidak menggunakan pakaian khusus.</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">E</span> Sebagian yang tidak menggunakan pakaian khusus bukan peserta lomba.</li>
+                        </ul>
+                    </div>
+                    <button class="btn-pembahasan" onclick="togglePembahasan('pem-9', this)">Buka Pembahasan</button>
+                    <div id="pem-9" class="pembahasan-box">
+                        <div class="kunci-jawaban">🎯 Kunci Jawaban: B</div>
+                        <p>Diagram himpunan (Euler):<br>
+                        Himpunan Peserta Lomba beririsan dengan Anak TK (karena sebagian peserta adalah anak TK).<br>
+                        Himpunan Anak TK berada di dalam himpunan Pengguna Pakaian Khusus (karena semua anak TK memakai pakaian khusus).<br>
+                        Karena ada anak TK yang ikut lomba, maka anak TK tersebut pasti memakai pakaian khusus. Jadi, ada pengguna pakaian khusus yang menjadi peserta lomba. Simpulan yang tepat: "Sebagian yang menggunakan pakaian khusus adalah peserta lomba."</p>
+                    </div>
+                </div>
+
+                <div class="soal-card">
+                    <div class="soal-header">
+                        <div class="soal-number">Soal 10</div>
+                        <div class="badge hots">Tingkat: HOTS</div>
+                    </div>
+                    <div class="soal-content">
+                        <p>Sebuah tempat parkir memasang tarif pada 2 jam pertama Rp5.000,00 untuk mobil dan Rp3.000,00 untuk motor. Tarif pada jam selanjutnya Rp2.000,00 untuk mobil dan Rp1.500,00 untuk motor. Jika Danu memarkir mobil sedangkan Dani memarkir motor selama mereka berkunjung dari jam 9 sampai jam 5 sore, maka biaya parkir yang harus dibayar oleh Dani dan Danu masing-masing adalah ....</p>
+                        <ul class="opsi-list">
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">A</span> Rp11.000,00 dan Rp16.000,00</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">B</span> Rp12.000,00 dan Rp17.000,00</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">C</span> Rp16.000,00 dan Rp11.000,00</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">D</span> Rp17.000,00 dan Rp12.000,00</li>
+                            <li class="opsi-item" onclick="selectOption(this)"><span class="opsi-label">E</span> Rp16.000,00 dan Rp40.000,00</li>
+                        </ul>
+                    </div>
+                    <button class="btn-pembahasan" onclick="togglePembahasan('pem-10', this)">Buka Pembahasan</button>
+                    <div id="pem-10" class="pembahasan-box">
+                        <div class="kunci-jawaban">🎯 Kunci Jawaban: B</div>
+                        <p>Durasi parkir: Pukul 09.00 hingga 17.00 = 8 Jam.<br><br>
+                        <strong>Parkir Motor Dani:</strong><br>
+                        2 Jam pertama: Rp 3.000<br>
+                        Sisa jam (6 jam) x Rp 1.500 = Rp 9.000<br>
+                        Total Dani = Rp 12.000<br><br>
+                        <strong>Parkir Mobil Danu:</strong><br>
+                        2 Jam pertama: Rp 5.000<br>
+                        Sisa jam (6 jam) x Rp 2.000 = Rp 12.000<br>
+                        Total Danu = Rp 17.000<br><br>
+                        Pertanyaan meminta urutan <strong>Dani dan Danu masing-masing</strong>, maka urutannya adalah Rp12.000,00 dan Rp17.000,00.</p>
+                    </div>
+                </div>
+
             </div>
-            <button class="btn-pembahasan" onclick="togglePembahasan('pem-8')">Lihat Pembahasan</button>
-            <div id="pem-8" class="pembahasan-box">
-                <div class="kunci-jawaban">Kunci: E</div>
-                <p>Berdasarkan kalimat penutup pada paragraf 4: "Selain itu, AAP juga menyarankan agar tidak menggunakan media digital sebagai satu-satunya cara untuk menenangkan anak. Hal tersebut berpengaruh terhadap kemampuan anak dalam mengelola emosi." Penggunaan berlebih pada anak memiliki dampak langsung pada kemampuannya mengelola emosi.</p>
+            
+            <div class="footer-nav">
+                <button class="btn-nav" id="btn-prev" onclick="changeSoal(-1)" disabled>← Sebelumnya</button>
+                <div class="progress-text" id="progress-text">Soal 1 dari 10</div>
+                <button class="btn-nav next" id="btn-next" onclick="changeSoal(1)">Selanjutnya →</button>
+            </div>
+            
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal-box">
+            <h3>Masukkan Password</h3>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Dibutuhkan otorisasi guru untuk melihat pembahasan.</p>
+            <input type="password" id="inputPassword" placeholder="Ketik sandi...">
+            <div class="modal-btns">
+                <button class="btn-cancel" onclick="closeModal()">Batal</button>
+                <button class="btn-confirm" onclick="checkPassword()">Konfirmasi</button>
             </div>
         </div>
-
-        <div class="soal-card">
-            <div class="soal-header">
-                <div class="soal-number">Soal 9</div>
-                <div class="badge hots">Tingkat: HOTS</div>
-            </div>
-            <div class="soal-content">
-                <p><strong>Perhatikan pernyataan berikut!</strong><br>
-                Sebagian peserta lomba adalah anak TK.<br>
-                Semua anak TK menggunakan pakaian khusus.</p>
-                <p>Berdasarkan dua pernyataan di atas, simpulan yang paling tepat adalah ...</p>
-                <ul class="opsi-list">
-                    <li class="opsi-item"><span class="opsi-label">A</span> Sebagian anak TK bukan peserta lomba.</li>
-                    <li class="opsi-item"><span class="opsi-label">B</span> Sebagian yang menggunakan pakaian khusus adalah peserta lomba.</li>
-                    <li class="opsi-item"><span class="opsi-label">C</span> Sebagian yang menggunakan pakaian khusus bukan peserta lomba.</li>
-                    <li class="opsi-item"><span class="opsi-label">D</span> Sebagian peserta lomba tidak menggunakan pakaian khusus.</li>
-                    <li class="opsi-item"><span class="opsi-label">E</span> Sebagian yang tidak menggunakan pakaian khusus bukan peserta lomba.</li>
-                </ul>
-            </div>
-            <button class="btn-pembahasan" onclick="togglePembahasan('pem-9')">Lihat Pembahasan</button>
-            <div id="pem-9" class="pembahasan-box">
-                <div class="kunci-jawaban">Kunci: B</div>
-                <p>Diagram himpunan (Euler):<br>
-                Himpunan Peserta Lomba beririsan dengan Anak TK (karena sebagian peserta adalah anak TK).<br>
-                Himpunan Anak TK berada di dalam himpunan Pengguna Pakaian Khusus (karena semua anak TK memakai pakaian khusus).<br>
-                Karena ada anak TK yang ikut lomba, maka anak TK tersebut pasti memakai pakaian khusus. Jadi, ada pengguna pakaian khusus yang menjadi peserta lomba. Simpulan yang tepat: "Sebagian yang menggunakan pakaian khusus adalah peserta lomba."</p>
-            </div>
-        </div>
-
-        <div class="soal-card">
-            <div class="soal-header">
-                <div class="soal-number">Soal 10</div>
-                <div class="badge hots">Tingkat: HOTS</div>
-            </div>
-            <div class="soal-content">
-                <p>Sebuah tempat parkir memasang tarif pada 2 jam pertama Rp5.000,00 untuk mobil dan Rp3.000,00 untuk motor. Tarif pada jam selanjutnya Rp2.000,00 untuk mobil dan Rp1.500,00 untuk motor. Jika Danu memarkir mobil sedangkan Dani memarkir motor selama mereka berkunjung dari jam 9 sampai jam 5 sore, maka biaya parkir yang harus dibayar oleh Dani dan Danu masing-masing adalah ....</p>
-                <ul class="opsi-list">
-                    <li class="opsi-item"><span class="opsi-label">A</span> Rp11.000,00 dan Rp16.000,00</li>
-                    <li class="opsi-item"><span class="opsi-label">B</span> Rp12.000,00 dan Rp17.000,00</li>
-                    <li class="opsi-item"><span class="opsi-label">C</span> Rp16.000,00 dan Rp11.000,00</li>
-                    <li class="opsi-item"><span class="opsi-label">D</span> Rp17.000,00 dan Rp12.000,00</li>
-                    <li class="opsi-item"><span class="opsi-label">E</span> Rp16.000,00 dan Rp40.000,00</li>
-                </ul>
-            </div>
-            <button class="btn-pembahasan" onclick="togglePembahasan('pem-10')">Lihat Pembahasan</button>
-            <div id="pem-10" class="pembahasan-box">
-                <div class="kunci-jawaban">Kunci: B</div>
-                <p>Durasi parkir: Pukul 09.00 hingga 17.00 = 8 Jam.<br><br>
-                <strong>Parkir Motor Dani:</strong><br>
-                2 Jam pertama: Rp 3.000<br>
-                Sisa jam (6 jam) x Rp 1.500 = Rp 9.000<br>
-                Total Dani = Rp 12.000<br><br>
-                <strong>Parkir Mobil Danu:</strong><br>
-                2 Jam pertama: Rp 5.000<br>
-                Sisa jam (6 jam) x Rp 2.000 = Rp 12.000<br>
-                Total Danu = Rp 17.000<br><br>
-                Pertanyaan meminta urutan <strong>Dani dan Danu masing-masing</strong>, maka urutannya adalah Rp12.000,00 dan Rp17.000,00.</p>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        function togglePembahasan(id) {
-            const el = document.getElementById(id);
-            const btn = el.previousElementSibling;
-            if (el.style.display === "block") {
-                el.style.display = "none";
-                btn.innerText = "Lihat Pembahasan";
-                btn.style.backgroundColor = "var(--primary)";
+        // Data & State
+        const soalCards = document.querySelectorAll('.soal-card');
+        const totalSoal = soalCards.length;
+        let currentSoal = 0;
+        let isPembahasanMode = false;
+        const SECRET_PASSWORD = "guru"; // Ganti password di sini
+
+        // Init
+        updateView();
+
+        function updateView() {
+            // Hide all, show current
+            soalCards.forEach((card, index) => {
+                if(index === currentSoal) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+
+            // Update footer text
+            document.getElementById('progress-text').innerText = `Soal ${currentSoal + 1} dari ${totalSoal}`;
+
+            // Update buttons
+            document.getElementById('btn-prev').disabled = currentSoal === 0;
+            document.getElementById('btn-next').disabled = currentSoal === totalSoal - 1;
+
+            // Reset scroll position to top when changing question
+            document.getElementById('scroll-area').scrollTop = 0;
+
+            // Toggle logic
+            const modeIndicator = document.getElementById('mode-indicator');
+            const btnMode = document.getElementById('btn-mode');
+            const btnPembahasanList = document.querySelectorAll('.btn-pembahasan');
+            const boxPembahasanList = document.querySelectorAll('.pembahasan-box');
+
+            if (isPembahasanMode) {
+                modeIndicator.innerText = "Mode: Pembahasan";
+                modeIndicator.classList.add('active');
+                btnMode.innerText = "Tutup Pembahasan";
+                btnPembahasanList.forEach(btn => btn.style.display = 'block');
             } else {
-                el.style.display = "block";
-                btn.innerText = "Sembunyikan Pembahasan";
-                btn.style.backgroundColor = "var(--text-muted)";
+                modeIndicator.innerText = "Mode: Latihan";
+                modeIndicator.classList.remove('active');
+                btnMode.innerText = "Ubah ke Pembahasan";
+                
+                // Hide all discussion boxes when returning to practice mode
+                btnPembahasanList.forEach(btn => {
+                    btn.style.display = 'none';
+                    btn.innerText = "Buka Pembahasan";
+                });
+                boxPembahasanList.forEach(box => box.style.display = 'none');
             }
         }
+
+        function changeSoal(direction) {
+            currentSoal += direction;
+            if (currentSoal < 0) currentSoal = 0;
+            if (currentSoal >= totalSoal) currentSoal = totalSoal - 1;
+            updateView();
+        }
+
+        // Option Selection (hanya efek visual)
+        function selectOption(element) {
+            // If in discussion mode, disable clicking option to avoid confusion (optional)
+            // if (isPembahasanMode) return; 
+
+            // Find parent UL, remove 'selected' from all LIs
+            const parentUl = element.closest('.opsi-list');
+            const items = parentUl.querySelectorAll('.opsi-item');
+            items.forEach(item => item.classList.remove('selected'));
+            
+            // Add 'selected' to clicked element
+            element.classList.add('selected');
+        }
+
+        // Toggle Expand Pembahasan
+        function togglePembahasan(id, btnElement) {
+            const el = document.getElementById(id);
+            if (el.style.display === "block") {
+                el.style.display = "none";
+                btnElement.innerText = "Buka Pembahasan";
+                btnElement.style.background = "var(--accent)";
+            } else {
+                el.style.display = "block";
+                btnElement.innerText = "Tutup Pembahasan";
+                btnElement.style.background = "var(--secondary)";
+            }
+        }
+
+        // Modal Logic
+        function requestModeChange() {
+            if (isPembahasanMode) {
+                // Return to Latihan directly without password
+                isPembahasanMode = false;
+                updateView();
+            } else {
+                // Show Password Modal
+                document.getElementById('passwordModal').style.display = 'flex';
+                document.getElementById('inputPassword').value = '';
+                document.getElementById('inputPassword').focus();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('inputPassword').value;
+            if (input === SECRET_PASSWORD) {
+                isPembahasanMode = true;
+                closeModal();
+                updateView();
+            } else {
+                alert("Password Salah!");
+                document.getElementById('inputPassword').value = '';
+                document.getElementById('inputPassword').focus();
+            }
+        }
+
+        // Handle Enter key on Modal Input
+        document.getElementById('inputPassword').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
     </script>
 </body>
 </html>
