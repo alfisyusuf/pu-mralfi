@@ -48,20 +48,18 @@
         .logo-section img { width: 45mm; height: auto; filter: grayscale(100%); } 
 
         .titles-section { text-align: center; margin-bottom: 12mm; }
-        
-        /* DIPERBARUI: Menggunakan Arial Black untuk Judul */
         .title-bold { 
             font-family: "Arial Black", Arial, sans-serif; 
-            font-size: 16pt; 
+            font-size: 15pt; 
             font-weight: normal; 
-            margin-bottom: 4mm; 
+            margin-bottom: 3mm; 
             text-transform: uppercase; 
         }
 
         .school-name-section { text-align: center; margin-bottom: 35mm; }
-        .school-bold { font-size: 12.5pt; font-weight: bold; margin-bottom: 2mm; text-transform: uppercase; }
+        .school-bold { font-size: 12pt; font-weight: bold; margin-bottom: 2mm; text-transform: uppercase; }
 
-        .student-section { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .student-section { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 35mm;}
         .student-label { font-size: 12pt; font-weight: bold; margin-bottom: 2mm; }
         .name-box { 
             border: 1.5pt solid black; 
@@ -82,11 +80,9 @@
             width: 100%; 
             text-align: center; 
         }
-        
-        /* DIPERBARUI: Menggunakan Arial Black untuk Kementerian */
         .ministry-bold { 
             font-family: "Arial Black", Arial, sans-serif; 
-            font-size: 14pt; 
+            font-size: 12pt; 
             font-weight: normal; 
             margin-bottom: 2mm; 
             text-transform: uppercase; 
@@ -109,14 +105,58 @@
 
 
         /* --- STYLING KHUSUS HALAMAN 3 (BIODATA) --- */
-        .biodata-page { padding: 20mm; font-family: 'Times New Roman', Times, serif; } 
-        .data-table { width: 100%; font-size: 11pt; line-height: 1.5; margin-top: 20px; border-collapse: collapse; }
-        .data-table td { vertical-align: top; padding: 3px; }
-        .col-label { width: 35%; }
-        .col-colon { width: 2%; text-align: center;}
-        .photo-box { width: 3cm; height: 4cm; border: 1px solid black; display: flex; align-items: center; justify-content: center; margin-top: 40px; text-align: center;}
-        .signature-area { width: 100%; display: flex; justify-content: space-between; margin-top: 40px; font-size: 11pt; }
-        .signature-box { width: 45%; }
+        .biodata-page { 
+            padding: 15mm 25mm; 
+        } 
+        
+        .biodata-title { 
+            font-family: "Arial Black", Arial, sans-serif; 
+            font-size: 13.5pt; 
+            text-align: center; 
+            margin-top: 10mm; 
+            margin-bottom: 10mm; 
+            text-transform: uppercase;
+        }
+
+        .biodata-table { 
+            width: 100%; 
+            font-size: 11pt; 
+            line-height: 1.3; 
+            border-collapse: collapse; 
+        }
+        .biodata-table td { vertical-align: top; padding-bottom: 1px; }
+        
+        .b-col-num { width: 6%; text-align: left; }
+        .b-col-label { width: 39%; }
+        .b-col-colon { width: 2%; text-align: center; }
+        .b-col-value { width: 53%; padding-left: 2mm; }
+
+        .bottom-section { 
+            position: relative;
+            margin-top: 10mm; 
+            height: 45mm;
+        }
+        .photo-container { 
+            position: absolute;
+            left: 15mm; 
+            top: 5mm;
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            width: 3cm; 
+            height: 4cm; 
+            border: 1px solid black; 
+            font-size: 10pt; 
+        }
+        .signature-block { 
+            position: absolute;
+            left: 110mm; 
+            top: 0;
+            width: 70mm; 
+            font-size: 11pt; 
+            line-height: 1.4; 
+        }
 
         /* --- PENGATURAN MODE CETAK (CTRL+P) --- */
         @media print {
@@ -131,7 +171,7 @@
 
     <div class="control-panel">
         <h2 style="font-family: sans-serif; color: #1e40af; margin-top: 0;">Sistem Generator Cover Rapor SMA ABBS</h2>
-        <p style="font-family: sans-serif; color: #4b5563;">Unduh template Excel, isi data siswa, lalu upload kembali ke sini untuk mencetak massal.</p>
+        <p style="font-family: sans-serif; color: #4b5563;">Unduh template Excel terbaru, isi data siswa, lalu upload kembali ke sini untuk mencetak massal.</p>
         
         <div style="margin-top: 20px;">
             <button class="btn btn-download" onclick="downloadTemplate()">📥 Unduh Template</button>
@@ -144,16 +184,33 @@
 
     <script>
         function downloadTemplate() {
+            // Header kolom diperbarui dengan data pelengkap baru sesuai kebutuhan
             const dataTemplate = [
-                ["no", "nama siswa", "nis", "nisn", "tempat, tanggal lahir", "nama ayah", "nama ibu", "nomor ayah", "nomor ibu", "pekerjaan ayah", "pekerjaan ibu", "alamat", "asal sekolah"],
-                [1, "Ahmad Zaki Nada Putra", "25131005", "0105724018", "Batan, 27 Maret 2010", "Ahmad Hidayat", "Saterina", "6281277203647", "628127016056", "Karyawan Swasta", "Ibu Rumah Tangga", "Kampung Ponjen RT 02/05 Tanjung Riau Sekupang", "SMPS IT IMAM SYAFII BATAM"]
+                [
+                    "no", "nama siswa", "nis", "nisn", "tempat, tanggal lahir", "jenis kelamin", "agama", 
+                    "status dalam keluarga", "anak ke", "alamat", "nomor telepon rumah", "asal sekolah", 
+                    "alamat sekolah asal", "diterima di kelas", "diterima di semester", "nama ayah", "nama ibu", 
+                    "nomor ayah", "nomor ibu", "pekerjaan ayah", "pekerjaan ibu", 
+                    "nama wali", "alamat wali", "nomor telpon wali", "pekerjaan wali"
+                ],
+                [
+                    1, "Ahmad Zaki Nada Putra", "25131005", "0105724018", "Batan, 27 Maret 2010", "Laki-laki", "Islam",
+                    "Anak Kandung", "1", "Kampung Ponjen RT 02/05 Tanjung Riau Sekupang", "0271-123456", "SMPS IT IMAM SYAFII BATAM",
+                    "Jl. Raya Batam No. 12", "X-A", "1", "Ahmad Hidayat", "Saterina", 
+                    "6281277203647", "628127016056", "Karyawan Swasta", "Ibu Rumah Tangga",
+                    "-", "-", "-", "-"
+                ]
             ];
             const worksheet = XLSX.utils.aoa_to_sheet(dataTemplate);
-            const colWidths = [ {wch: 5}, {wch: 25}, {wch: 15}, {wch: 15}, {wch: 25}, {wch: 20}, {wch: 20}, {wch: 15}, {wch: 15}, {wch: 20}, {wch: 20}, {wch: 40}, {wch: 25} ];
+            
+            // Seting lebar kolom otomatis agar nyaman diisi
+            const colWidths = [];
+            dataTemplate[0].forEach(() => colWidths.push({wch: 20}));
             worksheet['!cols'] = colWidths;
+            
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Data Siswa");
-            XLSX.writeFile(workbook, "Template_Data_Siswa_ABBS.xlsx");
+            XLSX.writeFile(workbook, "Template_Data_Siswa_ABBS_Lengkap.xlsx");
         }
 
         document.getElementById('excelFile').addEventListener('change', function(e) {
@@ -178,16 +235,45 @@
             printArea.innerHTML = ''; 
 
             data.forEach(student => {
+                // Mapping field data lama & baru secara fleksibel
                 const nama = student['nama siswa'] || student['Nama Siswa'] || '-';
                 const nis = student['nis'] || student['NIS'] || '-';
                 const nisn = student['nisn'] || student['NISN'] || '-';
                 const ttl = student['tempat, tanggal lahir'] || student['Tempat, Tanggal Lahir'] || student['tempat tanggal lahir'] || '-';
+                const jk = student['jenis kelamin'] || student['Jenis Kelamin'] || '-';
+                const agama = student['agama'] || student['Agama'] || 'Islam';
+                const statusKeluarga = student['status dalam keluarga'] || student['Status Dalam Keluarga'] || '-';
+                const anakKe = student['anak ke'] || student['Anak Ke'] || '-';
                 const alamat = student['alamat'] || student['Alamat'] || '-';
+                const telpRumah = student['nomor telepon rumah'] || student['Nomor Telepon Rumah'] || '-';
+                
+                const asalSekolah = student['asal sekolah'] || student['Asal Sekolah'] || '-';
+                const alamatAsalSekolah = student['alamat sekolah asal'] || student['Alamat Sekolah Asal'] || '-';
+                
+                const diterimaKelas = student['diterima di kelas'] || student['Diterima Di Kelas'] || '-';
+                const diterimaSemester = student['diterima di semester'] || student['Diterima Di Semester'] || '-';
+                
                 const ayah = student['nama ayah'] || student['Nama Ayah'] || '-';
                 const ibu = student['nama ibu'] || student['Nama Ibu'] || '-';
-                const asalSekolah = student['asal sekolah'] || student['Asal Sekolah'] || '-';
+                
+                // Formatter penggabungan nomor telpon orang tua dibatasi garis miring (/)
+                const telpAyah = student['nomor ayah'] || student['Nomor Ayah'] || '';
+                const telpIbu = student['nomor ibu'] || student['Nomor Ibu'] || '';
+                let telpOrtu = '-';
+                if (telpAyah && telpIbu) {
+                    telpOrtu = `${telpAyah} / ${telpIbu}`;
+                } else if (telpAyah || telpIbu) {
+                    telpOrtu = telpAyah || telpIbu;
+                }
+
                 const pekerjaanAyah = student['pekerjaan ayah'] || student['Pekerjaan Ayah'] || '-';
                 const pekerjaanIbu = student['pekerjaan ibu'] || student['Pekerjaan Ibu'] || '-';
+
+                // Kolom opsional Wali Siswa
+                const namaWali = student['nama wali'] || student['Nama Wali'] || '-';
+                const alamatWali = student['alamat wali'] || student['Alamat Wali'] || '-';
+                const telpWali = student['nomor telpon wali'] || student['Nomor Telpon Wali'] || '-';
+                const pekerjaanWali = student['pekerjaan wali'] || student['Pekerjaan Wali'] || '-';
 
                 // -- TEMPLATE HALAMAN 1 (COVER DEPAN) --
                 let page1 = `
@@ -195,19 +281,16 @@
                     <div class="logo-section">
                         <img src="logo_sma_abbs_surakarta.png" alt="Logo Sekolah ABBS">
                     </div>
-
                     <div class="titles-section">
                         <div class="title-bold">LAPORAN</div>
                         <div class="title-bold">CAPAIAN KOMPETENSI PESERTA DIDIK</div>
                         <div class="title-bold">SEKOLAH MENENGAH ATAS</div>
                         <div class="title-bold">(SMA)</div>
                     </div>
-
                     <div class="school-name-section">
                         <div class="school-bold">SMA AL ABIDIN BILINGUAL BOARDING SCHOOL (ABBS)</div>
                         <div class="school-bold">SURAKARTA</div>
                     </div>
-
                     <div class="student-section">
                         <div class="student-label">Nama Peserta Didik</div>
                         <div class="name-box">
@@ -215,7 +298,6 @@
                         </div>
                         <div class="nis-label">NIS / NISN : ${nis} / ${nisn}</div>
                     </div>
-
                     <div class="ministry-section">
                         <div class="ministry-bold">KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN</div>
                         <div class="ministry-bold">REPUBLIK INDONESIA</div>
@@ -231,97 +313,76 @@
                         <div class="title-bold">SEKOLAH MENENGAH ATAS</div>
                         <div class="title-bold">(SMA)</div>
                     </div>
-
                     <table class="school-info-table">
-                        <tr>
-                            <td class="info-label">Nama Sekolah</td>
-                            <td class="info-colon">:</td>
-                            <td class="info-value">SMA ABBS<br>(AL ABIDIN BILINGUAL<br>BOARDING SCHOOL)</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">NPSN/NSS</td>
-                            <td class="info-colon">:</td>
-                            <td class="info-value">69823287</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Alamat Sekolah</td>
-                            <td class="info-colon">:</td>
-                            <td class="info-value">Jalan Tarumanegara III,<br>Kode Pos: 57137<br>Telepon: (0271) 7882145</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Kelurahan</td>
-                            <td class="info-colon">:</td>
-                            <td class="info-value">Banyuanyar</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Kecamatan</td>
-                            <td class="info-colon">:</td>
-                            <td class="info-value">Banjarsari</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Kabupaten/Kota</td>
-                            <td class="info-colon">:</td>
-                            <td class="info-value">Kota Surakarta</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Provinsi</td>
-                            <td class="info-colon">:</td>
-                            <td class="info-value">Jawa Tengah</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">Website</td>
-                            <td class="info-colon">:</td>
-                            <td class="info-value">www.abbs.alabidin.sch.id</td>
-                        </tr>
-                        <tr>
-                            <td class="info-label">E-mail Sekolah</td>
-                            <td class="info-colon">:</td>
-                            <td class="info-value">abbs@alabidin.sch.id</td>
-                        </tr>
+                        <tr><td class="info-label">Nama Sekolah</td><td class="info-colon">:</td><td class="info-value">SMA ABBS<br>(AL ABIDIN BILINGUAL<br>BOARDING SCHOOL)</td></tr>
+                        <tr><td class="info-label">NPSN/NSS</td><td class="info-colon">:</td><td class="info-value">69823287</td></tr>
+                        <tr><td class="info-label">Alamat Sekolah</td><td class="info-colon">:</td><td class="info-value">Jalan Tarumanegara III,<br>Kode Pos: 57137<br>Telepon: (0271) 7882145</td></tr>
+                        <tr><td class="info-label">Kelurahan</td><td class="info-colon">:</td><td class="info-value">Banyuanyar</td></tr>
+                        <tr><td class="info-label">Kecamatan</td><td class="info-colon">:</td><td class="info-value">Banjarsari</td></tr>
+                        <tr><td class="info-label">Kabupaten/Kota</td><td class="info-colon">:</td><td class="info-value">Kota Surakarta</td></tr>
+                        <tr><td class="info-label">Provinsi</td><td class="info-colon">:</td><td class="info-value">Jawa Tengah</td></tr>
+                        <tr><td class="info-label">Website</td><td class="info-colon">:</td><td class="info-value">www.abbs.alabidin.sch.id</td></tr>
+                        <tr><td class="info-label">E-mail Sekolah</td><td class="info-colon">:</td><td class="info-value">abbs@alabidin.sch.id</td></tr>
                     </table>
                 </div>`;
 
-                // -- TEMPLATE HALAMAN 3 (Keterangan Diri Siswa) --
+                // -- TEMPLATE HALAMAN 3 (BIODATA SISWA - DILENGKAPI 100% SESUAI PATOKAN) --
                 let page3 = `
                 <div class="page biodata-page">
-                    <h3 class="text-center bold" style="margin-bottom: 30px;">KETERANGAN TENTANG DIRI SISWA</h3>
+                    <div class="biodata-title">KETERANGAN TENTANG DIRI SISWA</div>
                     
-                    <table class="data-table">
-                        <tr><td class="col-label">1. Nama Siswa (Lengkap)</td><td class="col-colon">:</td><td>${nama}</td></tr>
-                        <tr><td class="col-label">2. NIS / NISN</td><td class="col-colon">:</td><td>${nis} / ${nisn}</td></tr>
-                        <tr><td class="col-label">3. Tempat Tanggal Lahir</td><td class="col-colon">:</td><td>${ttl}</td></tr>
-                        <tr><td class="col-label">4. Jenis Kelamin</td><td class="col-colon">:</td><td>-</td></tr>
-                        <tr><td class="col-label">5. Agama</td><td class="col-colon">:</td><td>Islam</td></tr>
-                        <tr><td class="col-label">6. Status dalam Keluarga</td><td class="col-colon">:</td><td>Anak Kandung</td></tr>
-                        <tr><td class="col-label">7. Anak ke</td><td class="col-colon">:</td><td>-</td></tr>
-                        <tr><td class="col-label">8. Alamat Siswa</td><td class="col-colon">:</td><td>${alamat}</td></tr>
-                        <tr><td class="col-label">9. Sekolah Asal</td><td class="col-colon">:</td><td></td></tr>
-                        <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Nama Sekolah</td><td class="col-colon">:</td><td>${asalSekolah}</td></tr>
+                    <table class="biodata-table">
+                        <tr><td class="b-col-num">1.</td><td class="b-col-label">Nama Siswa (Lengkap)</td><td class="b-col-colon">:</td><td class="b-col-value">${nama}</td></tr>
+                        <tr><td class="b-col-num">2.</td><td class="b-col-label">NIS / NISN</td><td class="b-col-colon">:</td><td class="b-col-value">${nis} / ${nisn}</td></tr>
+                        <tr><td class="b-col-num">3.</td><td class="b-col-label">Tempat Tanggal Lahir</td><td class="b-col-colon">:</td><td class="b-col-value">${ttl}</td></tr>
+                        <tr><td class="b-col-num">4.</td><td class="b-col-label">Jenis Kelamin</td><td class="b-col-colon">:</td><td class="b-col-value">${jk}</td></tr>
+                        <tr><td class="b-col-num">5.</td><td class="b-col-label">Agama</td><td class="b-col-colon">:</td><td class="b-col-value">${agama}</td></tr>
+                        <tr><td class="b-col-num">6.</td><td class="b-col-label">Status dalam Keluarga</td><td class="b-col-colon">:</td><td class="b-col-value">${statusKeluarga}</td></tr>
+                        <tr><td class="b-col-num">7.</td><td class="b-col-label">Anak ke</td><td class="col-colon">:</td><td class="b-col-value">${anakKe}</td></tr>
+                        <tr><td class="b-col-num">8.</td><td class="b-col-label">Alamat Siswa</td><td class="b-col-colon">:</td><td class="b-col-value">${alamat}</td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Nomor Telepon Rumah</td><td class="b-col-colon">:</td><td class="b-col-value">${telpRumah}</td></tr>
                         
-                        <tr><td colspan="3"><br><b>11. Nama Orang Tua</b></td></tr>
-                        <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ayah</td><td class="col-colon">:</td><td>${ayah}</td></tr>
-                        <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ibu</td><td class="col-colon">:</td><td>${ibu}</td></tr>
+                        <tr><td class="b-col-num">9.</td><td class="b-col-label">Sekolah Asal</td><td class="b-col-colon"></td><td class="b-col-value"></td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Nama Sekolah</td><td class="b-col-colon">:</td><td class="b-col-value">${asalSekolah}</td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Alamat Sekolah</td><td class="b-col-colon">:</td><td class="b-col-value">${alamatAsalSekolah}</td></tr>
                         
-                        <tr><td colspan="3"><br><b>13. Pekerjaan Orang Tua</b></td></tr>
-                        <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ayah</td><td class="col-colon">:</td><td>${pekerjaanAyah}</td></tr>
-                        <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ibu</td><td class="col-colon">:</td><td>${pekerjaanIbu}</td></tr>
+                        <tr><td class="b-col-num">10.</td><td class="b-col-label">Diterima di sekolah ini</td><td class="b-col-colon"></td><td class="b-col-value"></td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Di kelas</td><td class="b-col-colon">:</td><td class="b-col-value">${diterimaKelas}</td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Pada tanggal</td><td class="b-col-colon">:</td><td class="b-col-value">14 Juli 2025</td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Semester</td><td class="b-col-colon">:</td><td class="b-col-value">${diterimaSemester}</td></tr>
+                        
+                        <tr><td class="b-col-num">11.</td><td class="b-col-label">Nama Orang Tua</td><td class="b-col-colon"></td><td class="b-col-value"></td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Ayah</td><td class="b-col-colon">:</td><td class="b-col-value">${ayah}</td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Ibu</td><td class="b-col-colon">:</td><td class="b-col-value">${ibu}</td></tr>
+                        
+                        <tr><td class="b-col-num">12.</td><td class="b-col-label">Alamat Orang Tua</td><td class="b-col-colon">:</td><td class="b-col-value">${alamat}</td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Nomor Telepon Orang Tua</td><td class="b-col-colon">:</td><td class="b-col-value">${telpOrtu}</td></tr>
+                        
+                        <tr><td class="b-col-num">13.</td><td class="b-col-label">Pekerjaan Orang Tua</td><td class="b-col-colon"></td><td class="b-col-value"></td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Ayah</td><td class="b-col-colon">:</td><td class="b-col-value">${pekerjaanAyah}</td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Ibu</td><td class="b-col-colon">:</td><td class="b-col-value">${pekerjaanIbu}</td></tr>
+                        
+                        <tr><td class="b-col-num">14.</td><td class="b-col-label">Nama Wali Siswa</td><td class="b-col-colon">:</td><td class="b-col-value">${namaWali}</td></tr>
+                        <tr><td class="b-col-num">15.</td><td class="b-col-label">Alamat Wali Siswa</td><td class="b-col-colon">:</td><td class="b-col-value">${alamatWali}</td></tr>
+                        <tr><td class="b-col-num"></td><td class="b-col-label">Nomor Telpon Rumah</td><td class="b-col-colon">:</td><td class="b-col-value">${telpWali}</td></tr>
+                        <tr><td class="b-col-num">16.</td><td class="b-col-label">Pekerjaan Wali Siswa</td><td class="b-col-colon">:</td><td class="b-col-value">${pekerjaanWali}</td></tr>
                     </table>
 
-                    <div class="signature-area">
-                        <div class="signature-box">
-                            <div class="photo-box">Pas Foto<br>3 x 4</div>
+                    <div class="bottom-section">
+                        <div class="photo-container">
+                            <div>Pas Foto</div>
+                            <div>3 x 4</div>
                         </div>
-                        <div class="signature-box">
+                        <div class="signature-block">
                             <div>Surakarta, 14 Juli 2025</div>
                             <div>Kepala Sekolah,</div>
                             <br><br><br><br>
-                            <div><b>Mia Febriana, M.Pd.</b></div>
+                            <div>Mia Febriana, M.Pd.</div>
                             <div>NIP.-</div>
                         </div>
                     </div>
                 </div>`;
 
-                // Render berurutan: Page 1 -> Page 2 -> Page 3
                 printArea.innerHTML += page1 + page2 + page3;
             });
         }
