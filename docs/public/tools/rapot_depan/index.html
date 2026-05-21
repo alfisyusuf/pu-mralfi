@@ -10,7 +10,6 @@
         *, *::before, *::after { box-sizing: border-box; }
         
         body { 
-            /* Ubah font ke Arial agar sama persis dengan file patokan */
             font-family: Arial, Helvetica, sans-serif; 
             background: #e2e8f0; 
             margin: 0; 
@@ -29,7 +28,7 @@
         /* Seting Kertas A4 GLOBAL */
         .page {
             width: 210mm;
-            height: 296.5mm; /* Sedikit di bawah 297mm agar tidak bocor jadi blank page */
+            height: 296.5mm; 
             background: white;
             position: relative;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -46,11 +45,18 @@
         }
         
         .logo-section { margin-top: 20mm; margin-bottom: 25mm; text-align: center; }
-        /* Tambahan filter grayscale agar logo otomatis hitam putih jika file aslinya berwarna */
         .logo-section img { width: 45mm; height: auto; filter: grayscale(100%); } 
 
         .titles-section { text-align: center; margin-bottom: 12mm; }
-        .title-bold { font-size: 16pt; font-weight: 900; margin-bottom: 4mm; text-transform: uppercase; }
+        
+        /* DIPERBARUI: Menggunakan Arial Black untuk Judul */
+        .title-bold { 
+            font-family: "Arial Black", Arial, sans-serif; 
+            font-size: 16pt; 
+            font-weight: normal; 
+            margin-bottom: 4mm; 
+            text-transform: uppercase; 
+        }
 
         .school-name-section { text-align: center; margin-bottom: 35mm; }
         .school-bold { font-size: 12.5pt; font-weight: bold; margin-bottom: 2mm; text-transform: uppercase; }
@@ -69,18 +75,41 @@
         .placeholder-name { font-size: 14pt; font-weight: bold; text-transform: uppercase; }
         .nis-label { font-size: 12pt; font-weight: bold; }
 
-        /* Posisi mutlak di paling bawah kertas */
         .ministry-section { 
             position: absolute; 
-            bottom: 30mm; /* Jarak dari tepi bawah kertas */
+            bottom: 30mm; 
             left: 0; 
             width: 100%; 
             text-align: center; 
         }
-        .ministry-bold { font-size: 14pt; font-weight: bold; margin-bottom: 2mm; text-transform: uppercase; }
+        
+        /* DIPERBARUI: Menggunakan Arial Black untuk Kementerian */
+        .ministry-bold { 
+            font-family: "Arial Black", Arial, sans-serif; 
+            font-size: 14pt; 
+            font-weight: normal; 
+            margin-bottom: 2mm; 
+            text-transform: uppercase; 
+        }
+
+        /* --- STYLING KHUSUS HALAMAN 2 (INFO SEKOLAH) --- */
+        .page-2-titles { margin-top: 48mm; margin-bottom: 50mm; text-align: center; } 
+        
+        .school-info-table { 
+            width: 130mm; 
+            margin-left: 55mm; 
+            font-size: 12pt; 
+            border-collapse: collapse; 
+            line-height: 1.6; 
+        }
+        .school-info-table td { vertical-align: top; }
+        .info-label { width: 35mm; } 
+        .info-colon { width: 5mm; text-align: center; } 
+        .info-value { padding-left: 2mm; }
+
 
         /* --- STYLING KHUSUS HALAMAN 3 (BIODATA) --- */
-        .biodata-page { padding: 20mm; font-family: 'Times New Roman', Times, serif; } /* Hal 3 biasanya pakai Times New Roman */
+        .biodata-page { padding: 20mm; font-family: 'Times New Roman', Times, serif; } 
         .data-table { width: 100%; font-size: 11pt; line-height: 1.5; margin-top: 20px; border-collapse: collapse; }
         .data-table td { vertical-align: top; padding: 3px; }
         .col-label { width: 35%; }
@@ -193,6 +222,65 @@
                     </div>
                 </div>`;
 
+                // -- TEMPLATE HALAMAN 2 (INFO SEKOLAH - STATIS) --
+                let page2 = `
+                <div class="page">
+                    <div class="page-2-titles">
+                        <div class="title-bold">LAPORAN</div>
+                        <div class="title-bold">CAPAIAN KOMPETENSI PESERTA DIDIK</div>
+                        <div class="title-bold">SEKOLAH MENENGAH ATAS</div>
+                        <div class="title-bold">(SMA)</div>
+                    </div>
+
+                    <table class="school-info-table">
+                        <tr>
+                            <td class="info-label">Nama Sekolah</td>
+                            <td class="info-colon">:</td>
+                            <td class="info-value">SMA ABBS<br>(AL ABIDIN BILINGUAL<br>BOARDING SCHOOL)</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">NPSN/NSS</td>
+                            <td class="info-colon">:</td>
+                            <td class="info-value">69823287</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Alamat Sekolah</td>
+                            <td class="info-colon">:</td>
+                            <td class="info-value">Jalan Tarumanegara III,<br>Kode Pos: 57137<br>Telepon: (0271) 7882145</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Kelurahan</td>
+                            <td class="info-colon">:</td>
+                            <td class="info-value">Banyuanyar</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Kecamatan</td>
+                            <td class="info-colon">:</td>
+                            <td class="info-value">Banjarsari</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Kabupaten/Kota</td>
+                            <td class="info-colon">:</td>
+                            <td class="info-value">Kota Surakarta</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Provinsi</td>
+                            <td class="info-colon">:</td>
+                            <td class="info-value">Jawa Tengah</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Website</td>
+                            <td class="info-colon">:</td>
+                            <td class="info-value">www.abbs.alabidin.sch.id</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">E-mail Sekolah</td>
+                            <td class="info-colon">:</td>
+                            <td class="info-value">abbs@alabidin.sch.id</td>
+                        </tr>
+                    </table>
+                </div>`;
+
                 // -- TEMPLATE HALAMAN 3 (Keterangan Diri Siswa) --
                 let page3 = `
                 <div class="page biodata-page">
@@ -233,7 +321,8 @@
                     </div>
                 </div>`;
 
-                printArea.innerHTML += page1 + page3;
+                // Render berurutan: Page 1 -> Page 2 -> Page 3
+                printArea.innerHTML += page1 + page2 + page3;
             });
         }
     </script>
