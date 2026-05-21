@@ -180,7 +180,7 @@
             line-height: 1.4; 
         }
 
-        /* --- STYLING KHUSUS HALAMAN 4 (PINDAH SEKOLAH - KELUAR) --- */
+        /* --- STYLING UMUM HALAMAN 4 & 5 (PINDAH SEKOLAH) --- */
         .pindah-page { 
             padding: 20mm 20mm; 
         }
@@ -198,6 +198,18 @@
             margin-bottom: 3mm; 
             text-transform: uppercase; 
         }
+        .bg-peach { 
+            background-color: #fce4d6; 
+            font-weight: bold !important; 
+            padding: 6px !important; 
+        }
+        .sig-line-solid { 
+            border-bottom: 1.5pt solid black; 
+            width: 100%; 
+            margin-bottom: 1px; 
+        }
+
+        /* --- STYLING KHUSUS HALAMAN 4 (KELUAR) --- */
         .pindah-table { 
             width: 100%; 
             border-collapse: collapse; 
@@ -213,13 +225,8 @@
         .pindah-table th { 
             font-weight: normal; 
         } 
-        .bg-peach { 
-            background-color: #fce4d6; 
-            font-weight: bold !important; 
-            padding: 6px !important; 
-        }
         .pindah-row { 
-            height: 65mm; /* Tinggi fix agar 3 baris pas memenuhi kertas */
+            height: 65mm; 
         } 
         .sig-cell { 
             text-align: left !important; 
@@ -227,13 +234,42 @@
             padding: 8px 12px !important; 
         }
         .sig-space { 
-            height: 18mm; /* Tinggi area kosong untuk stempel & TTD */
+            height: 18mm; 
         } 
-        .sig-line-solid { 
-            border-bottom: 1.5pt solid black; 
+
+        /* --- STYLING KHUSUS HALAMAN 5 (MASUK) --- */
+        .masuk-table { 
             width: 100%; 
-            margin-bottom: 1px; 
+            border-collapse: collapse; 
+            font-size: 11pt; 
+            line-height: 1.3; 
         }
+        .masuk-table th, .masuk-table td { 
+            border: 1.5pt solid black; 
+            vertical-align: top; 
+        }
+        .masuk-table th { 
+            padding: 6px; 
+            text-align: center; 
+        }
+        
+        /* Layout 4 Kolom Baru agar presisi */
+        .m-col-num { width: 8%; text-align: center; padding-top: 15px; padding-bottom: 15px; }
+        .m-col-label { width: 32%; padding-top: 15px; padding-bottom: 15px; padding-left: 10px; }
+        .m-col-line { width: 28%; padding-top: 15px; padding-bottom: 15px; }
+        .m-col-sig { width: 32%; padding: 15px 12px; }
+        
+        .m-row { height: 26px; line-height: 26px; }
+        
+        /* Garis isian otomatis memanjang di dalam kolomnya */
+        .fill-line { 
+            border-bottom: 1pt solid black; 
+            height: 20px; 
+            width: 90%; 
+            margin: 0 auto; 
+        }
+        
+        .m-sig-space { height: 32mm; } 
 
         /* --- PENGATURAN MODE CETAK (CTRL+P) --- */
         @media print {
@@ -567,8 +603,136 @@
                     </table>
                 </div>`;
 
-                // Render berurutan: Page 1 -> 2 -> 3 -> 4
-                printArea.innerHTML += page1 + page2 + page3 + page4;
+                // ==========================================
+                // HALAMAN 5 (PINDAH SEKOLAH - MASUK)
+                // ==========================================
+                let page5 = `
+                <div class="page pindah-page">
+                    <div class="pindah-title">KETERANGAN PINDAH SEKOLAH</div>
+                    <div class="pindah-student">NAMA SISWA : ${nama}</div>
+                    
+                    <table class="masuk-table">
+                        <tr>
+                            <th style="width: 8%;">NO.</th>
+                            <th colspan="3" class="bg-peach">MASUK</th>
+                        </tr>
+                        
+                        <tr>
+                            <td class="m-col-num">
+                                <div class="m-row">1</div>
+                                <div class="m-row">2</div>
+                                <div class="m-row">3</div>
+                                <div class="m-row">4</div>
+                                <div class="m-row"></div>
+                                <div class="m-row"></div>
+                                <div class="m-row">5</div>
+                            </td>
+                            <td class="m-col-label">
+                                <div class="m-row">Nama Siswa</div>
+                                <div class="m-row">Nomor Induk</div>
+                                <div class="m-row">Nama Sekolah</div>
+                                <div class="m-row">Masuk di Sekolah ini:</div>
+                                <div class="m-row" style="padding-left: 15px;">a. Tanggal</div>
+                                <div class="m-row" style="padding-left: 15px;">b. Di Kelas</div>
+                                <div class="m-row">Tahun Pelajaran</div>
+                            </td>
+                            <td class="m-col-line">
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                            </td>
+                            <td class="m-col-sig">
+                                <div>_______________, _______________</div>
+                                <div style="margin-top: 5px;">Kepala Sekolah,</div>
+                                <div class="m-sig-space"></div>
+                                <div class="sig-line-solid"></div>
+                                <div>NIP.</div>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="m-col-num">
+                                <div class="m-row">1</div>
+                                <div class="m-row">2</div>
+                                <div class="m-row">3</div>
+                                <div class="m-row">4</div>
+                                <div class="m-row"></div>
+                                <div class="m-row"></div>
+                                <div class="m-row">5</div>
+                            </td>
+                            <td class="m-col-label">
+                                <div class="m-row">Nama Siswa</div>
+                                <div class="m-row">Nomor Induk</div>
+                                <div class="m-row">Nama Sekolah</div>
+                                <div class="m-row">Masuk di Sekolah ini:</div>
+                                <div class="m-row" style="padding-left: 15px;">a. Tanggal</div>
+                                <div class="m-row" style="padding-left: 15px;">b. Di Kelas</div>
+                                <div class="m-row">Tahun Pelajaran</div>
+                            </td>
+                            <td class="m-col-line">
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                            </td>
+                            <td class="m-col-sig">
+                                <div>_______________, _______________</div>
+                                <div style="margin-top: 5px;">Kepala Sekolah,</div>
+                                <div class="m-sig-space"></div>
+                                <div class="sig-line-solid"></div>
+                                <div>NIP.</div>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="m-col-num">
+                                <div class="m-row">1</div>
+                                <div class="m-row">2</div>
+                                <div class="m-row">3</div>
+                                <div class="m-row">4</div>
+                                <div class="m-row"></div>
+                                <div class="m-row"></div>
+                                <div class="m-row">5</div>
+                            </td>
+                            <td class="m-col-label">
+                                <div class="m-row">Nama Siswa</div>
+                                <div class="m-row">Nomor Induk</div>
+                                <div class="m-row">Nama Sekolah</div>
+                                <div class="m-row">Masuk di Sekolah ini:</div>
+                                <div class="m-row" style="padding-left: 15px;">a. Tanggal</div>
+                                <div class="m-row" style="padding-left: 15px;">b. Di Kelas</div>
+                                <div class="m-row">Tahun Pelajaran</div>
+                            </td>
+                            <td class="m-col-line">
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                                <div class="m-row"><div class="fill-line"></div></div>
+                            </td>
+                            <td class="m-col-sig">
+                                <div>_______________, _______________</div>
+                                <div style="margin-top: 5px;">Kepala Sekolah,</div>
+                                <div class="m-sig-space"></div>
+                                <div class="sig-line-solid"></div>
+                                <div>NIP.</div>
+                            </td>
+                        </tr>
+                        
+                    </table>
+                </div>`;
+
+                // Render berurutan: Page 1 sampai 5
+                printArea.innerHTML += page1 + page2 + page3 + page4 + page5;
             });
         }
     </script>
