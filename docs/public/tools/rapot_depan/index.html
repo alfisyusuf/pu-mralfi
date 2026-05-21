@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cetak Cover Rapor SMA ABBS</title>
+    <title>Sistem Cetak Cover Rapor SMA ABBS</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         /* Gaya dasar untuk layar komputer */
         body { font-family: 'Times New Roman', Times, serif; background: #e2e8f0; margin: 0; padding: 20px; }
         .control-panel { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
-        .btn { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #2563eb; color: white; border: none; border-radius: 5px; margin-left: 10px; }
-        .btn-print { background: #16a34a; }
+        .btn { padding: 10px 20px; font-size: 16px; cursor: pointer; color: white; border: none; border-radius: 5px; margin-left: 10px; font-weight: bold; }
+        .btn-download { background-color: #f59e0b; }
+        .btn-print { background-color: #16a34a; }
+        .file-input { margin-left: 20px; font-size: 16px; }
         
         /* Area Cetak */
         #printArea { display: flex; flex-direction: column; align-items: center; }
@@ -35,10 +37,10 @@
         .title-medium { font-size: 14pt; margin: 5px 0;}
         
         /* Layout Halaman 1 (Cover Depan) */
-        .logo-placeholder { width: 120px; height: 120px; margin: 0 auto 40px auto; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center;}
+        .logo-placeholder { width: 120px; height: 120px; margin: 0 auto 40px auto; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: sans-serif; font-weight: bold; color: #6b7280; border: 2px dashed #9ca3af;}
         .student-box { border: 1px solid black; padding: 20px; margin: 40px 10%; text-align: center; font-size: 16pt; font-weight: bold; }
         
-        /* Layout Biodata (Halaman 2 & 3) */
+        /* Layout Biodata (Halaman 3) */
         .data-table { width: 100%; font-size: 12pt; line-height: 1.5; margin-top: 20px; }
         .data-table td { vertical-align: top; padding: 4px; }
         .col-label { width: 35%; }
@@ -60,15 +62,46 @@
 <body>
 
     <div class="control-panel">
-        <h2>Sistem Cetak Cover Rapor</h2>
-        <p>1. Siapkan file Excel (.xlsx) dengan kolom: no, nama siswa, nis, nisn, tempat tanggal lahir, nama ayah, dll.</p>
-        <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" />
-        <button class="btn btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+        <h2 style="font-family: sans-serif; color: #1e40af; margin-top: 0;">Sistem Generator Cover Rapor</h2>
+        <p style="font-family: sans-serif; color: #4b5563;">Unduh template Excel, isi data siswa, lalu upload kembali ke sini untuk mencetak secara massal.</p>
+        
+        <div style="margin-top: 20px;">
+            <button class="btn btn-download" onclick="downloadTemplate()">📥 Unduh Template Excel</button>
+            <input type="file" id="excelFile" class="file-input" accept=".xlsx, .xls, .csv" />
+            <button class="btn btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+        </div>
     </div>
 
     <div id="printArea"></div>
 
     <script>
+        // 1. Fungsi Unduh Template Excel
+        function downloadTemplate() {
+            // Definisikan header (nama kolom) dan contoh baris data
+            const dataTemplate = [
+                ["no", "nama siswa", "nis", "nisn", "tempat, tanggal lahir", "nama ayah", "nama ibu", "nomor ayah", "nomor ibu", "pekerjaan ayah", "pekerjaan ibu", "alamat", "asal sekolah"],
+                [1, "Ahmad Zaki Nada Putra", "25131005", "0105724018", "Batan, 27 Maret 2010", "Ahmad Hidayat", "Saterina", "6281277203647", "628127016056", "Karyawan Swasta", "Ibu Rumah Tangga", "Kampung Ponjen RT 02/05 Tanjung Riau Sekupang Kota Batam", "SMPS IT IMAM SYAFII BATAM"],
+                [2, "Contoh Siswa Kedua", "12345678", "0011223344", "Surakarta, 10 Mei 2010", "Nama Ayah", "Nama Ibu", "08123456789", "08129876543", "Wiraswasta", "Guru", "Jl. Tarumanegara III, Banyuanyar", "SMP Negeri 1 Surakarta"]
+            ];
+
+            // Buat worksheet baru dari array
+            const worksheet = XLSX.utils.aoa_to_sheet(dataTemplate);
+
+            // Seting lebar kolom otomatis agar rapi saat dibuka
+            const colWidths = [
+                {wch: 5}, {wch: 25}, {wch: 15}, {wch: 15}, {wch: 25}, 
+                {wch: 20}, {wch: 20}, {wch: 15}, {wch: 15}, 
+                {wch: 20}, {wch: 20}, {wch: 40}, {wch: 25}
+            ];
+            worksheet['!cols'] = colWidths;
+
+            // Buat workbook dan simpan
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Data Siswa");
+            XLSX.writeFile(workbook, "Template_Data_Siswa_ABBS.xlsx");
+        }
+
+        // 2. Event Listener untuk membaca file Excel yang diupload
         document.getElementById('excelFile').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -77,36 +110,40 @@
             reader.onload = function(e) {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
-                // Ambil sheet pertama
+                
+                // Ambil sheet pertama dari file Excel
                 const firstSheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[firstSheetName];
-                // Convert ke JSON
+                
+                // Convert sheet ke format JSON (Array of Objects)
                 const jsonData = XLSX.utils.sheet_to_json(worksheet, {raw: false});
                 
+                // Panggil fungsi render ke HTML
                 renderPages(jsonData);
             };
             reader.readAsArrayBuffer(file);
         });
 
+        // 3. Fungsi Render Data ke Halaman HTML
         function renderPages(data) {
             const printArea = document.getElementById('printArea');
-            printArea.innerHTML = ''; // Bersihkan area cetak
+            printArea.innerHTML = ''; // Bersihkan area cetak sebelumnya
 
+            // Looping seluruh baris data siswa dari Excel
             data.forEach(student => {
-                // Konversi key Excel agar mudah diakses, antisipasi huruf besar/kecil
-                // Pastikan nama kolom di excel sesuai (nama siswa, nis, nisn, tempat, tanggal lahir, dll)
+                // Konversi key Excel agar fleksibel (huruf besar/kecil)
                 const nama = student['nama siswa'] || student['Nama Siswa'] || '-';
                 const nis = student['nis'] || student['NIS'] || '-';
                 const nisn = student['nisn'] || student['NISN'] || '-';
-                const ttl = student['tempat, tanggal lahir'] || student['Tempat, Tanggal Lahir'] || '-';
+                const ttl = student['tempat, tanggal lahir'] || student['Tempat, Tanggal Lahir'] || student['tempat tanggal lahir'] || '-';
                 const alamat = student['alamat'] || student['Alamat'] || '-';
                 const ayah = student['nama ayah'] || student['Nama Ayah'] || '-';
                 const ibu = student['nama ibu'] || student['Nama Ibu'] || '-';
                 const asalSekolah = student['asal sekolah'] || student['Asal Sekolah'] || '-';
-                const pekerjaanAyah = student['pekerjaan ayah'] || '-';
-                const pekerjaanIbu = student['pekerjaan ibu'] || '-';
+                const pekerjaanAyah = student['pekerjaan ayah'] || student['Pekerjaan Ayah'] || '-';
+                const pekerjaanIbu = student['pekerjaan ibu'] || student['Pekerjaan Ibu'] || '-';
 
-                // Bikin HTML Halaman 1 (Cover Depan)
+                // -- TEMPLATE HALAMAN 1 (Cover Depan) --
                 let page1 = `
                 <div class="page text-center">
                     <div class="logo-placeholder">LOGO<br>ABBS</div>
@@ -130,7 +167,7 @@
                     </div>
                 </div>`;
 
-                // Bikin HTML Halaman 3 (Keterangan Diri Siswa) - Berdasarkan Gambar 3
+                // -- TEMPLATE HALAMAN 3 (Keterangan Tentang Diri Siswa) --
                 let page3 = `
                 <div class="page">
                     <h3 class="text-center bold" style="margin-bottom: 40px;">KETERANGAN TENTANG DIRI SISWA</h3>
@@ -141,11 +178,16 @@
                         <tr><td class="col-label">3. Tempat Tanggal Lahir</td><td class="col-colon">:</td><td>${ttl}</td></tr>
                         <tr><td class="col-label">4. Jenis Kelamin</td><td class="col-colon">:</td><td>-</td></tr>
                         <tr><td class="col-label">5. Agama</td><td class="col-colon">:</td><td>Islam</td></tr>
+                        <tr><td class="col-label">6. Status dalam Keluarga</td><td class="col-colon">:</td><td>Anak Kandung</td></tr>
+                        <tr><td class="col-label">7. Anak ke</td><td class="col-colon">:</td><td>-</td></tr>
                         <tr><td class="col-label">8. Alamat Siswa</td><td class="col-colon">:</td><td>${alamat}</td></tr>
-                        <tr><td class="col-label">9. Sekolah Asal</td><td class="col-colon">:</td><td>${asalSekolah}</td></tr>
+                        <tr><td class="col-label">9. Sekolah Asal</td><td class="col-colon">:</td><td></td></tr>
+                        <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Nama Sekolah</td><td class="col-colon">:</td><td>${asalSekolah}</td></tr>
+                        
                         <tr><td colspan="3"><br><b>11. Nama Orang Tua</b></td></tr>
                         <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ayah</td><td class="col-colon">:</td><td>${ayah}</td></tr>
                         <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ibu</td><td class="col-colon">:</td><td>${ibu}</td></tr>
+                        
                         <tr><td colspan="3"><br><b>13. Pekerjaan Orang Tua</b></td></tr>
                         <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ayah</td><td class="col-colon">:</td><td>${pekerjaanAyah}</td></tr>
                         <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ibu</td><td class="col-colon">:</td><td>${pekerjaanIbu}</td></tr>
@@ -165,7 +207,7 @@
                     </div>
                 </div>`;
 
-                // Masukkan template ke dalam area print (Tambahkan Halaman 2, 4, 5 sesuai pola di atas)
+                // Masukkan halaman-halaman tersebut ke dalam Print Area secara berurutan
                 printArea.innerHTML += page1 + page3;
             });
         }
