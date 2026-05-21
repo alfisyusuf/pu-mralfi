@@ -6,6 +6,9 @@
     <title>Sistem Cetak Cover Rapor SMA ABBS</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
+        /* CSS Reset Dasar */
+        *, *::before, *::after { box-sizing: border-box; }
+        
         /* Gaya dasar untuk layar komputer */
         body { font-family: 'Times New Roman', Times, serif; background: #e2e8f0; margin: 0; padding: 20px; }
         .control-panel { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
@@ -17,56 +20,75 @@
         /* Area Cetak */
         #printArea { display: flex; flex-direction: column; align-items: center; }
         
-        /* Seting Kertas A4 */
+        /* Seting Kertas A4 GLOBAL */
         .page {
             width: 210mm;
             height: 297mm;
-            padding: 20mm;
-            margin: 10mm auto;
             background: white;
-            box-sizing: border-box;
             position: relative;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             page-break-after: always; /* Pemisah Halaman saat di-print */
+            overflow: hidden; /* PENTING: Mencegah elemen meluber dan bikin blank page */
+            margin-bottom: 10mm;
         }
 
-        /* Tipografi & Layout Halaman */
-        .text-center { text-align: center; }
-        .bold { font-weight: bold; }
-        .title-large { font-size: 18pt; margin-top: 50px; margin-bottom: 20px;}
-        .title-medium { font-size: 14pt; margin: 5px 0;}
+        /* --- STYLING KHUSUS HALAMAN 1 (COVER) --- */
+        .cover-page {
+            padding: 20mm 20mm 15mm;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         
-        /* Layout Halaman 1 (Cover Depan) */
-        .logo-placeholder { width: 120px; height: 120px; margin: 0 auto 40px auto; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: sans-serif; font-weight: bold; color: #6b7280; border: 2px dashed #9ca3af;}
-        .student-box { border: 1px solid black; padding: 20px; margin: 40px 10%; text-align: center; font-size: 16pt; font-weight: bold; }
-        
-        /* Layout Biodata (Halaman 3) */
-        .data-table { width: 100%; font-size: 12pt; line-height: 1.5; margin-top: 20px; }
-        .data-table td { vertical-align: top; padding: 4px; }
+        .logo-section { margin-top: 15mm; margin-bottom: 20mm; text-align: center; }
+        .logo-section img { width: 45mm; height: auto; }
+
+        .titles-section { text-align: center; margin-bottom: 25mm; line-height: 1.5; }
+        .main-title { font-size: 14pt; font-weight: bold; margin-bottom: 2mm; }
+        .kompetensi-title { font-size: 16pt; font-weight: bold; margin-bottom: 2mm; }
+        .sma-title { font-size: 16pt; font-weight: bold; margin-bottom: 2mm; }
+        .sma-paren { font-size: 14pt; font-weight: bold; }
+
+        .school-name-section { text-align: center; margin-bottom: 40mm; line-height: 1.3; }
+        .school-name-line { font-size: 12pt; font-weight: bold; margin-bottom: 1mm; }
+
+        .student-section { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 50mm; }
+        .student-label { font-size: 11pt; font-weight: bold; margin-bottom: 3mm; }
+        .name-box { border: 1.5pt solid black; width: 120mm; height: 22mm; display: flex; align-items: center; justify-content: center; margin-bottom: 4mm; }
+        .placeholder-name { font-size: 14pt; font-weight: bold; text-transform: uppercase; }
+        .nis-label { font-size: 11pt; font-weight: bold; }
+
+        .ministry-section { position: absolute; bottom: 30mm; left: 0; width: 100%; text-align: center; line-height: 1.4; }
+        .ministry-line-1 { font-size: 12pt; font-weight: bold; }
+        .ministry-line-2 { font-size: 14pt; font-weight: bold; }
+
+        /* --- STYLING KHUSUS HALAMAN 3 (BIODATA) --- */
+        .biodata-page { padding: 20mm; }
+        .data-table { width: 100%; font-size: 11pt; line-height: 1.5; margin-top: 20px; border-collapse: collapse; }
+        .data-table td { vertical-align: top; padding: 3px; }
         .col-label { width: 35%; }
         .col-colon { width: 2%; text-align: center;}
-        
         .photo-box { width: 3cm; height: 4cm; border: 1px solid black; display: flex; align-items: center; justify-content: center; margin-top: 40px; text-align: center;}
-        
-        .signature-area { width: 100%; display: flex; justify-content: space-between; margin-top: 40px; }
+        .signature-area { width: 100%; display: flex; justify-content: space-between; margin-top: 40px; font-size: 11pt; }
         .signature-box { width: 45%; }
 
-        /* Mode Print (Sembunyikan panel kontrol, hapus shadow) */
+        /* --- PENGATURAN MODE CETAK (CTRL+P) --- */
         @media print {
+            @page { size: A4; margin: 0; } /* Set margin kertas ke 0 agar dikontrol oleh padding .page */
             body { background: white; margin: 0; padding: 0; }
-            .control-panel { display: none; }
-            .page { margin: 0; box-shadow: none; border: none; }
+            .control-panel { display: none; } /* Sembunyikan tombol upload saat diprint */
+            .page { box-shadow: none; margin-bottom: 0; border: none; }
         }
     </style>
 </head>
 <body>
 
     <div class="control-panel">
-        <h2 style="font-family: sans-serif; color: #1e40af; margin-top: 0;">Sistem Generator Cover Rapor</h2>
-        <p style="font-family: sans-serif; color: #4b5563;">Unduh template Excel, isi data siswa, lalu upload kembali ke sini untuk mencetak secara massal.</p>
+        <h2 style="font-family: sans-serif; color: #1e40af; margin-top: 0;">Sistem Generator Cover Rapor SMA ABBS</h2>
+        <p style="font-family: sans-serif; color: #4b5563;">Unduh template Excel, isi data siswa, lalu upload kembali ke sini untuk mencetak massal.</p>
         
         <div style="margin-top: 20px;">
-            <button class="btn btn-download" onclick="downloadTemplate()">📥 Unduh Template Excel</button>
+            <button class="btn btn-download" onclick="downloadTemplate()">📥 Unduh Template</button>
             <input type="file" id="excelFile" class="file-input" accept=".xlsx, .xls, .csv" />
             <button class="btn btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
         </div>
@@ -77,31 +99,19 @@
     <script>
         // 1. Fungsi Unduh Template Excel
         function downloadTemplate() {
-            // Definisikan header (nama kolom) dan contoh baris data
             const dataTemplate = [
                 ["no", "nama siswa", "nis", "nisn", "tempat, tanggal lahir", "nama ayah", "nama ibu", "nomor ayah", "nomor ibu", "pekerjaan ayah", "pekerjaan ibu", "alamat", "asal sekolah"],
-                [1, "Ahmad Zaki Nada Putra", "25131005", "0105724018", "Batan, 27 Maret 2010", "Ahmad Hidayat", "Saterina", "6281277203647", "628127016056", "Karyawan Swasta", "Ibu Rumah Tangga", "Kampung Ponjen RT 02/05 Tanjung Riau Sekupang Kota Batam", "SMPS IT IMAM SYAFII BATAM"],
-                [2, "Contoh Siswa Kedua", "12345678", "0011223344", "Surakarta, 10 Mei 2010", "Nama Ayah", "Nama Ibu", "08123456789", "08129876543", "Wiraswasta", "Guru", "Jl. Tarumanegara III, Banyuanyar", "SMP Negeri 1 Surakarta"]
+                [1, "Ahmad Zaki Nada Putra", "25131005", "0105724018", "Batan, 27 Maret 2010", "Ahmad Hidayat", "Saterina", "6281277203647", "628127016056", "Karyawan Swasta", "Ibu Rumah Tangga", "Kampung Ponjen RT 02/05 Tanjung Riau Sekupang", "SMPS IT IMAM SYAFII BATAM"]
             ];
-
-            // Buat worksheet baru dari array
             const worksheet = XLSX.utils.aoa_to_sheet(dataTemplate);
-
-            // Seting lebar kolom otomatis agar rapi saat dibuka
-            const colWidths = [
-                {wch: 5}, {wch: 25}, {wch: 15}, {wch: 15}, {wch: 25}, 
-                {wch: 20}, {wch: 20}, {wch: 15}, {wch: 15}, 
-                {wch: 20}, {wch: 20}, {wch: 40}, {wch: 25}
-            ];
+            const colWidths = [ {wch: 5}, {wch: 25}, {wch: 15}, {wch: 15}, {wch: 25}, {wch: 20}, {wch: 20}, {wch: 15}, {wch: 15}, {wch: 20}, {wch: 20}, {wch: 40}, {wch: 25} ];
             worksheet['!cols'] = colWidths;
-
-            // Buat workbook dan simpan
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Data Siswa");
             XLSX.writeFile(workbook, "Template_Data_Siswa_ABBS.xlsx");
         }
 
-        // 2. Event Listener untuk membaca file Excel yang diupload
+        // 2. Baca file Excel yang diupload
         document.getElementById('excelFile').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -110,16 +120,11 @@
             reader.onload = function(e) {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
-                
-                // Ambil sheet pertama dari file Excel
                 const firstSheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[firstSheetName];
-                
-                // Convert sheet ke format JSON (Array of Objects)
                 const jsonData = XLSX.utils.sheet_to_json(worksheet, {raw: false});
                 
-                // Panggil fungsi render ke HTML
-                renderPages(jsonData);
+                renderPages(jsonData); // Panggil fungsi render
             };
             reader.readAsArrayBuffer(file);
         });
@@ -127,9 +132,8 @@
         // 3. Fungsi Render Data ke Halaman HTML
         function renderPages(data) {
             const printArea = document.getElementById('printArea');
-            printArea.innerHTML = ''; // Bersihkan area cetak sebelumnya
+            printArea.innerHTML = ''; 
 
-            // Looping seluruh baris data siswa dari Excel
             data.forEach(student => {
                 // Konversi key Excel agar fleksibel (huruf besar/kecil)
                 const nama = student['nama siswa'] || student['Nama Siswa'] || '-';
@@ -143,34 +147,43 @@
                 const pekerjaanAyah = student['pekerjaan ayah'] || student['Pekerjaan Ayah'] || '-';
                 const pekerjaanIbu = student['pekerjaan ibu'] || student['Pekerjaan Ibu'] || '-';
 
-                // -- TEMPLATE HALAMAN 1 (Cover Depan) --
+                // -- TEMPLATE HALAMAN 1 (COVER DEPAN) YANG SUDAH PRESISI --
                 let page1 = `
-                <div class="page text-center">
-                    <div class="logo-placeholder">LOGO<br>ABBS</div>
-                    
-                    <div class="title-large bold">LAPORAN</div>
-                    <div class="title-medium bold">CAPAIAN KOMPETENSI PESERTA DIDIK</div>
-                    <div class="title-medium bold">SEKOLAH MENENGAH ATAS</div>
-                    <div class="title-medium bold">(SMA)</div>
-                    <br><br>
-                    <div class="title-medium bold">SMA AL ABIDIN BILINGUAL BOARDING SCHOOL (ABBS)</div>
-                    <div class="title-medium bold">SURAKARTA</div>
-                    
-                    <br><br><br><br><br>
-                    <div>Nama Peserta Didik</div>
-                    <div class="student-box">${nama}</div>
-                    <div class="bold" style="font-size: 14pt;">NIS / NISN : ${nis} / ${nisn}</div>
+                <div class="page cover-page">
+                    <div class="logo-section">
+                        <img src="logo_sma_abbs_surakarta.png" alt="Logo Sekolah ABBS">
+                    </div>
 
-                    <div style="position: absolute; bottom: 50px; width: 100%; left: 0;">
-                        <div class="title-medium bold">KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN</div>
-                        <div class="title-medium bold">REPUBLIK INDONESIA</div>
+                    <div class="titles-section">
+                        <div class="main-title">LAPORAN</div>
+                        <div class="kompetensi-title">CAPAIAN KOMPETENSI PESERTA DIDIK</div>
+                        <div class="sma-title">SEKOLAH MENENGAH ATAS</div>
+                        <div class="sma-paren">(SMA)</div>
+                    </div>
+
+                    <div class="school-name-section">
+                        <div class="school-name-line">SMA AL ABIDIN BILINGUAL BOARDING SCHOOL (ABBS)</div>
+                        <div class="school-name-line">SURAKARTA</div>
+                    </div>
+
+                    <div class="student-section">
+                        <div class="student-label">Nama Peserta Didik</div>
+                        <div class="name-box">
+                            <div class="placeholder-name">${nama}</div>
+                        </div>
+                        <div class="nis-label">NIS / NISN : ${nis} / ${nisn}</div>
+                    </div>
+
+                    <div class="ministry-section">
+                        <div class="ministry-line-1">KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN</div>
+                        <div class="ministry-line-2">REPUBLIK INDONESIA</div>
                     </div>
                 </div>`;
 
-                // -- TEMPLATE HALAMAN 3 (Keterangan Tentang Diri Siswa) --
+                // -- TEMPLATE HALAMAN 3 (Keterangan Diri Siswa) --
                 let page3 = `
-                <div class="page">
-                    <h3 class="text-center bold" style="margin-bottom: 40px;">KETERANGAN TENTANG DIRI SISWA</h3>
+                <div class="page biodata-page">
+                    <h3 class="text-center bold" style="margin-bottom: 30px;">KETERANGAN TENTANG DIRI SISWA</h3>
                     
                     <table class="data-table">
                         <tr><td class="col-label">1. Nama Siswa (Lengkap)</td><td class="col-colon">:</td><td>${nama}</td></tr>
@@ -207,7 +220,7 @@
                     </div>
                 </div>`;
 
-                // Masukkan halaman-halaman tersebut ke dalam Print Area secara berurutan
+                // Masukkan halaman 1 dan 3 ke dalam Print Area
                 printArea.innerHTML += page1 + page3;
             });
         }
