@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cetak Cover Rapor SMA ABBS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        /* Gaya dasar untuk layar komputer */
+        body { font-family: 'Times New Roman', Times, serif; background: #e2e8f0; margin: 0; padding: 20px; }
+        .control-panel { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .btn { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #2563eb; color: white; border: none; border-radius: 5px; margin-left: 10px; }
+        .btn-print { background: #16a34a; }
+        
+        /* Area Cetak */
+        #printArea { display: flex; flex-direction: column; align-items: center; }
+        
+        /* Seting Kertas A4 */
+        .page {
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm;
+            margin: 10mm auto;
+            background: white;
+            box-sizing: border-box;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            page-break-after: always; /* Pemisah Halaman saat di-print */
+        }
+
+        /* Tipografi & Layout Halaman */
+        .text-center { text-align: center; }
+        .bold { font-weight: bold; }
+        .title-large { font-size: 18pt; margin-top: 50px; margin-bottom: 20px;}
+        .title-medium { font-size: 14pt; margin: 5px 0;}
+        
+        /* Layout Halaman 1 (Cover Depan) */
+        .logo-placeholder { width: 120px; height: 120px; margin: 0 auto 40px auto; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center;}
+        .student-box { border: 1px solid black; padding: 20px; margin: 40px 10%; text-align: center; font-size: 16pt; font-weight: bold; }
+        
+        /* Layout Biodata (Halaman 2 & 3) */
+        .data-table { width: 100%; font-size: 12pt; line-height: 1.5; margin-top: 20px; }
+        .data-table td { vertical-align: top; padding: 4px; }
+        .col-label { width: 35%; }
+        .col-colon { width: 2%; text-align: center;}
+        
+        .photo-box { width: 3cm; height: 4cm; border: 1px solid black; display: flex; align-items: center; justify-content: center; margin-top: 40px; text-align: center;}
+        
+        .signature-area { width: 100%; display: flex; justify-content: space-between; margin-top: 40px; }
+        .signature-box { width: 45%; }
+
+        /* Mode Print (Sembunyikan panel kontrol, hapus shadow) */
+        @media print {
+            body { background: white; margin: 0; padding: 0; }
+            .control-panel { display: none; }
+            .page { margin: 0; box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="control-panel">
+        <h2>Sistem Cetak Cover Rapor</h2>
+        <p>1. Siapkan file Excel (.xlsx) dengan kolom: no, nama siswa, nis, nisn, tempat tanggal lahir, nama ayah, dll.</p>
+        <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" />
+        <button class="btn btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+    </div>
+
+    <div id="printArea"></div>
+
+    <script>
+        document.getElementById('excelFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                // Ambil sheet pertama
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                // Convert ke JSON
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, {raw: false});
+                
+                renderPages(jsonData);
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        function renderPages(data) {
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = ''; // Bersihkan area cetak
+
+            data.forEach(student => {
+                // Konversi key Excel agar mudah diakses, antisipasi huruf besar/kecil
+                // Pastikan nama kolom di excel sesuai (nama siswa, nis, nisn, tempat, tanggal lahir, dll)
+                const nama = student['nama siswa'] || student['Nama Siswa'] || '-';
+                const nis = student['nis'] || student['NIS'] || '-';
+                const nisn = student['nisn'] || student['NISN'] || '-';
+                const ttl = student['tempat, tanggal lahir'] || student['Tempat, Tanggal Lahir'] || '-';
+                const alamat = student['alamat'] || student['Alamat'] || '-';
+                const ayah = student['nama ayah'] || student['Nama Ayah'] || '-';
+                const ibu = student['nama ibu'] || student['Nama Ibu'] || '-';
+                const asalSekolah = student['asal sekolah'] || student['Asal Sekolah'] || '-';
+                const pekerjaanAyah = student['pekerjaan ayah'] || '-';
+                const pekerjaanIbu = student['pekerjaan ibu'] || '-';
+
+                // Bikin HTML Halaman 1 (Cover Depan)
+                let page1 = `
+                <div class="page text-center">
+                    <div class="logo-placeholder">LOGO<br>ABBS</div>
+                    
+                    <div class="title-large bold">LAPORAN</div>
+                    <div class="title-medium bold">CAPAIAN KOMPETENSI PESERTA DIDIK</div>
+                    <div class="title-medium bold">SEKOLAH MENENGAH ATAS</div>
+                    <div class="title-medium bold">(SMA)</div>
+                    <br><br>
+                    <div class="title-medium bold">SMA AL ABIDIN BILINGUAL BOARDING SCHOOL (ABBS)</div>
+                    <div class="title-medium bold">SURAKARTA</div>
+                    
+                    <br><br><br><br><br>
+                    <div>Nama Peserta Didik</div>
+                    <div class="student-box">${nama}</div>
+                    <div class="bold" style="font-size: 14pt;">NIS / NISN : ${nis} / ${nisn}</div>
+
+                    <div style="position: absolute; bottom: 50px; width: 100%; left: 0;">
+                        <div class="title-medium bold">KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN</div>
+                        <div class="title-medium bold">REPUBLIK INDONESIA</div>
+                    </div>
+                </div>`;
+
+                // Bikin HTML Halaman 3 (Keterangan Diri Siswa) - Berdasarkan Gambar 3
+                let page3 = `
+                <div class="page">
+                    <h3 class="text-center bold" style="margin-bottom: 40px;">KETERANGAN TENTANG DIRI SISWA</h3>
+                    
+                    <table class="data-table">
+                        <tr><td class="col-label">1. Nama Siswa (Lengkap)</td><td class="col-colon">:</td><td>${nama}</td></tr>
+                        <tr><td class="col-label">2. NIS / NISN</td><td class="col-colon">:</td><td>${nis} / ${nisn}</td></tr>
+                        <tr><td class="col-label">3. Tempat Tanggal Lahir</td><td class="col-colon">:</td><td>${ttl}</td></tr>
+                        <tr><td class="col-label">4. Jenis Kelamin</td><td class="col-colon">:</td><td>-</td></tr>
+                        <tr><td class="col-label">5. Agama</td><td class="col-colon">:</td><td>Islam</td></tr>
+                        <tr><td class="col-label">8. Alamat Siswa</td><td class="col-colon">:</td><td>${alamat}</td></tr>
+                        <tr><td class="col-label">9. Sekolah Asal</td><td class="col-colon">:</td><td>${asalSekolah}</td></tr>
+                        <tr><td colspan="3"><br><b>11. Nama Orang Tua</b></td></tr>
+                        <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ayah</td><td class="col-colon">:</td><td>${ayah}</td></tr>
+                        <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ibu</td><td class="col-colon">:</td><td>${ibu}</td></tr>
+                        <tr><td colspan="3"><br><b>13. Pekerjaan Orang Tua</b></td></tr>
+                        <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ayah</td><td class="col-colon">:</td><td>${pekerjaanAyah}</td></tr>
+                        <tr><td class="col-label">&nbsp;&nbsp;&nbsp;&nbsp;Ibu</td><td class="col-colon">:</td><td>${pekerjaanIbu}</td></tr>
+                    </table>
+
+                    <div class="signature-area">
+                        <div class="signature-box">
+                            <div class="photo-box">Pas Foto<br>3 x 4</div>
+                        </div>
+                        <div class="signature-box">
+                            <div>Surakarta, 14 Juli 2025</div>
+                            <div>Kepala Sekolah,</div>
+                            <br><br><br><br>
+                            <div><b>Mia Febriana, M.Pd.</b></div>
+                            <div>NIP.-</div>
+                        </div>
+                    </div>
+                </div>`;
+
+                // Masukkan template ke dalam area print (Tambahkan Halaman 2, 4, 5 sesuai pola di atas)
+                printArea.innerHTML += page1 + page3;
+            });
+        }
+    </script>
+</body>
+</html>
